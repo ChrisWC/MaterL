@@ -1,0 +1,6 @@
+{
+  "name": "NavigationComponent",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./NavigationComponent.js"
+}
