@@ -8,11 +8,10 @@ export default function configureStore(initialState) {
     const middleware = process.env.NODE_ENV !== 'production' ?
         [require('redux-immutable-state-invariant')(), thunk]:[thunk];
 
-    const tools = process.env.NODE_ENV !== 'production' ? (global.devToolsExtension? global.devToolsExtension(): f => f):f => f
+    const tools = process.env.NODE_ENV !== 'production' ? (global.devToolsExtension? global.devToolsExtension(): () => {}):() => {};
 
     const store = createStore(personalApp, initialState, compose(
         applyMiddleware(...middleware),
-        tools
     ));
 
     if (module.hot) {

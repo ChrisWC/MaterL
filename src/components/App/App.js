@@ -20,10 +20,11 @@ import Drawer from '../Material/Drawer/';
 import Paper from '../Material/Paper/';
 import MenuItem from '../Material/MenuItem/';
 import Menu from '../Material/Menu/';
-import {grey800} from 'material-ui/styles/colors';
 import Button from '../Material/Button';
 import PopOver from '../Material/PopOver';
 import Card from '../Material/Card';
+import CardTitle from '../Material/Card/CardTitle';
+import CardBody from '../Material/Card/CardBody';
 import ColorPicker from '../Lotus/ColorPicker';
 import Image from '../Lotus/Image';
 import Palette from '../Material/Palette';
@@ -31,6 +32,7 @@ import Theme from '../Material/Theme';
 
 import Icon from '../Material/Icon'
 
+import history from '../../core/history';
 class App extends Component {
     constructor(props) {
         super(props);
@@ -95,16 +97,23 @@ class App extends Component {
     ) : this.props.children;
 
 
-    const muiTheme = getMuiTheme({palette: {primary1Color: grey800}, userAgent: global.navigator.userAgent,});
-    const wrapper = React.createElement(MuiThemeProvider, {muiTheme}, component);
-    return wrapper
   }
   render() {
     const leftDrawer = (<Drawer open={this.state.openLeftDrawer} depth={1}>
-
             <Menu>
-                <Button contextName="menu" label="Menu Button 1" active={false}/>
-                <Button contextName="menu" label="Menu Button 2" active={false}/>
+                <Button contextName="menu" label="About Project" active={false} redirect={"/about"} />
+                <Button contextName="menu" label="Components" active={false} redirect={"/"}>
+                    <Menu>
+                        <Button contextName="menu" label="Button" active={false} redirect={"/button"} />
+                        <Button contextName="menu" label="Choice" active={false} redirect={"/choice"} />
+                        <Button contextName="menu" label="Appbar" active={false} redirect={"/appbar"} />
+                        <Button contextName="menu" label="Drawer" active={false} redirect={"/drawer"} />
+                        <Button contextName="menu" label="Menu" active={false} redirect={"/menu"} />
+                        <Button contextName="menu" label="Paper" active={false} redirect={"/paper"} />
+                        <Button contextName="menu" label="Icon" active={false} redirect={"/icon"} />
+                    </Menu>
+                </Button>
+                <Button contextName="menu" label="Layout" active={false}/>
             </Menu>
         </Drawer>)
     const menuButton = (
@@ -115,85 +124,20 @@ class App extends Component {
     )
     const component =  !this.props.error ? (
         <Theme>
-            <Palette primary="lightBlue" secondary="lightBlue">
+            <Palette primary="deepPurple" secondary="lightBlue">
                 <Paper showShadows={false} fullscreen={true} role={"body"}>
-                    <AppBar icon={menuButton} right={<Button label={"Hello!"} raised={true}/>}/>
+                    <AppBar icon={menuButton} right={<Button label={"Donate"} raised={true}/>}/>
                     {leftDrawer}
-                        <Card title={"Menu"} width={"small-1"}>
-                            <Menu style={{width:'200px'}}>
-                                <Button contextName="menu" label="Menu Button"/>
-                                <Button contextName="menu" label="Menu Button"/>
-                            </Menu>
-                        </Card>
-                        <Card title={"Buttons and Popovers"} width={"small-0"}>
-                            <div>
-                            <Button label={"A BUTTON"} raised={false} primary={false} popover={
-                                <PopOver ref="pop" >
-                                    <Menu>
-                                        <Button contextName="menu" label="Menu Button"/>
-                                        <Button contextName="menu" label="Menu Button"/>
-                                    </Menu>
-                                </PopOver>}>
-                            </Button>
-                            <Button label={"A BUTTON"} raised={true} primary={true} popover={
-                                <PopOver role="popover" ref="pop">
-                                    <Menu>
-                                        <Button contextName="menu" label="Menu Button"/>
-                                        <Button contextName="menu" label="Menu Button"/>
-                                    </Menu>
-                                </PopOver>}>
-                            </Button>
-                            </div>
-                        </Card>
-                        {/*<Card title={"Lotus Color Picker"}>
-                           <ColorPicker width={300} height={300}/> 
-                        </Card>*/}
-                        <Card title={"Material Icons"}>
-                            <Icon resolution={"24px"} context={"navigation"} component={"apps"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"arrow_back"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"arrow_downward"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"arrow_drop_down"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"arrow_drop_down_circle"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"arrow_drop_up"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"arrow_forward"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"arrow_upward"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"cancel"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"check"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"chevron_left"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"chevron_right"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"close"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"expand_less"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"expand_more"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"first_page"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"fullscreen"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"fullscreen_exit"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"last_page"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"menu"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"more_horiz"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"more_vert"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"refresh"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"subdirectory_arrow_left"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"subdirectory_arrow_right"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"unfold_less"}/>
-                            <Icon resolution={"24px"} context={"navigation"} component={"unfold_more"}/>
-                            <Icon resolution={"24px"} context={"toggle"} component={"check_box"}/>
-                            <Icon resolution={"24px"} context={"toggle"} component={"check_box_outline_blank"}/>
-                            <Icon resolution={"24px"} context={"toggle"} component={"indeterminate_check_box"}/>
-                            <Icon resolution={"24px"} context={"toggle"} component={"radio_button_checked"}/>
-                            <Icon resolution={"24px"} context={"toggle"} component={"radio_button_unchecked"}/>
-                            <Icon resolution={"24px"} context={"toggle"} component={"star"}/>
-                            <Icon resolution={"24px"} context={"toggle"} component={"star_border"}/>
-                            <Icon resolution={"24px"} context={"toggle"} component={"star_half"}/>
-                        </Card>
+                    {this.props.children}
                 </Paper>
             </Palette>
         </Theme>
     ) : this.props.children;
 
 
-    const muiTheme = getMuiTheme({palette: {primary1Color: grey800}, userAgent: global.navigator.userAgent,});
-    const wrapper = React.createElement(MuiThemeProvider, {muiTheme}, component);
-    return wrapper
+    //const muiTheme = getMuiTheme({palette: {primary1Color: grey800}, userAgent: global.navigator.userAgent,});
+    //const wrapper = React.createElement(MuiThemeProvider, {muiTheme}, component);
+    return component;
   }
 
 }

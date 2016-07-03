@@ -41,6 +41,10 @@ class Component extends React.Component {
                 position:'absolute'
             },
         }
+
+        if (this.props.handleResize) {
+            this.props.handleResize('top', '64px', this)
+        }
     }
     static propTypes = {
         role:PropTypes.string.isRequired
@@ -50,11 +54,15 @@ class Component extends React.Component {
     }
     static contextTypes = {
         palette: React.PropTypes.object
+    } 
+    componentWillReceiveProps = (newProps) => {
+        if (newProps.handleResize) {
+            //newProps.handleResize('top', this.state.style.height, this)
+        }
     }
     render() {
         return(
             <Paper style={this.state.style} depth={4} {...this.props} {...this.defaultProps}>
-
                 <div style={{position:'relative', float:'left', paddingTop:'4px', paddingBottom:'4px', display:'inline-block', lineHeight:'48px', height:'48px'}}>
                     {React.cloneElement(this.props.icon, {style:icon_style, ...this.props.icon.props})}
                 </div>

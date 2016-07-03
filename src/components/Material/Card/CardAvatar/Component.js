@@ -47,13 +47,6 @@ class Component extends React.Component {
         super(props, context);
 
         this.state = {
-            style:{
-                ...style
-            },
-            inner_style:{
-                ...inner_style,
-                ...context.theme.card.style
-            },
             titleStyle:{
                 ...titleStyle,
                 ...context.palette.primary['500'],
@@ -75,9 +68,14 @@ class Component extends React.Component {
     }
     render() {
         return(
-            <div style={this.state.style} role={'card'}>
-                <Paper role={"card"} width={this.props.width} style={this.state.inner_style} depth={1}>    
-                    {this.props.children}
+            <div style={style} role={'card'}>
+                <Paper role={"card"} width={this.props.width} style={inner_style} depth={1}>
+                    <div className={s.title} style={this.state.titleStyle}>
+                        <span style={{position:'relative'}}>{this.props.title}</span>
+                    </div>
+                    <div style={this.state.bodyStyle}>
+                        {this.props.children}
+                    </div>
                 </Paper>
             </div>
         );

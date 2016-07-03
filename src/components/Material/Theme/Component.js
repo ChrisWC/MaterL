@@ -21,19 +21,48 @@ const defaultTheme = {
     button:{
         raised:{
             resting:{
-                zDepth:2,
+                elevation:2,
             },
             pressed:{
-                zDepth:8,
+                elevation:8,
             }
         },
         raisedDesktop:{
             resting:{
-                zDepth:0,
+                elevation:0,
             },
             pressed:{
                 zDepth:2,
             }
+        },
+        default:{
+            fontFamily:"Roboto-Medium",
+            foxtSize:14,
+            height:'36px',
+            lineHeight:'36px',
+            paddingLeft:'16px',
+            paddingRight:'16px',
+            borderRadius:'2px',
+            margin:'5px'
+        },
+        defaultMenu:{
+            fontFamily:"Roboto-Medium",
+            foxtSize:14,
+            height:'48px',
+            lineHeight:'48px',
+            paddingLeft:'16px',
+            paddingRight:'16px',
+            borderRadius:'0px',
+        },
+        dense:{
+            fontFamily:"Roboto-Medium",
+            foxtSize:13,
+            height:'32px',
+            lineHeight:'32px',
+            paddingLeft:'16px',
+            paddingRight:'16px',
+            borderRadius:'2px',
+            margin:'5px'
         },
         floating:{
             resting:{
@@ -42,6 +71,15 @@ const defaultTheme = {
             pressed:{
                 zDepth:12,
             }
+        },
+        icon:{
+            border:'none',
+            display:'inline-block',
+            position:'relative',
+            height:'36px',
+            fill:'white',
+            color:'white',
+            'float':'left'
         },
         inset:16,
     },
@@ -65,6 +103,11 @@ const defaultTheme = {
         },
         actions:{
             inset:8,
+        },
+        style:{
+            boder:'1px solid black',
+            borderRadius:'2px',
+            overflow:'hidden'
         }
     },
     shadows:{

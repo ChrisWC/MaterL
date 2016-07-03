@@ -11,30 +11,7 @@ import React, { PropTypes } from 'react';
 import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Component.css';
-//import * as colors from 'material-ui/styles/colors';
-
-const icon_style = {
-    border:'none',
-    display:'inline-block',
-    position:'relative',
-    height:'36px',
-    fill:'white',
-    'float':'left'
-}
-const title_style = {
-    display:'inline-block',
-    margin:0,
-    padding:0,
-    border:'none',
-    color:'white',
-    paddingLeft:'8px',
-    height:'36px',
-    lineHeight:'36px',
-    fontSize:'24px',
-    float:'left',
-    verticalAlign:'middle',
-    position:'relative',
-}
+import history from '../../../core/history';
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -46,31 +23,32 @@ class Component extends React.Component {
         if (this.getColor){
             color = this.getColor();
         }
+        var leftTab = 16
+
+        if (this.props.menuDepth) {
+            leftTab = (this.props.menuDepth + 1)*16
+        }
         this.state = {
             round:false,
             raised:false,
             outer_style:{
-                height:'48px',
                 display:(this.props.contextName === 'menu')? 'block':'inline-block',
-                lineHeight:'64px',
                 width:(this.props.width !== undefined)? this.props.width:'auto',
                 margin:(this.props.contextName === 'menu')? '0px':'5px',
                 float:'clear',
                 position:'relative',
                 overflow:'hidden',
             },
+            icon_style:{
+                ...this.context.theme.button.icon
+            },
             inner_style:{
-                height:(this.props.contextName === 'menu')? '48px':'36px',
-                width:(this.props.contextName === 'menu')? 'auto':'auto',
-                display:'block',
+                ...this.getDensityStyling(),
+                ...this.getShadow(),
                 ...color,
-                paddingLeft:'16px',
-                paddingRight:'16px',
-                lineHeight:(this.props.contextName === 'menu')? '48px':'36px',
-                margin:(this.props.contextName === 'menu')? '0px':'5px',
+                paddingLeft:leftTab + "px",
+                display:'block',
                 position:'relative',
-                borderRadius:'2px',
-                ...this.getShadow()
             },
             title_style:{
                 display:'inline-block',
@@ -90,9 +68,20 @@ class Component extends React.Component {
             active:this.props.active
         }
     }
+    getDensityStyling = () => {
+        if (this.props.contextName === 'menu') {
+            return this.context.theme.button.defaultMenu
+        }
+        else {
+            if (this.context.dense) {
+                return this.context.theme.button.dense
+            }
+            else {
+                return this.context.theme.button.default
+            }
+        }
+    }
     getShadow = () => {
-        console.log("SHADOW")
-        console.log(this.props)
         if (this.props.raised) {
             if (this.state) {
                 if (this.state.hover) {
@@ -124,10 +113,10 @@ class Component extends React.Component {
                 return this.context.palette['primary']['700']
             }
             else {
-                return null
+                return {backgroundColor:'rgba(0,0,0,0)', color:'black'}
             }
         }
-        return null
+        return {backgroundColor:'rgba(0,0,0,0)', color:'black'}
     }
     static propTypes = {
         label:PropTypes.string,
@@ -139,6 +128,8 @@ class Component extends React.Component {
         icon:PropTypes.element,
         contextName:PropTypes.string.isRequired,
         toggle:PropTypes.bool.isRequired,
+        redirect:PropTypes.string,
+        rightIcon:PropTypes.element
     };
     static defaultProps = {
         active:false,
@@ -161,15 +152,12 @@ class Component extends React.Component {
     handleDefault = () => {
         this.setState({openPopovers:false, inner_style:{...this.state.inner_style, ...this.getColor()}})
     }
-    handleClick = () => {
+    handleClick = (e) => {
         var rect = this.refs.cont.getBoundingClientRect();
         var minWidth = rect.right - rect.left;
         var left = rect.left;
         var top = rect.bottom;
         
-        if (this.props.onClick !== undefined) {
-            this.props.onClick()
-        }
 
         if (this.props.contextMenu !== 'menu') {
             this.setState({active:!this.state.active})
@@ -183,6 +171,15 @@ class Component extends React.Component {
             //this.setState({inner_style:{...this.state.inner_style, backgroundColor:colors.blue700,}})
             this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(React.cloneElement(this.props.popover, {open:false, handleClose:this.handleClick, minWidth:minWidth, width:'auto', left:left, top:top , ...this.props.popover.props}))
             this.setState({active:false})
+        }
+
+        if (this.props.onClick !== undefined) {
+            this.props.onClick(e)
+        }
+
+        if (this.props.redirect) {
+            e.preventDefault();
+            history.push(this.props.redirect);
         }
     }
     handleMouseDown = () => {
@@ -205,7 +202,6 @@ class Component extends React.Component {
         if (newProps.clicked) {
             //this.handleClick()
         }
-        
         this.setState({
             inner_style:{...this.state.inner_style, ...this.getColor()},
             active:newProps.active,
@@ -220,11 +216,14 @@ class Component extends React.Component {
                     onMouseUp={() => this.handleMouseUp()}
                     onMouseEnter={() => this.handleHover(true)} 
                     onMouseOut={() => this.handleHover(false)} 
-                    onClick={() => {
-                        this.handleClick()
+                    onClick={(e) => {
+                        console.log("CLICK BUTTON")
+                        console.log(e)
+                        this.handleClick(e)
                     }} >
-                    {this.props.icon? React.cloneElement(this.props.icon, {style:icon_style, ...this.props.icon.props}):null}
+                    {this.props.icon? React.cloneElement(this.props.icon, {style:this.state.icon_style, ...this.props.icon.props}):null}
                     {this.props.label? <span style={this.state.title_style}>{this.props.label}</span>:null}
+                    {this.props.rightIcon? React.cloneElement(this.props.rightIcon, {style:this.state.icon_style, ...this.props.icon.props, float:'right', paddingRight:'16px'}):null}
                 </div>
             </div>
         );

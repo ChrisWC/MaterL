@@ -12,7 +12,7 @@ import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Component.css';
 import Paper from '../Paper'
-
+import ScrollBar from '../ScrollBar'
 class Component extends React.Component {
     constructor(props, context) {
         super(props), context;
@@ -33,7 +33,8 @@ class Component extends React.Component {
     }
     static propTypes = {
         open:PropTypes.bool,
-        role:PropTypes.string.isRequired
+        role:PropTypes.string.isRequired,
+        handleResize:PropTypes.func
     };
     static defaultProps = {
        role:"drawer" 
@@ -42,18 +43,25 @@ class Component extends React.Component {
         theme: PropTypes.object,
         palette: PropTypes.object
     }
+    
     componentWillReceiveProps = (newProps) => {
         if (newProps.open !== undefined) {
-            this.setState({open:newProps.open})
+            if (this.props.handleResize && newProps.open != this.state.open) {
+                this.props.handleResize('left', {width:(newProps.open)? this.state.style.width:'0px'})
+                this.setState({open:newProps.open})
+            }
+            
         }
     }
     render() {
         return this.props.open? (
             <div className={s.drawer} role={this.props.role}>
-                <Paper role={this.props.role} style={this.state.style} depth={1} >
-                    {React.Children.map(this.props.children, (val, key, arr) => {
-                        return React.cloneElement(val, {key:key, width:this.state.style.width,...val.props})
-                    })}
+                <Paper role={this.props.role} style={this.state.style} depth={1} > 
+                    <div style={{float:'clear', width:'auto', overflow:'hidden', position:'relative'}}>
+                        {React.Children.map(this.props.children, (val, key, arr) => {
+                            return React.cloneElement(val, {key:key, width:this.state.style.width, onClick:(e)=>{val.props.onClick(e);}, ...val.props})
+                        })} 
+                    </div>
                 </Paper>
             </div>
         ):(null);

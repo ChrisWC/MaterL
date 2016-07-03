@@ -12,6 +12,8 @@ import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Component.css';
 import Layer from '../Layer';
+import ScrollBar from '../ScrollBar';
+
 const width = {
     'window': {
         xsmall:[480],
@@ -53,6 +55,10 @@ class Component extends React.Component {
                 },
                 spread:1,
            }],
+           contentArea:{
+               top:'64px',
+               left:'320px',
+           },
            disabled:false,
            foregroundActive:false,
            inForeground:false
@@ -198,6 +204,15 @@ class Component extends React.Component {
             //this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getComponent())
         }
     }
+    handleResizeElement = (loc, spec) => {
+        //console.log(obj)
+        if (loc === 'top') {
+            //this.setState({contentArea:{...this.state.contentArea, top:this.state.style.height}})
+        }
+        else if (loc === 'left') {
+            this.setState({contentArea:{...this.state.contentArea, left:spec.width}})
+        }
+    }
     processProps = (props) => {
         this.props.toolbars.splice(0, this.props.toolbars.length)
         this.props.content.splice(0, this.props.content.length) 
@@ -205,10 +220,10 @@ class Component extends React.Component {
         React.Children.map(props, (val, key, arr) => {
             if (val != null && val.props != null && val.props !== undefined) {
                 if ((val.props.role && val.props.role == "appbar") || (!val.props.role && val.type.ComposedComponent && val.type.ComposedComponent.defaultProps && val.type.ComposedComponent.defaultProps.role === 'appbar')) {
-                    this.props.toolbars.push(React.cloneElement(val, {key:key, getParentSheets:this.getParentSheets, ...val.props}))
+                    this.props.toolbars.push(React.cloneElement(val, {key:key, handleResize:this.handleResizeElement, getParentSheets:this.getParentSheets, ...val.props}))
                 }
                 else if (val.props.role && val.props.role == "drawer"|| (!val.props.role && val.type.ComposedComponent && val.type.ComposedComponent.defaultProps && val.type.ComposedComponent.defaultProps.role === 'drawer')) {
-                    this.props.drawers.push(React.cloneElement(val, {key:key, getParentSheets:this.getParentSheets, ...val.props}))
+                    this.props.drawers.push(React.cloneElement(val, {key:key, open:true, handleResize:this.handleResizeElement, getParentSheets:this.getParentSheets, ...val.props}))
                 }
                 else if (val.props.role && val.props.role == "popover"|| (!val.props.role && val.type.ComposedComponent && val.type.ComposedComponent.defaultProps && val.type.ComposedComponent.defaultProps.role === 'popover')) {
                     //this.props.drawers.push(React.cloneElement(val, {key:key, getParentSheets:this.getParentSheets, ...val.props}))
@@ -228,7 +243,7 @@ class Component extends React.Component {
                 <div {...this.props} style={this.state.style}>
                     {this.props.toolbars}
                     {this.props.drawers}
-                    {!this.context.sheets? <div style={{position:'fixed', display:'inline-block', left:'320px', top:'64px', bottom:'0px', height:'100%'}}>
+                    {!this.context.sheets? <div style={{position:'fixed', display:'block',  overflow:'hidden', overflowY:'scroll', left:this.state.contentArea.left, top:this.state.contentArea.top, bottom:'0px', height:'auto', width:'100%'}}>
                         {this.props.content}
                     </div>:this.props.content}
                     {this.state.foregroundActive? <Layer backgroundColor={'black'} key={0} role={'layer'} foreground={this.props.foreground} />:null}

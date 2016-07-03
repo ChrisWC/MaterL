@@ -11,7 +11,7 @@ import React, { PropTypes } from 'react';
 import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Component.css';
-import Paper from '../Paper';
+import Paper from '../../Paper';
 
 const style = {
     display:'inline-block',
@@ -34,7 +34,7 @@ const titleStyle = {
     lineHeight:'48px',
     paddingLeft:'24px',
     paddingRight:'24px',
-    position:'relative'
+    overflow:'hidden'
 }
 const bodyStyle = {
     padding:'10px',
@@ -47,13 +47,6 @@ class Component extends React.Component {
         super(props, context);
 
         this.state = {
-            style:{
-                ...style
-            },
-            inner_style:{
-                ...inner_style,
-                ...context.theme.card.style
-            },
             titleStyle:{
                 ...titleStyle,
                 ...context.palette.primary['500'],
@@ -75,10 +68,10 @@ class Component extends React.Component {
     }
     render() {
         return(
-            <div style={this.state.style} role={'card'}>
-                <Paper role={"card"} width={this.props.width} style={this.state.inner_style} depth={1}>    
-                    {this.props.children}
-                </Paper>
+            <div style={{overflow:'hidden'}}>
+            <div style={this.state.titleStyle} role={'card'}>
+                <span>{this.props.title}</span>
+            </div>
             </div>
         );
     }
