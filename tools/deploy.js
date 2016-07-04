@@ -15,9 +15,9 @@ import fetch from './lib/fetch';
 // For more information visit http://gitolite.com/deploy.html
 const getRemote = (slot) => ({
   name: slot || 'production',
-  url: `https://git.heroku.com/chrwcio.git`,
-  website: `http://chrwcio.herokuapp.com`,
-  branch:`deploy`,
+  url: `https://github.com/ChrisWC/LotusReact.git`,
+  website: `http://lotus.chrwc.com`,
+  branch:`release`,
 });
 
 /**
@@ -43,7 +43,7 @@ async function deploy() {
   // Build the project in RELEASE mode which
   // generates optimized and minimized bundles
   process.argv.push('--release');
-  await run(require('./build'));
+  await run(require('./pack'));
 
   // Push the contents of the build folder to the remote server via Git
   await repo.add('--all .');
@@ -51,8 +51,8 @@ async function deploy() {
   await repo.push(remote.name, remote.branch);
 
   // Check if the site was successfully deployed
-  const response = await fetch(remote.website);
-  console.log(`${remote.website} -> ${response.statusCode}`);
+  //const response = await fetch(remote.website);
+  //console.log(`${remote.website} -> ${response.statusCode}`);
 }
 
 export default deploy;
