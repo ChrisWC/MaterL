@@ -8,6 +8,7 @@ async function pack() {
     console.log("PACKAGING COMPONENTS");
     await run(clean);
     await run(copy);
+    await run(bundle);
 }
 
 export default pack;

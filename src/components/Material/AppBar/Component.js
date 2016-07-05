@@ -1,18 +1,5 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import React, { PropTypes } from 'react';
-import cx from 'classnames';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Component.css';
-import * as colors from 'material-ui/styles/colors'
-import Paper from '../Paper'
+import Paper from '../Paper';
 
 const icon_style = {
     border:'none',
@@ -40,10 +27,24 @@ class Component extends React.Component {
                 display:'block',
                 position:'absolute'
             },
+            title_style: {
+                display:'inline-block',
+                margin:'0px',
+                padding:'0px',
+                border:'none',
+                color:'white',
+                paddingLeft:'8px',
+                height:'24px',
+                lineHeight:'64px',
+                fontSize:'24px',
+                float:'left',
+                verticalAlign:'middle',
+                position:'relative',
+            }
         }
 
         if (this.props.handleResize) {
-            this.props.handleResize('top', '64px', this)
+            this.props.handleResize('top', '64px', this);
         }
     }
     static propTypes = {
@@ -67,7 +68,7 @@ class Component extends React.Component {
                     {React.cloneElement(this.props.icon, {style:icon_style, ...this.props.icon.props})}
                 </div>
                 {this.props.left}
-                <div className={s.title}><span><strong>Title</strong></span></div>
+                <div style={this.state.title_style}><span><strong>Title</strong></span></div>
                 <div style={{position:'relative', paddingRight:'8px', float:'right', paddingTop:'4px', paddingBottom:'4px', display:'block', lineHeight:'48px', height:'48px'}}>
                     {this.props.right }
                 </div>
@@ -77,4 +78,4 @@ class Component extends React.Component {
 }
 
 
-export default withStyles(s)(Component);
+export default Component;

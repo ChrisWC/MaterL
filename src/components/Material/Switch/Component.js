@@ -8,9 +8,6 @@
  */
 
 import React, { PropTypes } from 'react';
-import cx from 'classnames';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Component.css';
 
 class Component extends React.Component {
     constructor(props) {
@@ -23,7 +20,7 @@ class Component extends React.Component {
     };
     render() {
         return(
-            <div className={s.drawer}>
+            <div>
                 <span>T</span>
             </div>
         );
@@ -31,4 +28,4 @@ class Component extends React.Component {
 }
 
 
-export default withStyles(s)(Component);
+export default Component;

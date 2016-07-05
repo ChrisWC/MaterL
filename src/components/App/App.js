@@ -12,15 +12,13 @@ import emptyFunction from 'fbjs/lib/emptyFunction';
 import s from './App.css';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Appbar from 'material-ui/AppBar';
-
 import Header from '../Header';
-import AppBar from '../Material/AppBar/';
+//import AppBar from '../Material/AppBar';
 import Drawer from '../Material/Drawer/';
-import Paper from '../Material/Paper/';
+import {AppBar, Paper, Theme, Button} from '../Material';
 import MenuItem from '../Material/MenuItem/';
 import Menu from '../Material/Menu/';
-import Button from '../Material/Button';
+//import Button from '../Material/Button';
 import PopOver from '../Material/PopOver';
 import Card from '../Material/Card';
 import CardTitle from '../Material/Card/CardTitle';
@@ -28,7 +26,7 @@ import CardBody from '../Material/Card/CardBody';
 import ColorPicker from '../Lotus/ColorPicker';
 import Image from '../Lotus/Image';
 import Palette from '../Material/Palette';
-import Theme from '../Material/Theme';
+//import Theme from '../Material/Theme';
 
 import Icon from '../Material/Icon'
 

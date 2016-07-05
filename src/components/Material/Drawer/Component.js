@@ -8,9 +8,6 @@
  */
 
 import React, { PropTypes } from 'react';
-import cx from 'classnames';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Component.css';
 import Paper from '../Paper'
 import ScrollBar from '../ScrollBar'
 class Component extends React.Component {
@@ -27,6 +24,16 @@ class Component extends React.Component {
                 overflow:'hidden',
                 position:'absolute',
                 backgroundColor:'white',
+            },
+            drawer_style:{
+                width:'325px',
+                top:'64px',
+                left:'0px',
+                bottom:'0px',
+                float:'left',
+                overflow:'hidden',
+                position:'absolute',
+                display:'block'
             },
             open:this.props.open,
         }
@@ -55,7 +62,7 @@ class Component extends React.Component {
     }
     render() {
         return this.props.open? (
-            <div className={s.drawer} role={this.props.role}>
+            <div style={this.state.drawer_style} role={this.props.role}>
                 <Paper role={this.props.role} style={this.state.style} depth={1} > 
                     <div style={{float:'clear', width:'auto', overflow:'hidden', position:'relative'}}>
                         {React.Children.map(this.props.children, (val, key, arr) => {
@@ -69,4 +76,4 @@ class Component extends React.Component {
 }
 
 
-export default withStyles(s)(Component);
+export default Component;

@@ -1,5 +1,8 @@
 {
   "private": true,
+  "author":"Christopher W. Catton",
+  "version":"0.0.1-alpha",
+  "name":"lotus-material",
   "engines": {
     "node": ">=5.0 <7",
     "npm": ">=3.3 <4"
@@ -177,5 +180,6 @@
     "deploy": "babel-node tools/run deploy",
     "render": "babel-node tools/run render",
     "start": "babel-node tools/run start"
-  }
+  },
+  "main":"./lib/components/index.js"
 }

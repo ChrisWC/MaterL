@@ -8,11 +8,8 @@
  */
 
 import React, { PropTypes } from 'react';
-import cx from 'classnames';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Component.css';
 import Paper from '../Paper/'
-import ScrollBar from '../ScrollBar/'
+
 class Component extends React.Component {
     constructor(props) {
         super(props);
@@ -28,8 +25,8 @@ class Component extends React.Component {
             activeItem:-1,
             menuDepth:this.props.menuDepth
         }
-        this.handleMenuClick = this.handleMenuClick.bind(this)
-        this.setState = this.setState.bind(this)
+        this.handleMenuClick = this.handleMenuClick.bind(this);
+        this.setState = this.setState.bind(this);
     }
     static propTypes = {
         style: PropTypes.object,
@@ -56,40 +53,40 @@ class Component extends React.Component {
                     {this.props.open? React.Children.map(this.props.children, (val, key, arr) => {
                         var active= (this.state.activeItem==key);
                         if (val.type.ComposedComponent && val.type.ComposedComponent.defaultProps.role === 'menu') {
-                            return React.cloneElement(val, {key:key, context:"menu",toggle:{true}, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
+                            return React.cloneElement(val, {key:key, context:"menu",toggle:true, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
                                 onClick:(e)=>{
-                                    this.handleMenuClick(key)
-                                    val.props.onClick(e)
+                                    this.handleMenuClick(key);
+                                    val.props.onClick(e);
                                 }
                             });
                         }
                         else {
-                            var smenu = []
+                            var smenu = [];
 
                             if (active) {
                                 smenu = React.Children.map(val.props.children, (sval, key, arr) => {
-                                    return React.cloneElement(sval, {key:key, menuDepth:(this.state.menuDepth+1), width:this.props.width, sval:sval, context:"menu", open:active, toggle:{true}, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
+                                    return React.cloneElement(sval, {key:key, menuDepth:(this.state.menuDepth+1), width:this.props.width, sval:sval, context:"menu", open:active, toggle:true, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
                                         onClick:(e)=>{
-                                            this.handleMenuClick(key)
-                                            val.props.onClick(e)
+                                            this.handleMenuClick(key);
+                                            val.props.onClick(e);
                                         }
                                     });
                                 });
-                            }
+                            };
                             
                             if (smenu === undefined) {
-                                smenu = []
-                            }
-                            smenu = [React.cloneElement(val, {key:key, menuDepth:this.state.menuDepth, open:(this.state.activeItem==key), context:"menu",toggle:{true}, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
+                                smenu = [];
+                            };
+                            smenu = [React.cloneElement(val, {key:key, menuDepth:this.state.menuDepth, open:(this.state.activeItem==key), context:"menu",toggle:true, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
                                 onClick:(e)=>{
-                                    this.handleMenuClick(key)
+                                    this.handleMenuClick(key);
                                     if (val.props.onClick) {
-                                        val.props.onClick(e)
-                                    }
+                                        val.props.onClick(e);
+                                    };
                                 }
-                            }), ...smenu]
+                            }), ...smenu];
 
-                            return smenu
+                            return smenu;
                         }
                     }):null}
             </div>
@@ -97,4 +94,4 @@ class Component extends React.Component {
     }
 }
 
-export default withStyles(s)(Component);
+export default Component;

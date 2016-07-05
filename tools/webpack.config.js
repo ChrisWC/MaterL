@@ -36,11 +36,14 @@ const GLOBALS = {
 
 const config = {
   context: path.resolve(__dirname, '../src'),
-
+  entry:path.resolve(__dirname, '/src/components/index.js'),
+  devtool:'source-map',
   output: {
-    path: path.resolve(__dirname, '../build/public/assets'),
-    publicPath: '/assets/',
-    sourcePrefix: '  ',
+    path:path.resolve( __dirname, '../lib'),
+    filename:'lotus-material.js',
+    libraryTarget:'umd',
+    library:'lotus-material',
+    umdNamedDefine:true
   },
 
   module: {

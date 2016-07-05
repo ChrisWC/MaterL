@@ -8,10 +8,7 @@
  */
 
 import React, { PropTypes } from 'react';
-import cx from 'classnames';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Component.css';
-import history from '../../../core/history';
+//import history from '../../../core/history';
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -179,7 +176,7 @@ class Component extends React.Component {
 
         if (this.props.redirect) {
             e.preventDefault();
-            history.push(this.props.redirect);
+            //history.push(this.props.redirect);
         }
     }
     handleMouseDown = () => {
@@ -231,4 +228,4 @@ class Component extends React.Component {
 }
 
 
-export default withStyles(s)(Component);
+export default Component;

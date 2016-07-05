@@ -1,16 +1,4 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import React, { PropTypes } from 'react';
-import cx from 'classnames';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Component.css';
 
 /**********
  * Simple Container that blocks all elements on screen besides its own
@@ -66,8 +54,6 @@ class Component extends React.Component {
         }
     }
     render() {
-        console.log("RENDER LAYER")
-        console.log(this.props.foreground)
         return(
             <div role={"layer"} style={this.state.style} onClick={this.handleClick}>
                 {React.Children.map(this.props.foreground, (val, key, arr) => {
@@ -84,4 +70,4 @@ class Component extends React.Component {
 }
 
 
-export default withStyles(s)(Component);
+export default Component;

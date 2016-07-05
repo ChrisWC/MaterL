@@ -8,9 +8,6 @@
  */
 
 import React, { PropTypes } from 'react';
-import cx from 'classnames';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Component.css';
 import Image from '../../Lotus/Image'
 import Icon from '../Icon'
 
@@ -212,4 +209,4 @@ class Component extends React.Component {
 }
 
 
-export default withStyles(s)(Component);
+export default Component;
