@@ -9,14 +9,14 @@
 
 @font-face {
   font-family: 'Roboto';
-  src: local('Roboto'), url('../../public/fonts/Roboto-Regular.ttf') format('truetype');
+  src: local('Roboto'), url('./Roboto-Medium.ttf') format('truetype');
   font-weight:400;
   font-style:normal;
 }
 
 @font-face {
   font-family: 'Roboto-Medium';
-  src: local('Roboto-Medium'), url('../../public/fonts/Roboto-Medium.ttf') format('truetype');
+  src: local('Roboto-Medium'), url('Roboto-Medium.ttf') format('truetype');
   font-weight:500;
   font-style:normal;
 }
@@ -25,7 +25,6 @@
   /*
    * Typography
    * ======================================================================== */
-  --font-family-base: 'Roboto';
 
   /*
    * Layout

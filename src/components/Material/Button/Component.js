@@ -1,14 +1,8 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import React, { PropTypes } from 'react';
 //import history from '../../../core/history';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import s from './Component.css';
+
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -54,8 +48,8 @@ class Component extends React.Component {
                 border:'none',
                 height:(this.props.contextName === 'menu')? '48px':'36px',
                 lineHeight:(this.props.contextName === 'menu')? '48px':'36px',
-                fontSize:'14',
-                fontFamily:"Roboto-Medium",
+                fontSize:'14px',
+                fontFamily:'Roboto-Medium',
                 float:'left',
                 verticalAlign:'middle',
                 position:'relative',
@@ -150,7 +144,8 @@ class Component extends React.Component {
         this.setState({openPopovers:false, inner_style:{...this.state.inner_style, ...this.getColor()}})
     }
     handleClick = (e) => {
-        var rect = this.refs.cont.getBoundingClientRect();
+        var rect = this.refs['cont'].getBoundingClientRect();
+        console.log(rect)
         var minWidth = rect.right - rect.left;
         var left = rect.left;
         var top = rect.bottom;
@@ -218,9 +213,9 @@ class Component extends React.Component {
                         console.log(e)
                         this.handleClick(e)
                     }} >
-                    {this.props.icon? React.cloneElement(this.props.icon, {style:this.state.icon_style, ...this.props.icon.props}):null}
-                    {this.props.label? <span style={this.state.title_style}>{this.props.label}</span>:null}
-                    {this.props.rightIcon? React.cloneElement(this.props.rightIcon, {style:this.state.icon_style, ...this.props.icon.props, float:'right', paddingRight:'16px'}):null}
+                    {this.props.icon? React.cloneElement(this.props.icon, {...this.props.icon.props, style:this.state.icon_style,}):null}
+                    {this.props.label? <span style={this.state.title_style} className={s.button}>{this.props.label}</span>:null}
+                    {this.props.rightIcon? React.cloneElement(this.props.rightIcon, {style:this.state.icon_style, fill:this.state.icon_style.fill, ...this.props.icon.props, float:'right', paddingRight:'16px'}):null}
                 </div>
             </div>
         );
@@ -228,4 +223,4 @@ class Component extends React.Component {
 }
 
 
-export default Component;
+export default withStyles(s)(Component);

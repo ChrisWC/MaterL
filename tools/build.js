@@ -23,7 +23,7 @@ async function build() {
   await run(bundle);
 
   if (process.argv.includes('--static')) {
-    await run(render);
+    //await run(render);
   }
 }
 

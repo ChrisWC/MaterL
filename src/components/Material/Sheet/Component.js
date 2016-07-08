@@ -55,7 +55,9 @@ class Component extends React.Component {
            contentArea:{
                top:'64px',
                left:'320px',
+               right:'0px'
            },
+           contentWidth:'100%',
            disabled:false,
            foregroundActive:false,
            inForeground:false
@@ -146,6 +148,7 @@ class Component extends React.Component {
         else {
             //check if size is smaller than component or greater than threshold
         }
+        this.setState({contentWidth:window.innerWidth})
     }
     handleForegroundRequest = (c) => {
         /*****************************************************************************
@@ -160,8 +163,6 @@ class Component extends React.Component {
                 return true
             }
         })
-        console.log("HANDLE FOREGROUND")
-        console.log(found)
         if (found.length == 0) {
             this.props.foreground.push(c)
             this.setState({foregroundActive:true})
@@ -240,7 +241,7 @@ class Component extends React.Component {
                 <div {...this.props} style={this.state.style}>
                     {this.props.toolbars}
                     {this.props.drawers}
-                    {!this.context.sheets? <div style={{position:'fixed', display:'block',  overflow:'hidden', overflowY:'scroll', left:this.state.contentArea.left, top:this.state.contentArea.top, bottom:'0px', height:'auto', width:'100%'}}>
+                    {!this.context.sheets? <div style={{position:'fixed', display:'block',  overflow:'hidden', overflowY:'scroll', left:this.state.contentArea.left, right:this.state.contentArea.right, top:this.state.contentArea.top, bottom:'0px', height:'auto'}}>
                         {this.props.content}
                     </div>:this.props.content}
                     {this.state.foregroundActive? <Layer backgroundColor={'black'} key={0} role={'layer'} foreground={this.props.foreground} />:null}

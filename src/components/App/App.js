@@ -15,7 +15,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Header from '../Header';
 //import AppBar from '../Material/AppBar';
 import Drawer from '../Material/Drawer/';
-import {AppBar, Paper, Theme, Button} from '../Material';
+//import {AppBar, Paper, Theme, Button} from '../Material';
 import MenuItem from '../Material/MenuItem/';
 import Menu from '../Material/Menu/';
 //import Button from '../Material/Button';
@@ -97,7 +97,7 @@ class App extends Component {
 
   }
   render() {
-    const leftDrawer = (<Drawer open={this.state.openLeftDrawer} depth={1}>
+    /*const leftDrawer = (<Drawer open={this.state.openLeftDrawer} depth={1}>
             <Menu>
                 <Button contextName="menu" label="About Project" active={false} redirect={"/about"} />
                 <Button contextName="menu" label="Components" active={false} redirect={"/"}>
@@ -119,17 +119,9 @@ class App extends Component {
                     this.setState({openLeftDrawer:!this.state.openLeftDrawer})
                 }
             } />}/>
-    )
+    )*/
     const component =  !this.props.error ? (
-        <Theme>
-            <Palette primary="deepPurple" secondary="lightBlue">
-                <Paper showShadows={false} fullscreen={true} role={"body"}>
-                    <AppBar icon={menuButton} right={<Button label={"Donate"} raised={true}/>}/>
-                    {leftDrawer}
-                    {this.props.children}
-                </Paper>
-            </Palette>
-        </Theme>
+        <div></div>
     ) : this.props.children;
 
 

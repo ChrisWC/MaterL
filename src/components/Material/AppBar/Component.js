@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import Paper from '../Paper';
-
 const icon_style = {
     border:'none',
     display:'inline-block',
@@ -48,7 +47,8 @@ class Component extends React.Component {
         }
     }
     static propTypes = {
-        role:PropTypes.string.isRequired
+        role:PropTypes.string.isRequired,
+        title:PropTypes.string
     };
     static defaultProps = {
         role:"appbar"
@@ -65,10 +65,10 @@ class Component extends React.Component {
         return(
             <Paper style={this.state.style} depth={4} {...this.props} {...this.defaultProps}>
                 <div style={{position:'relative', float:'left', paddingTop:'4px', paddingBottom:'4px', display:'inline-block', lineHeight:'48px', height:'48px'}}>
-                    {React.cloneElement(this.props.icon, {style:icon_style, ...this.props.icon.props})}
+                    {React.cloneElement(this.props.icon, {...this.props.icon.props, style:icon_style})}
                 </div>
                 {this.props.left}
-                <div style={this.state.title_style}><span><strong>Title</strong></span></div>
+                <div style={this.state.title_style}><span><strong>{this.props.title}</strong></span></div>
                 <div style={{position:'relative', paddingRight:'8px', float:'right', paddingTop:'4px', paddingBottom:'4px', display:'block', lineHeight:'48px', height:'48px'}}>
                     {this.props.right }
                 </div>
