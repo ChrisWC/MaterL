@@ -130,6 +130,7 @@ class Component extends React.Component {
     static contextTypes = {
         sheets: React.PropTypes.arrayOf(React.PropTypes.object),
         palette: React.PropTypes.object,
+        commonFunctions: React.PropTypes.object,
         theme: React.PropTypes.object,
         isDense: React.PropTypes.bool,
     }
@@ -145,7 +146,6 @@ class Component extends React.Component {
     }
     handleClick = (e) => {
         var rect = this.refs['cont'].getBoundingClientRect();
-        console.log(rect)
         var minWidth = rect.right - rect.left;
         var left = rect.left;
         var top = rect.bottom;
@@ -169,9 +169,10 @@ class Component extends React.Component {
             this.props.onClick(e)
         }
 
-        if (this.props.redirect) {
-            e.preventDefault();
+        if (this.props.redirect && this.context.commonFunctions.redirect) {
+            //e.preventDefault();
             //history.push(this.props.redirect);
+            this.context.commonFunctions.redirect(e, this.props.redirect);
         }
     }
     handleMouseDown = () => {
@@ -209,8 +210,6 @@ class Component extends React.Component {
                     onMouseEnter={() => this.handleHover(true)} 
                     onMouseOut={() => this.handleHover(false)} 
                     onClick={(e) => {
-                        console.log("CLICK BUTTON")
-                        console.log(e)
                         this.handleClick(e)
                     }} >
                     {this.props.icon? React.cloneElement(this.props.icon, {...this.props.icon.props, style:this.state.icon_style,}):null}

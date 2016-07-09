@@ -13,12 +13,12 @@ import s from './App.css';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Header from '../Header';
-//import AppBar from '../Material/AppBar';
+import AppBar from '../Material/AppBar';
 import Drawer from '../Material/Drawer/';
 //import {AppBar, Paper, Theme, Button} from '../Material';
 import MenuItem from '../Material/MenuItem/';
 import Menu from '../Material/Menu/';
-//import Button from '../Material/Button';
+import Button from '../Material/Button';
 import PopOver from '../Material/PopOver';
 import Card from '../Material/Card';
 import CardTitle from '../Material/Card/CardTitle';
@@ -26,9 +26,10 @@ import CardBody from '../Material/Card/CardBody';
 import ColorPicker from '../Lotus/ColorPicker';
 import Image from '../Lotus/Image';
 import Palette from '../Material/Palette';
-//import Theme from '../Material/Theme';
-
+import Theme from '../Material/Theme';
+import Paper from '../Material/Paper';
 import Icon from '../Material/Icon'
+import CommonFunctions from '../Material/CommonFunctions'
 
 import history from '../../core/history';
 class App extends Component {
@@ -73,35 +74,24 @@ class App extends Component {
     this.removeCss();
   }
 
-  render2() {
-    const component =  !this.props.error ? (
-        <div className={s.page} >
-            <Paper>
-                <div>
-                    <Paper>
-                        <Paper width={'small-0'} backgroundColor='blue' check={true} popover={<Paper width={'small-0'} backgroundColor='green'/>}>
-                            <div> Test 2</div>
-                        </Paper>
-                        <Paper width={'small-0'} backgroundColor='pink' check={true} popover={<Paper width={'small-0'} backgroundColor='green'/>}>
-                            <div> Test 2</div>
-                        </Paper>
-                    </Paper>
-                </div>
-                <Paper width={'small-0'} backgroundColor='red' >
-                    <div >Test 3</div>
-                </Paper>
-            </Paper>
-        </div>
-    ) : this.props.children;
-
-
-  }
   render() {
-    /*const leftDrawer = (<Drawer open={this.state.openLeftDrawer} depth={1}>
+    const leftDrawer = (<Drawer open={this.state.openLeftDrawer} depth={1}>
             <Menu>
                 <Button contextName="menu" label="About Project" active={false} redirect={"/about"} />
-                <Button contextName="menu" label="Components" active={false} redirect={"/"}>
+                <Button contextName="menu" label="Topics">
                     <Menu>
+                        <Button contextName="menu" label="Creating Component Demo's"/>
+                    </Menu>
+                </Button>
+                <Button contextName="menu" label="Style">
+                    <Menu>
+                        <Button contextName="menu" label="Shadow's"/>
+                        <Button contextName="menu" label="Paper and Sheet's"/>
+                    </Menu>
+                </Button>
+                <Button contextName="menu" label="Components" active={false}>
+                    <Menu>
+                        <Button contextName="menu" label="BarDecor" active={false} redirect={"/bar_decor"} />
                         <Button contextName="menu" label="Button" active={false} redirect={"/button"} />
                         <Button contextName="menu" label="Choice" active={false} redirect={"/choice"} />
                         <Button contextName="menu" label="Appbar" active={false} redirect={"/appbar"} />
@@ -109,6 +99,46 @@ class App extends Component {
                         <Button contextName="menu" label="Menu" active={false} redirect={"/menu"} />
                         <Button contextName="menu" label="Paper" active={false} redirect={"/paper"} />
                         <Button contextName="menu" label="Icon" active={false} redirect={"/icon"} />
+                    </Menu>
+                </Button>
+                <Button contextName="menu" label="Material Spec">
+                    <Menu>
+                    <Button contextName="menu" label="Layout" active={false}>
+                        <Menu>
+                            <Button contextName="menu" label="Principles"/>
+                            <Button contextName="menu" label="Units and measurements"/>
+                            <Button contextName="menu" label="Metrics and keylines"/>
+                            <Button contextName="menu" label="Responsive UI"/>
+                            <Button contextName="menu" label="Split Screen"/>
+                        </Menu>
+                    </Button>
+                    <Button contextName="menu" label="Components">
+                        <Menu>
+                            <Button contextName="menu" label="Bottom Navigation"/>
+                            <Button contextName="menu" label="Bottom Sheets"/>
+                            <Button contextName="menu" label="Buttons"/>
+                            <Button contextName="menu" label="Buttons: Floating Action Buttons"/>
+                            <Button contextName="menu" label="Cards"/>
+                            <Button contextName="menu" label="Data Tables"/>
+                            <Button contextName="menu" label="Dialogs"/>
+                            <Button contextName="menu" label="Dividers"/>
+                            <Button contextName="menu" label="Expansion Panels"/>
+                            <Button contextName="menu" label="Grid List"/>
+                            <Button contextName="menu" label="Lists"/>
+                            <Button contextName="menu" label="Lists: Controls"/>
+                            <Button contextName="menu" label="Menus"/>
+                            <Button contextName="menu" label="Pickers"/>
+                            <Button contextName="menu" label="Progress & activity"/>
+                            <Button contextName="menu" label="Selection controls"/>
+                            <Button contextName="menu" label="Sliders"/>
+                            <Button contextName="menu" label="Snackbars & toasts"/>
+                            <Button contextName="menu" label="Steppers"/>
+                            <Button contextName="menu" label="Tabs"/>
+                            <Button contextName="menu" label="Text Fields"/>
+                            <Button contextName="menu" label="Toolbars"/>
+                            <Button contextName="menu" label="Tooltips"/>
+                        </Menu>
+                    </Button>
                     </Menu>
                 </Button>
                 <Button contextName="menu" label="Layout" active={false}/>
@@ -119,9 +149,23 @@ class App extends Component {
                     this.setState({openLeftDrawer:!this.state.openLeftDrawer})
                 }
             } />}/>
-    )*/
+    )
     const component =  !this.props.error ? (
-        <div></div>
+            <CommonFunctions
+                redirect={(e, redirect_location) => {
+                    e.preventDefault();
+                    history.push(redirect_location);
+                }}>
+            <Palette primary={"blue"} secondary={"amber"}>
+                <Theme>
+                    <Paper role={"body"}>>
+                    <AppBar icon={menuButton} title={"CHRWC"}/>
+                    {leftDrawer}
+                    {this.props.children}
+                    </Paper>
+                </Theme>
+            </Palette>
+            </CommonFunctions>
     ) : this.props.children;
 
 

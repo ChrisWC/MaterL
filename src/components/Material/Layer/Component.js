@@ -24,7 +24,6 @@ class Component extends React.Component {
             clicked:false,
             openElements:0
         }
-        console.log("LAYER TEST")
     }
     static propTypes = {
         showShadows: PropTypes.bool,
@@ -43,7 +42,6 @@ class Component extends React.Component {
     }
     handleClick = () => {
         this.setState({clicked:true})
-        console.log("LAYER CLICKED")
     }
     handleElementClosure = () => {
         if (openElements == 1) {

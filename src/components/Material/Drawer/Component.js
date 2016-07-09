@@ -22,6 +22,7 @@ class Component extends React.Component {
                 bottom:'0px',
                 display:'inline-block',
                 overflow:'hidden',
+                overflowY:'scroll',
                 position:'absolute',
                 backgroundColor:'white',
             },

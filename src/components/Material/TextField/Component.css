@@ -7,14 +7,18 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-.button {
-    font-family:'Roboto-Medium';
-    font-size:'24px';
-}
 .root {
   margin: 0;
 }
+.cycle {
 
+}
+.grow {
+
+}
+.progress {
+
+}
 .link {
   display: inline-block;
   padding: 3px 8px;

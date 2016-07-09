@@ -27,6 +27,8 @@ import appbar from './appbar';
 import menu from './menu';
 import paper from './paper';
 import choice from './choice';
+import bar_decor from './bar_decor';
+import popover from './popover';
 import { Provider } from 'react-redux';
 
 export default {
@@ -36,6 +38,7 @@ export default {
   children: [
     home,
     button,
+    bar_decor,
     drawer,
     appbar,
     menu,
@@ -44,6 +47,7 @@ export default {
     contact,
     login,
     paper,
+    popover,
     choice,
     register,
     content,

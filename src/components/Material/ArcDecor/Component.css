@@ -7,13 +7,19 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-.button {
-    font-family:'Roboto-Medium';
-    font-size:'24px';
-}
 .root {
   margin: 0;
 }
+
+.orbit {
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+    animation:spin 4s linear infinite;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 .link {
   display: inline-block;

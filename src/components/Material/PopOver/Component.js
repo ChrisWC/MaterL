@@ -41,13 +41,13 @@ class Component extends React.Component {
         role:PropTypes.string.isRequired,
         open:PropTypes.bool.isRequired,
         clicked:PropTypes.bool.isRequired,
-        handleClose:PropTypes.func.isRequired,
+        handleClose:PropTypes.func,
     };
     static defaultProps = {
         pop:true,
         open:true,
         role:"popover",
-        clicked:false
+        clicked:false,
     };
     static contextTypes = {
         toForeground: React.PropTypes.func
@@ -78,7 +78,6 @@ class Component extends React.Component {
         if (newProps.externalClick) {
             this.handleClose()
         }
-
         if (!newProps.open) {
             this.handleClose();
         }

@@ -55,7 +55,9 @@ class Component extends React.Component {
            contentArea:{
                top:'64px',
                left:'320px',
-               right:'0px'
+               right:'0px',
+               marginLeft:'0px',
+               marginRight:'0px'
            },
            contentWidth:'100%',
            disabled:false,
@@ -241,7 +243,7 @@ class Component extends React.Component {
                 <div {...this.props} style={this.state.style}>
                     {this.props.toolbars}
                     {this.props.drawers}
-                    {!this.context.sheets? <div style={{position:'fixed', display:'block',  overflow:'hidden', overflowY:'scroll', left:this.state.contentArea.left, right:this.state.contentArea.right, top:this.state.contentArea.top, bottom:'0px', height:'auto'}}>
+                    {!this.context.sheets? <div style={{position:'fixed', display:'block',  overflow:'hidden', overflowY:'scroll', marginLeft:this.state.contentArea.marginLeft, marginRight:this.state.contentArea.marginRight, left:this.state.contentArea.left, right:this.state.contentArea.right, top:this.state.contentArea.top, bottom:'0px', height:'auto'}}>
                         {this.props.content}
                     </div>:this.props.content}
                     {this.state.foregroundActive? <Layer backgroundColor={'black'} key={0} role={'layer'} foreground={this.props.foreground} />:null}
