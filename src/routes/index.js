@@ -29,6 +29,10 @@ import paper from './paper';
 import choice from './choice';
 import bar_decor from './bar_decor';
 import popover from './popover';
+import text_field from './text_field';
+import card from './card';
+import shadows from './shadows';
+import demo_guide from './demo_guide';
 import { Provider } from 'react-redux';
 
 export default {
@@ -38,7 +42,11 @@ export default {
   children: [
     home,
     button,
+    card,
+    shadows,
+    demo_guide,
     bar_decor,
+    text_field,
     drawer,
     appbar,
     menu,

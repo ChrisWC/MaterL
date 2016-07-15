@@ -9,9 +9,6 @@ function Contact(props, context) {
   return (
     <div className={s.root}>
       <div className={s.container}>
-        <h1>{title}</h1>
-        <p>For now, you can contact me on
-        <a href="http://linkedin.com/in/chriswcatton">Linkedin</a></p>
       </div>
     </div>
   );

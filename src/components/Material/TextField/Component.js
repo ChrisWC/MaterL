@@ -11,7 +11,7 @@ import React, { PropTypes } from 'react';
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Component.css';
-import 'BarDecor' from '../BarDecor';
+import BarDecor from '../BarDecor';
 /****************************************************************
  ****************************************************************/
 class Component extends React.Component {
@@ -20,13 +20,10 @@ class Component extends React.Component {
 
         this.state = {
             style: {
-                color:'black',
-                display:'inline-block',
-                position:'relative',
-                width:this.props.vertical? '4px':'100%',
-                height:this.props.vertical? '100%':'4px',
+                width:'180px',
             },
-            active:!this.props.active
+            active:!this.props.active,
+            value:""
         }
     }
     static propTypes = {
@@ -50,14 +47,17 @@ class Component extends React.Component {
     handleClick = (e) => {
         this.setState({active:!this.state.active});
     }
+    handleChange = (e) => {
+
+    }
     render() {
         return (
             <div style={this.state.style} onClick={this.props.onClick}>
-                <span ref="FloatingHintText">{this.state.active? this.props.floatingHintText:null}</span><br/>
-                <textarea ref="textfield">
-                    {this.state.active? {this.state.dirty? null:this.props.hintText}:{this.state.dirty? null:this.props.floatingHintText}}
+                <div style={{display:'block'}} ref="FloatingHintText">{this.state.active? this.props.floatingHintText:null}</div>
+                <textarea ref="textfield" style={{padding:'0px', border:'none', borderRadius:'0px', padding:'0px', width:this.state.style.width,display:'block', position:'relative', resize:'none'}} rows={1}  onChange={this.handleChange}
+                    value={this.state.active? (this.state.dirty? this.state.value:this.props.hintText):(this.state.dirty? this.state.value:this.props.floatingHintText)}>
                 </textarea>
-                <BarDecor/>
+                <BarDecor width={180}/>
             </div>
         );
     }

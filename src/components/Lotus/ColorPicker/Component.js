@@ -26,7 +26,7 @@ import React, { PropTypes } from 'react';
 /*getRadialDistance = (x0, y0, cx, cy, ux, uy) => {
 
 }*/
-class Vec {
+/*class Vec {
     constructor(points) {
         this.points = points;
     }
@@ -68,8 +68,8 @@ class ColorWheel {
     static test = () => {}
 }
 const v = new Vec([0, 0])
-const v2 = new Vec([1, 1])
-console.log(Vec.distance(v, v2))
+const v2 = new Vec([1, 1])*/
+
 class Component extends React.Component {
     constructor(props) {
         super(props);

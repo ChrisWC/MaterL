@@ -3,7 +3,6 @@ import personalApp from '../reducers';
 import thunk from 'redux-thunk'
 import invariant from 'redux-immutable-state-invariant';
 
-console.log(process.env.NODE_ENV)
 export default function configureStore(initialState) {
     const middleware = process.env.NODE_ENV !== 'production' ?
         [require('redux-immutable-state-invariant')(), thunk]:[thunk];

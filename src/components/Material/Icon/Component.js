@@ -147,8 +147,7 @@ class Component extends React.Component {
             style: {
                 color:'white',
                 fill:this.props.style.fill,
-                display:'inline-block',
-                position:'relative'
+                display:'block',
             }
         }
     }
@@ -178,10 +177,7 @@ class Component extends React.Component {
     render() {
         //console.log(Icon)
         return (
-            <div style={this.state.style} onClick={this.props.onClick}>
-                {/*this.getIcon()? <Isvg src={this.getIcon()}/>:null*/}
-                <div style={this.state.style} dangerouslySetInnerHTML={{__html:this.getIcon()}}/>
-            </div>
+            <div onClick={this.props.onClick} style={{...this.state.style, ...this.props.style, display:'block', overflow:'hidden'}} dangerouslySetInnerHTML={{__html:this.getIcon()}}/>
         );
     }
 }

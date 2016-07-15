@@ -1,30 +1,30 @@
 import React, { PropTypes } from 'react';
 import Paper from '../Paper';
+
 const icon_style = {
     border:'none',
     display:'inline-block',
     height:'24px',
-    margin:'8px 8px',
-    padding:'12px',
     fill:'white',
-    'float':'left'
 }
+
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
             style:{
-                ...context.palette['primary']['900'],
+                ...context.palette['primary']['primary'],
                 color:'white',
                 width:'100%',
                 height:'64px',
+                lineHeight:'24px',
                 left:'0px',
                 top:'0px',
-                paddingLeft:'8px',
+                paddingLeft:'0px',
                 paddingRight:'0px',
                 display:'block',
-                position:'absolute'
+                position:'absolute',
             },
             title_style: {
                 display:'inline-block',
@@ -32,13 +32,11 @@ class Component extends React.Component {
                 padding:'0px',
                 border:'none',
                 color:'white',
-                paddingLeft:'8px',
-                height:'24px',
+                paddingLeft:this.props.icon? '0px':'24px',
+                height:'64px',
                 lineHeight:'64px',
                 fontSize:'24px',
-                float:'left',
-                verticalAlign:'middle',
-                position:'relative',
+                float:'left'
             }
         }
 
@@ -48,14 +46,22 @@ class Component extends React.Component {
     }
     static propTypes = {
         role:PropTypes.string.isRequired,
-        title:PropTypes.string
+        title:PropTypes.string,
+        icon:PropTypes.element,
     };
     static defaultProps = {
         role:"appbar"
     }
     static contextTypes = {
         palette: React.PropTypes.object
-    } 
+    }
+    static childContextTypes = {
+        backgroundColor: React.PropTypes.object,
+        contextName:React.PropTypes.string
+    }
+    getChildContext = () => {
+        return {backgroundColor:this.context.palette['primary'], contextName:'appbar'}
+    }
     componentWillReceiveProps = (newProps) => {
         if (newProps.handleResize) {
             //newProps.handleResize('top', this.state.style.height, this)
@@ -64,11 +70,10 @@ class Component extends React.Component {
     render() {
         return(
             <Paper style={this.state.style} depth={4} {...this.props} {...this.defaultProps}>
-                <div style={{position:'relative', float:'left', paddingTop:'4px', paddingBottom:'4px', display:'inline-block', lineHeight:'48px', height:'48px'}}>
-                    {React.cloneElement(this.props.icon, {...this.props.icon.props, style:icon_style})}
-                </div>
-                {this.props.left}
-                <div style={this.state.title_style}><span><strong>{this.props.title}</strong></span></div>
+                <span style={{float:'left'}}>
+                {this.props.icon? React.cloneElement(this.props.icon, {...this.props.icon.props, contextName:'appbar'}):null}
+                </span>
+                <span style={this.state.title_style}>{this.props.title}</span>
                 <div style={{position:'relative', paddingRight:'8px', float:'right', paddingTop:'4px', paddingBottom:'4px', display:'block', lineHeight:'48px', height:'48px'}}>
                     {this.props.right }
                 </div>

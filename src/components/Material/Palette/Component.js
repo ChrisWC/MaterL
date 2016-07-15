@@ -1017,19 +1017,19 @@ const colors = {
         },
         '600':{
             backgroundColor:'#757575',
-            color:'black',
+            color:'white',
         },
         '700':{
             backgroundColor:'#616161',
-            color:'black',
+            color:'white',
         },
         '800':{
             backgroundColor:'#424242',
-            color:'black',
+            color:'white',
         },
         '900':{
             backgroundColor:'#212121',
-            color:'black',
+            color:'white',
         },
     },
     'blueGrey':{
@@ -1088,8 +1088,8 @@ const colors = {
     }
 }
 class Component extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
 
         this.state = {
             style:{
@@ -1114,13 +1114,21 @@ class Component extends React.Component {
     }
     static propTypes = {
         role:PropTypes.string.isRequired,
+        color:PropTypes.string,
         primary:PropTypes.string,
         secondary:PropTypes.string,
+        default:PropTypes.string
     };
     static defaultProps = {
         role:"palatte",
-        primary:'grey',
-        secondary:'blue'
+        priority:"primary",
+        color:'blue',
+        primary:'500',
+        secondary:'700',
+        default:'800'
+    }
+    static contextTypes = {
+        palette: React.PropTypes.object
     }
     static childContextTypes = {
         palette: React.PropTypes.object
@@ -1129,8 +1137,12 @@ class Component extends React.Component {
     getChildContext = () => {
         return {
             palette:{
-                primary:colors[this.props.primary],
-                secondary:colors[this.props.secondary]
+                ...this.context.palette,
+                [this.props.priority]:{
+                    primary:colors[this.props.color][this.props.primary],
+                    secondary:colors[this.props.color][this.props.secondary],
+                    default:colors[this.props.color][this.props.default]
+                }
             }
         }
     }

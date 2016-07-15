@@ -77,8 +77,8 @@ class Component extends React.Component {
         return (
             <div style={this.state.style} onClick={this.props.onClick}>
                 <svg className={s.orbit} key={1} xmlns="http://www.w3.org/2000/svg" width={'100%'} height={'100%'}>
-                    <path ref={"base"} id={"BaseRing"}  d={this.describeArc(this.props.width/2.0,this.props.width/2.0,(this.props.width)/2.0-4,0,359.99)} strokeWidth="4px" fill={'none'} stroke={this.context.palette['primary']['50'].backgroundColor}/>
-                    <path ref={"ring0"} d={this.describeArc(this.props.width/2.0,this.props.width/2.0,(this.props.width/2.0) -4.0,0,60)} strokeWidth="4px" fill={'none'} stroke={this.context.palette['primary']['500'].backgroundColor}/>
+                    <path ref={"base"} id={"BaseRing"}  d={this.describeArc(this.props.width/2.0,this.props.width/2.0,(this.props.width)/2.0-4,0,359.99)} strokeWidth="4px" fill={'none'} stroke={this.context.palette['default']['default'].backgroundColor}/>
+                    <path ref={"ring0"} d={this.describeArc(this.props.width/2.0,this.props.width/2.0,(this.props.width/2.0) -4.0,0,60)} strokeWidth="4px" fill={'none'} stroke={this.context.palette['primary']['primary'].backgroundColor}/>
                 </svg>
             </div>
         );

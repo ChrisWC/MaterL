@@ -33,14 +33,15 @@ const width = {
     }
 }
 class Component extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor(props,context) {
+        super(props,context);
 
         this.state = {
            style:{
                width:this.getWidthByName(this.props.width),
                backgroundColor:this.props.backgroundColor,
-               ...this.props.style
+               ...this.props.style,
+               ...this.getShadow(this.props.depth)
             },
             shadow:[{
                 offset: {
@@ -54,17 +55,18 @@ class Component extends React.Component {
            }],
            contentArea:{
                top:'64px',
-               left:'320px',
+               left:context.theme.drawer.style.width,
                right:'0px',
                marginLeft:'0px',
                marginRight:'0px'
            },
+           width:'0px',
+           height:'0px',
            contentWidth:'100%',
            disabled:false,
            foregroundActive:false,
            inForeground:false
         }
-        this.handleForegroundRequest = this.handleForegroundRequest.bind(this);
     }
 
     getWidthByName = (n) => {
@@ -103,21 +105,14 @@ class Component extends React.Component {
         sheets:[],
         ind:10
     }
-    genBoxShadowString = (bs) => {
+    getShadow = (depth) => {
         /*Object.keys(bs).map((val, index, arr) => {
 
         })*/
         if (this.props.depth >= 0) {
-            this.setState({style:{boxShadow:this.context.theme['shadows'][""+this.props.depth]['boxShadow'], ...this.state.style}})
+            return this.context.theme['shadows'][""+depth]
         }
-        /*else if (this.props.depth > 0) {
-            var nmargin = bs[0].spread + 'px';
-            var str = bs[0].offset.x + " " + bs[0].offset.y + " " + " " + bs[0].blur.radius + 'px' + " " + bs[0].spread + 'px' + ((bs[0].color)? " " + bs[0].color:"");
-            this.setState({style:{boxShadow:str, margin:nmargin, ...this.state.style}});
-        }
-        else {
-
-        }*/
+        return {boxShadow:'none'}
     }
     static contextTypes = {
         sheets: React.PropTypes.arrayOf(React.PropTypes.object),
@@ -125,14 +120,15 @@ class Component extends React.Component {
     }
     static childContextTypes = {
         sheets: React.PropTypes.arrayOf(React.PropTypes.object),
+        rootSheetDim: React.PropTypes.object,
     }
     getChildContext = () => {
-        return {sheets: [this, ...(this.context.sheets? this.context.sheets:[])], }
+        return {sheets: [this, ...(this.context.sheets? this.context.sheets:[])], rootSheetDim:{width:this.state.width, height:this.state.height} }
     }
     componentWillMount = () => {
 
         //this.processProps(this.props.children)
-        this.genBoxShadowString(this.state.shadow)
+        //this.genBoxShadowString(this.state.shadow)
     }
     componentWillUpdate = (nextProps, nextState) => {
     }
@@ -179,33 +175,26 @@ class Component extends React.Component {
         //return ancestors
         return this.props.sheets
     }
-    //static methods
-    static statics = {
-
-    }
-    componentWillReceiveProps = (newProps) => {
-        //console.log("RECEIVED NEW PROPS")
-        //console.log(this)
-        /*if (newProps.foreground) {// && this.props.foreground.length <= 0) {
-            this.props.foreground.splice(0)
-            this.props.foreground.push(newProps.foreground)
-            console.log(this.props.foreground)
-            //this.setState({'test':'t'})
-        }*/
-        //console.log(newProps)
+    componentWillReceiveProps = (nProps, nContext) => {
+        if (nProps.style) {
+            //console.log(this.state.style)
+            //console.log(nProps.style)
+            if (nProps.style.maxWidth != this.state.maxWidth && nProps.style.maxHeight != this.state.maxHeight) {
+                this.setState({style:{...this.state.style, maxWidth:nProps.style.maxWidth, maxHeight:nProps.style.maxHeight}})
+                //this.genBoxShadowString(this.state.shadow)
+            }
+        }
     }
     componentDidMount = () => {
-        //console.log("TEST CDM")
         if (this.context.sheets && this.props.check == true && this.state.inForeground == false) {
-            //console.log("TEST CDM TEST " + this.props.ind)
             this.setState({disabled:true, inForeground:true})
-            //console.log("HAANDLE FOREGROUND REQUEST")
-            //this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.props.popover)
-            //this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getComponent())
+        }
+        else if (!this.context.sheets || this.context.sheets.length == 0) {
+            var rect = this.refs['sheet'].getBoundingClientRect();
+            this.setState({width:rect.right-rect.left, height:rect.bottom-rect.top})
         }
     }
     handleResizeElement = (loc, spec) => {
-        //console.log(obj)
         if (loc === 'top') {
             //this.setState({contentArea:{...this.state.contentArea, top:this.state.style.height}})
         }
@@ -238,20 +227,16 @@ class Component extends React.Component {
     }
     render() {
         this.processProps(this.props.children)
-        if (this.state.disabled == false) {
-            return(
-                <div {...this.props} style={this.state.style}>
-                    {this.props.toolbars}
-                    {this.props.drawers}
-                    {!this.context.sheets? <div style={{position:'fixed', display:'block',  overflow:'hidden', overflowY:'scroll', marginLeft:this.state.contentArea.marginLeft, marginRight:this.state.contentArea.marginRight, left:this.state.contentArea.left, right:this.state.contentArea.right, top:this.state.contentArea.top, bottom:'0px', height:'auto'}}>
-                        {this.props.content}
-                    </div>:this.props.content}
-                    {this.state.foregroundActive? <Layer backgroundColor={'black'} key={0} role={'layer'} foreground={this.props.foreground} />:null}
-                </div>
-            );
-        } else {
-            return (<span/>);
-        }
+        return(
+            <div {...this.props} ref="sheet" style={this.state.style}>
+                {this.props.toolbars}
+                {this.props.drawers}
+                {(!this.context.sheets || this.context.sheets.length == 0)? <div style={{position:'absolute', display:'block',  overflow:'hidden', overflowY:'scroll', marginLeft:this.state.contentArea.marginLeft, marginRight:this.state.contentArea.marginRight, left:(this.props.drawers.length > 0)? this.state.contentArea.left:'0px', right:this.state.contentArea.right, top:this.state.contentArea.top, bottom:'0px', height:'auto'}}>
+                    {this.props.content}
+                </div>:this.props.content}
+                {this.state.foregroundActive? <Layer backgroundColor={'black'} key={0} role={'layer'} foreground={this.props.foreground} />:null}
+            </div>
+        );
     }
 }
 

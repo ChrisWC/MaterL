@@ -17,49 +17,67 @@ const defaultTheme = {
     },
     button:{
         raised:{
-            resting:{
-                elevation:2,
-            },
-            pressed:{
-                elevation:8,
-            }
-        },
-        raisedDesktop:{
-            resting:{
-                elevation:0,
-            },
-            pressed:{
-                zDepth:2,
-            }
-        },
-        default:{
             fontFamily:"Roboto-Medium",
-            foxtSize:14,
+            fontSize:14,
             height:'36px',
             lineHeight:'36px',
             paddingLeft:'16px',
             paddingRight:'16px',
             borderRadius:'2px',
-            margin:'5px'
+            margin:'4px'
+        },
+        flat:{
+            fontFamily:"Roboto-Medium",
+            fontSize:14,
+            height:'36px',
+            lineHeight:'36px',
+            paddingLeft:'16px',
+            paddingRight:'16px',
+            borderRadius:'2px',
+            margin:'4px'
         },
         defaultMenu:{
             fontFamily:"Roboto-Medium",
-            foxtSize:14,
+            fontSize:14,
             height:'48px',
             lineHeight:'48px',
             paddingLeft:'16px',
             paddingRight:'16px',
             borderRadius:'0px',
         },
-        dense:{
+        defaultAppbar:{
+            fontFamily:"Roboto-Regular",
+            fontSize:24,
+            height:'64px',
+            lineHeight:'64px',
+            paddingLeft:'16px',
+            paddingRight:'16px',
+            borderRadius:'0px',
+            border:'none',
+            margin:'0px',
+            padding:0
+        },
+        flatDense:{
             fontFamily:"Roboto-Medium",
-            foxtSize:13,
+            fontSize:13,
             height:'32px',
             lineHeight:'32px',
             paddingLeft:'16px',
             paddingRight:'16px',
             borderRadius:'2px',
-            margin:'5px'
+            verticalAlign:'middle',
+            margin:'4px'
+        },
+        raisedDense:{
+            fontFamily:"Roboto-Medium",
+            fontSize:13,
+            height:'32px',
+            lineHeight:'32px',
+            paddingLeft:'16px',
+            paddingRight:'16px',
+            borderRadius:'2px',
+            verticalAlign:'middle',
+            margin:'4px'
         },
         floating:{
             resting:{
@@ -71,19 +89,22 @@ const defaultTheme = {
         },
         icon:{
             border:'none',
-            display:'inline-block',
-            position:'relative',
-            height:'36px',
+            height:'64px',
+            lineHeight:'64px',
             fill:'white',
             color:'white',
-            'float':'left'
+            paddingLeft:'16px',
+            paddingRight:'16px'
         },
         inset:16,
     },
     drawer:{
         iconInsetLeft:16,
         labelInsetLeft:72,
-        InsetRight:16
+        InsetRight:16,
+        style:{
+            width:'370px',
+        }
     },
     popover:{
 

@@ -9,14 +9,16 @@
 
 import React, { PropTypes } from 'react';
 import Paper from '../Paper'
-import ScrollBar from '../ScrollBar'
 class Component extends React.Component {
     constructor(props, context) {
-        super(props), context;
+        super(props, context);
 
         this.state = {
             style:{
                 width:'320px',
+                height:'100%',
+                maxWidth:context.rootSheetDim.width,
+                maxHeight:context.rootSheetDim.height,
                 top:'0px',
                 left:'0px',
                 bottom:'0px',
@@ -24,7 +26,8 @@ class Component extends React.Component {
                 overflow:'hidden',
                 overflowY:'scroll',
                 position:'absolute',
-                backgroundColor:'white',
+                ...context.theme.drawer.style,
+                ...props.style
             },
             drawer_style:{
                 width:'325px',
@@ -34,7 +37,8 @@ class Component extends React.Component {
                 float:'left',
                 overflow:'hidden',
                 position:'absolute',
-                display:'block'
+                display:'block',
+                ...context.theme.drawer.style,
             },
             open:this.props.open,
         }
@@ -49,17 +53,41 @@ class Component extends React.Component {
     };
     static contextTypes = {
         theme: PropTypes.object,
-        palette: PropTypes.object
+        palette: PropTypes.object,
+        rootSheetDim: PropTypes.object,
+        sheets: React.PropTypes.arrayOf(React.PropTypes.object),
     }
     
-    componentWillReceiveProps = (newProps) => {
+    componentWillReceiveProps = (newProps, nContext) => {
+        var nstate = {}
         if (newProps.open !== undefined) {
             if (this.props.handleResize && newProps.open != this.state.open) {
                 this.props.handleResize('left', {width:(newProps.open)? this.state.style.width:'0px'})
-                this.setState({open:newProps.open})
+                nstate = {...nstate, open:newProps.open}
             }
-            
+
         }
+        this.setState({...this.state, ...nstate, style:{...this.state.style, maxWidth:nContext.rootSheetDim.width+'px', maxHeight:nContext.rootSheetDim.height+'px'}, drawer_style:{...this.state.drawer_style,maxWidth:nContext.rootSheetDim.width+'px', maxHeight:nContext.rootSheetDim.height+'px'}})
+    }
+    handleResize = (e) => {
+        this.setState({style:{...this.state.style, maxWidth:window.innerWidth}})
+    }
+    componentWillMount = () => {
+        /*if (typeof(window) !== 'undefined') {
+            this.setState({style:{...this.state.style, maxWidth:window.innerWidth, maxHeight:window.innerHeight}})
+        } else { 
+            this.setState({style:{...this.state.style, maxWidth:'100%', maxHeight:'100%'}})
+        }*/
+        //console.log(global.viewport)
+    }
+    componentReceiveProps = (nProps, nContext) => {
+    }
+    componentDidMount = () => {
+        window.addEventListener('resize', this.handleResize);
+        this.setState({style:{...this.state.style, maxWidth:window.innerWidth, maxHeight:window.innerHeight}})
+    }
+    componentWillUnmount = () => {
+        window.removeEventListener('resize', this.handleResize);
     }
     render() {
         return this.props.open? (

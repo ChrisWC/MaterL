@@ -11,13 +11,8 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Header.css';
 import Link from '../Link';
-import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
 function Header() {
-  return (
-    <AppBar title="Login" iconElementRight={<span></span>}>
-    </AppBar>
-  );
+  return (<div></div>)
 }
 
 export default withStyles(s)(Header);

@@ -89,9 +89,6 @@ class Component extends React.Component {
     handleClick = (e, v, context) => {
 
     }
-    /*handleClick = () => {
-        this.
-    }*/
     render() {
         return this.state.open? (
             <div role="popover" style={this.state.outer_style} onClick={(e) => {

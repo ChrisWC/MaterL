@@ -35,8 +35,8 @@ class Component extends React.Component {
         super(props, context);
         this.state = {
            style:{
-               backgroundColor:this.props.backgroundColor,
-               ...this.props.style
+               ...this.context.palette.default.primary,
+               ...this.props.style,
             },
             shadow:[{
                 offset: {
@@ -91,7 +91,7 @@ class Component extends React.Component {
                height:'100%',
                width:'100%',
                top:'0px',
-               position:'fixed',
+               position:'absolute',
                bottom:'0px'
         },
         palette: {
@@ -111,11 +111,21 @@ class Component extends React.Component {
             }
         }
     }
+    static contextTypes = {
+        palette: React.PropTypes.object
+    }
     componentDidMount = () => {
         window.addEventListener('resize', this.handleResize);
     }
     componentWillUnmount = () => {
         window.removeEventListener('resize', this.handleResize);
+    }
+    componentWillReceiveProps = (nProps) => {
+        if (nProps.style) {
+            if (nProps.style.maxWidth != this.state.maxWidth && nProps.style.maxHeight != this.state.maxHeight) {
+                this.setState({style:{...this.state.style, maxWidth:nProps.style.maxWidth, maxHeight:nProps.style.maxHeight}})
+            }
+        }
     }
     calculateSize = () => {
     }
@@ -131,10 +141,6 @@ class Component extends React.Component {
         //return ancestors
         return this.props.sheets
     }
-    //static methods
-    static statics = {
-
-    }
     handleClick = (e) => {
     }
     handleMouseDown = (e) => {
@@ -148,13 +154,12 @@ class Component extends React.Component {
         }
     }
     handleDrag = (e) => {
-        console.log('DRAG')
     }
     render() {
         //console.log(" " + this.props.ind)
         //console.log(this)
 
-        return (<Sheet role={this.props.role} content={[]} drawers={[]} appbars={[]} draggable='true' onClick={this.handleClick} onDragStart={this.handleDrag} foreground={[]} check={this.props.check} width={this.props.width} backgroundColor={this.props.backgroundColor} style={this.state.style} popover={this.props.popover} depth={this.props.depth} {...this.props}> {this.props.children}</Sheet>)
+        return (<Sheet role={this.props.role} content={[]} drawers={[]} appbars={[]} draggable='true' onClick={this.handleClick} onDragStart={this.handleDrag} foreground={[]} check={this.props.check} width={this.props.width} {...this.props} style={this.state.style} popover={this.props.popover} depth={this.props.depth}> {this.props.children}</Sheet>)
     }
 }
 

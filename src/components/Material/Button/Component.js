@@ -1,58 +1,38 @@
 import React, { PropTypes } from 'react';
-//import history from '../../../core/history';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Component.css';
+import cx from 'classnames';
 
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
-        this.getColor = this.getColor.bind(this)
-        var color = null
-        if (this.props.primary) {
-            color = (this.props.active)? this.context.primary['primary']['900']:this.context.palette['primary']['700']
-        }
-        if (this.getColor){
-            color = this.getColor();
-        }
-        var leftTab = 16
-
-        if (this.props.menuDepth) {
-            leftTab = (this.props.menuDepth + 1)*16
-        }
         this.state = {
             round:false,
             raised:false,
             outer_style:{
                 display:(this.props.contextName === 'menu')? 'block':'inline-block',
                 width:(this.props.width !== undefined)? this.props.width:'auto',
-                margin:(this.props.contextName === 'menu')? '0px':'5px',
-                float:'clear',
-                position:'relative',
-                overflow:'hidden',
             },
             icon_style:{
-                ...this.context.theme.button.icon
+                ...this.context.theme.button.icon,
+                display:'inline-block',
+                float:'left'
             },
             inner_style:{
                 ...this.getDensityStyling(),
                 ...this.getShadow(),
-                ...color,
-                paddingLeft:leftTab + "px",
+                ...this.getColor(),
+                paddingLeft:(this.props.menuDepth? ((this.props.menuDepth + 1)*16):16) + "px",
                 display:'block',
-                position:'relative',
             },
             title_style:{
+                ...this.getDensityStyling(),
                 display:'inline-block',
+                float:'left',
                 margin:0,
                 padding:0,
                 border:'none',
-                height:(this.props.contextName === 'menu')? '48px':'36px',
-                lineHeight:(this.props.contextName === 'menu')? '48px':'36px',
-                fontSize:'14px',
-                fontFamily:'Roboto-Medium',
-                float:'left',
-                verticalAlign:'middle',
-                position:'relative',
+                top:-1,
             },
             hover:false,
             openPopovers:false,
@@ -63,12 +43,23 @@ class Component extends React.Component {
         if (this.props.contextName === 'menu') {
             return this.context.theme.button.defaultMenu
         }
-        else {
-            if (this.context.dense) {
-                return this.context.theme.button.dense
+        else if (this.props.contextName === 'appbar') {
+            return this.context.theme.button.defaultAppbar
+        }
+        else if (this.props.raised) {
+            if (this.context.dense || this.props.dense) {
+                return this.context.theme.button.raisedDense
             }
             else {
-                return this.context.theme.button.default
+                return this.context.theme.button.raised
+            }
+        }
+        else {
+            if (this.context.dense || this.props.dense) {
+                return this.context.theme.button.flatDense
+            }
+            else {
+                return this.context.theme.button.flat
             }
         }
     }
@@ -86,33 +77,56 @@ class Component extends React.Component {
         return null
     }
     getColor = () => {
-        if (this.props.primary) {
+        if (this.props.raised) {
             if ((this.state && this.state.hover && this.state.active == false)) {
-                return this.context.palette['primary']['600']
+                return this.context.palette[this.props.priority]['secondary']
             }
             else if ((this.state && this.state.active)) {
-                return this.context.palette['primary']['700']
+                return this.context.palette[this.props.priority]['default']
             }
             else {
-                return this.context.palette['primary']['500']
+                return this.context.palette[this.props.priority]['primary']
             }
-        } else { 
-            if ((this.state && this.state.hover == true && this.state.active == false)) {
-                return this.context.palette['primary']['600']
+        }
+        else {
+            var color = this.context.palette[this.props.priority]
+
+            if ((this.state && this.state.hover == true && this.state.active == false)) { 
+                if (this.context.backgroundColor) {
+                    return this.context.backgroundColor.secondary
+                }
+                var ncolor = {
+                    backgroundColor:this.context.palette.default.secondary.backgroundColor, 
+                    color:color.secondary.backgroundColor
+                }
+                return this.props.priority == 'default'? color.secondary:ncolor
             }
-            else if ((this.state && this.state.active == true)) {
-                return this.context.palette['primary']['700']
+            else if ((this.state && this.state.active == true)) { 
+                if (this.context.backgroundColor) {
+                    return this.context.backgroundColor.default;
+                }
+                var ncolor = {
+                    backgroundColor:this.context.palette.default.default.backgroundColor, 
+                    color:color.default.backgroundColor
+                }
+                return this.props.priority == 'default'? color.default:ncolor
             }
             else {
-                return {backgroundColor:'rgba(0,0,0,0)', color:'black'}
+                var ncolor = {
+                    backgroundColor:this.context.palette.default.primary.backgroundColor, 
+                    color:this.context.palette[this.props.priority].primary.backgroundColor
+                }
+            
+                return (this.context.backgroundColor)? this.context.backgroundColor.primary:(this.props.priority === 'default'? this.context.palette.default.primary:ncolor)
             }
         }
         return {backgroundColor:'rgba(0,0,0,0)', color:'black'}
     }
     static propTypes = {
         label:PropTypes.string,
+        priority:PropTypes.string,
         context:PropTypes.string,
-        dense:PropTypes.bool,
+        dense:PropTypes.bool.isRequired,
         touchable:PropTypes.bool,
         popover:PropTypes.element,
         active:PropTypes.bool.isRequired,
@@ -120,12 +134,23 @@ class Component extends React.Component {
         contextName:PropTypes.string.isRequired,
         toggle:PropTypes.bool.isRequired,
         redirect:PropTypes.string,
-        rightIcon:PropTypes.element
+        rightIcon:PropTypes.element,
+        primary:PropTypes.bool,
+        raised:PropTypes.bool,
+        menuDepth:PropTypes.number,
+        contextMenu:PropTypes.string
     };
     static defaultProps = {
         active:false,
         toggle:false,
         contextName:'default',
+        dense:false,
+        raised:false,
+        primary:false,
+        redirect:null,
+        popover:null,
+        priority:'default',
+
     };
     static contextTypes = {
         sheets: React.PropTypes.arrayOf(React.PropTypes.object),
@@ -133,13 +158,10 @@ class Component extends React.Component {
         commonFunctions: React.PropTypes.object,
         theme: React.PropTypes.object,
         isDense: React.PropTypes.bool,
+        backgroundColor: React.PropTypes.object
     }
-    handleHover = (start) => {
-        if (start) {
-            this.setState({hover:true})
-        } else {
-            this.setState({hover:false})
-        }
+    handleHover = (new_state) => {
+        this.setState({hover:new_state})
     }
     handleDefault = () => {
         this.setState({openPopovers:false, inner_style:{...this.state.inner_style, ...this.getColor()}})
@@ -151,8 +173,8 @@ class Component extends React.Component {
         var top = rect.bottom;
         
 
-        if (this.props.contextMenu !== 'menu') {
-            this.setState({active:!this.state.active})
+        if (this.props.contextName != 'menu') {
+            //this.setState({active:!this.state.active})
         }
         if (this.props.popover && !this.state.active) {
             //this.setState({inner_style:{...this.state.inner_style, backgroundColor:colors.blue900,}})
@@ -169,19 +191,17 @@ class Component extends React.Component {
             this.props.onClick(e)
         }
 
-        if (this.props.redirect && this.context.commonFunctions.redirect) {
-            //e.preventDefault();
-            //history.push(this.props.redirect);
+        if (this.props.redirect !== null && this.context.commonFunctions.redirect) {
             this.context.commonFunctions.redirect(e, this.props.redirect);
         }
     }
     handleMouseDown = () => {
-        if (this.props.contextMenu !== 'menu') {
+        if (this.props.contextName != 'menu') {
             this.setState({active:true})
         }
     }
     handleMouseUp = () => {
-        if (this.props.contextMenu !== 'menu') {
+        if (this.props.contextName != 'menu') {
             this.setState({active:false})
         }
     }
@@ -192,9 +212,6 @@ class Component extends React.Component {
 
     }
     componentWillReceiveProps = (newProps) => {
-        if (newProps.clicked) {
-            //this.handleClick()
-        }
         this.setState({
             inner_style:{...this.state.inner_style, ...this.getColor()},
             active:newProps.active,
@@ -204,16 +221,18 @@ class Component extends React.Component {
         var color = this.getColor()
         return(
             <div role="button" ref="cont" style={this.state.outer_style} onMouseLeave={() => {this.handleDefault()}} >
-                <div style={{...this.state.inner_style, ...this.getColor(), ...this.getShadow() }}  
+                <div id="inner" style={{...this.state.inner_style, ...this.getColor(), ...this.getShadow() }}  
                     onMouseDown={() => this.handleMouseDown()} 
                     onMouseUp={() => this.handleMouseUp()}
                     onMouseEnter={() => this.handleHover(true)} 
+                    onMouseOver={() => this.handleHover(true)} 
                     onMouseOut={() => this.handleHover(false)} 
                     onClick={(e) => {
                         this.handleClick(e)
+
                     }} >
                     {this.props.icon? React.cloneElement(this.props.icon, {...this.props.icon.props, style:this.state.icon_style,}):null}
-                    {this.props.label? <span style={this.state.title_style} className={s.button}>{this.props.label}</span>:null}
+                    {this.props.label? <div style={this.state.title_style} >{this.props.label}</div>:null}
                     {this.props.rightIcon? React.cloneElement(this.props.rightIcon, {style:this.state.icon_style, fill:this.state.icon_style.fill, ...this.props.icon.props, float:'right', paddingRight:'16px'}):null}
                 </div>
             </div>
