@@ -106,7 +106,7 @@ const config = {
         loader: 'raw-loader',
       },
       {
-        test: /\.(png|jpg|jpeg|gif|woff|woff2)$/,
+        test: /\.(png|jpg|jpeg|gif|ttf|woff|woff2)$/,
         loader: 'url-loader',
         query: {
           name: DEBUG ? '[path][name].[ext]?[hash]' : '[hash].[ext]',
@@ -114,7 +114,7 @@ const config = {
         },
       },
       {
-        test: /\.(eot|ttf|wav|mp3)$/,
+        test: /\.(eot|wav|mp3)$/,
         loader: 'file-loader',
         query: {
           name: DEBUG ? '[path][name].[ext]?[hash]' : '[hash].[ext]',
@@ -241,8 +241,20 @@ const clientConfig = extend(true, {}, config, {
       // https://github.com/mishoo/UglifyJS2#compressor-options
       new webpack.optimize.UglifyJsPlugin({
         compress: {
-          screw_ie8: true, // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
-          warnings: VERBOSE,
+            screw_ie8: true, // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
+            warnings: false,
+            properties: true,
+            sequences:200,
+            booleans:true,
+            conditionals:true,
+            properties:true,
+            comparisons:true,
+            evaluate:true,
+            hoist_funs:true,
+            if_return:true,
+            join_vars:true,
+            cascade:true,
+            passes:50,
         },
       }),
 
@@ -288,6 +300,24 @@ const serverConfig = extend(true, {}, config, {
     // https://webpack.github.io/docs/list-of-plugins.html#defineplugin
     new webpack.DefinePlugin({ ...GLOBALS, 'process.env.BROWSER': false }),
 
+    new webpack.optimize.UglifyJsPlugin({
+        compress: {
+            screw_ie8: true, // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
+            warnings: false,
+            properties: true,
+            sequences:200,
+            booleans:true,
+            conditionals:true,
+            properties:true,
+            comparisons:true,
+            evaluate:true,
+            hoist_funs:true,
+            if_return:true,
+            join_vars:true,
+            cascade:true,
+            passes:50,
+        },
+    }),
     // Adds a banner to the top of each generated chunk
     // https://webpack.github.io/docs/list-of-plugins.html#bannerplugin
     new webpack.BannerPlugin('require("source-map-support").install();',

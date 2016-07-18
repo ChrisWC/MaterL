@@ -33,6 +33,7 @@ import text_field from './text_field';
 import card from './card';
 import shadows from './shadows';
 import demo_guide from './demo_guide';
+import device from './device';
 import { Provider } from 'react-redux';
 
 export default {
@@ -43,6 +44,7 @@ export default {
     home,
     button,
     card,
+    device,
     shadows,
     demo_guide,
     bar_decor,

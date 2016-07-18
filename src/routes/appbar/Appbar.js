@@ -45,7 +45,7 @@ function AppbarRoute({}, context) {
             button as a component that reacts to a click.</p>
             <div>
             <Button label={"A BUTTON"} raised={false} primary={false} popover={
-                <PopOver ref="pop" >
+                <PopOver>
                     <Menu>
                         <Button contextName="menu" label="Menu Button"/>
                         <Button contextName="menu" label="Menu Button"/>
@@ -53,7 +53,7 @@ function AppbarRoute({}, context) {
                 </PopOver>}>
             </Button>
             <Button label={"A BUTTON"} raised={true} primary={true} popover={
-                <PopOver role="popover" ref="pop">
+                <PopOver role="popover">
                     <Menu>
                         <Button contextName="menu" label="Menu Button"/>
                         <Button contextName="menu" label="Menu Button"/>

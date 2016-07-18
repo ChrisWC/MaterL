@@ -17,9 +17,6 @@ class Component extends React.Component {
 
         this.state = {
             style: {
-                color:'black',
-                display:'inline-block',
-                position:'relative'
             },
             active:!this.props.active
         }
@@ -35,6 +32,9 @@ class Component extends React.Component {
         resolution:'18px',
         active:false
     };
+    static contextTypes = {
+        theme: PropTypes.object
+    }
     getIcon = (role, active) => {
         const check =  (<Icon onClick={(e) => this.handleClick(e)} resolution={"24px"} context={"toggle"} component={"check_box"}/>)
         const unchecked =  (<Icon onClick={(e) => this.handleClick(e)} resolution={"24px"} context={"toggle"} component={"check_box_outline_blank"}/>)
@@ -68,14 +68,17 @@ class Component extends React.Component {
         return null
     }
     handleClick = (e) => {
-        console.log("CHOICE CLICK")
         this.setState({active:!this.state.active});
     }
     render() {
         return (
-            <div style={this.state.style} onClick={this.props.onClick}>
-                {this.state.active? this.getIcon(this.props.role, false):this.getIcon(this.props.role, true)}
-                <span>{this.props.children}</span>
+            <div style={this.state.style} onClick={this.props.onClick} className={this.context.theme.choice.default}>
+                <div ref={'icon'} style={{height:'100%'}}>
+                    {this.getIcon(this.props.role, this.state.active)}
+                </div>
+                <div ref={'text'} style={{height:'100%'}}>
+                    {this.props.children}
+                </div>
             </div>
         );
     }

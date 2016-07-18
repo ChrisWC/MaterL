@@ -11,14 +11,11 @@ import React, { PropTypes } from 'react';
 import Paper from '../Paper/'
 
 class Component extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
 
         this.state = {
             style:{
-                height:'auto',
-                display:'inline-block',
-                position:'relative',
                 width:(this.props.width)? this.props.width:'auto',
                 ...this.props.style
             },
@@ -37,19 +34,21 @@ class Component extends React.Component {
     };
     static defaultProps = {
         style:{
-            display:'inline-block',
         },
         active:false,
         open:true,
         context:'default',
         menuDepth:0
     };
+    static contextTypes = {
+        theme: PropTypes.object
+    }
     handleMenuClick = (index) => {
         this.setState({activeItem:index})
     }
     render() {
         return(
-            <div style={this.state.style}>
+            <div className={this.context.theme.menu.menu} style={this.state.style}>
                     {this.props.open? React.Children.map(this.props.children, (val, key, arr) => {
                         var active= (this.state.activeItem==key);
                         if (val.type.ComposedComponent && val.type.ComposedComponent.defaultProps.role === 'menu') {

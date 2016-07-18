@@ -9,76 +9,25 @@
 
 import React, { PropTypes } from 'react';
 import Paper from '../Paper'
+import s from './Component.css'
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 const defaultTheme = {
+    choice:{
+        default:s.choice
+    },
     appbar:{
         inset:16,
         zDepth:4,
     },
+    menu:{
+        menu:s['menu']
+    },
     button:{
-        raised:{
-            fontFamily:"Roboto-Medium",
-            fontSize:14,
-            height:'36px',
-            lineHeight:'36px',
-            paddingLeft:'16px',
-            paddingRight:'16px',
-            borderRadius:'2px',
-            margin:'4px'
-        },
-        flat:{
-            fontFamily:"Roboto-Medium",
-            fontSize:14,
-            height:'36px',
-            lineHeight:'36px',
-            paddingLeft:'16px',
-            paddingRight:'16px',
-            borderRadius:'2px',
-            margin:'4px'
-        },
-        defaultMenu:{
-            fontFamily:"Roboto-Medium",
-            fontSize:14,
-            height:'48px',
-            lineHeight:'48px',
-            paddingLeft:'16px',
-            paddingRight:'16px',
-            borderRadius:'0px',
-        },
-        defaultAppbar:{
-            fontFamily:"Roboto-Regular",
-            fontSize:24,
-            height:'64px',
-            lineHeight:'64px',
-            paddingLeft:'16px',
-            paddingRight:'16px',
-            borderRadius:'0px',
-            border:'none',
-            margin:'0px',
-            padding:0
-        },
-        flatDense:{
-            fontFamily:"Roboto-Medium",
-            fontSize:13,
-            height:'32px',
-            lineHeight:'32px',
-            paddingLeft:'16px',
-            paddingRight:'16px',
-            borderRadius:'2px',
-            verticalAlign:'middle',
-            margin:'4px'
-        },
-        raisedDense:{
-            fontFamily:"Roboto-Medium",
-            fontSize:13,
-            height:'32px',
-            lineHeight:'32px',
-            paddingLeft:'16px',
-            paddingRight:'16px',
-            borderRadius:'2px',
-            verticalAlign:'middle',
-            margin:'4px'
-        },
+        button:s.button,
+        menu:s['menu-button'],
+        appbar:s['appbar-button'],
+        dense:s['dense-button'],
         floating:{
             resting:{
                 zDepth:6,
@@ -87,27 +36,106 @@ const defaultTheme = {
                 zDepth:12,
             }
         },
-        icon:{
-            border:'none',
-            height:'64px',
-            lineHeight:'64px',
-            fill:'white',
-            color:'white',
-            paddingLeft:'16px',
-            paddingRight:'16px'
-        },
+        icon:s['icon-button'],
         inset:16,
     },
     drawer:{
-        iconInsetLeft:16,
-        labelInsetLeft:72,
-        InsetRight:16,
+        cn:s['drawer'],
         style:{
             width:'370px',
+        },
+        rules:{
+            open:(breakpoint)=>{
+                return false;
+            }
+        }
+    },
+    sheet:{
+        autoOpenThreshold:'600px',
+        widthBreakpoints:{
+            'DESKTOP':[
+                {
+                    range:[0,480],
+                    size:'xsmall',
+                    columns:4
+                },
+                {
+                    range:[480,600],
+                    size:'xsmall',
+                    columns:8
+                },
+                {
+                    range:[600,840],
+                    size:'small',
+                    columns:8
+                },
+                {
+                    range:[840,960],
+                    size:'small',
+                },
+                {
+                    range:[960,1280],
+                    size:'medium',
+                },
+                {
+                    range:[1280,1440],
+                    size:'large'
+                },
+                {
+                    range:[1440,1600],
+                    size:'large'
+                },
+                {
+                    range:[1600,1920],
+                    size:'large'
+                },
+                {
+                    range:[1920, -1],
+                    size:'xlarge'
+                }
+            ],
+            'PHONE':{
+                'PORTAIT':[
+                    {
+                        range:[0,360],
+                        size:['small']
+                    },
+                    {
+                        range:[360,400],
+                        size:['medium']
+                    },
+                    {
+                        range:[400, -1],
+                        size:['large']
+                    }
+                ],
+                'LANDSCAPE':[
+                    {
+                        range:[0, 600],
+                        size:['small']
+                    },
+                    {
+                        range:[600, 720],
+                        size:['medium']
+                    },
+                    {
+                        range:[720, 960],
+                        size:['large']
+                    }
+                ]
+            },
+            'TABLET':{
+                'PORTAIT':{
+
+                }
+            }
         }
     },
     popover:{
-
+        cn:s['popover']
+    },
+    layer:{
+        default:s['layer']
     },
     card:{
         textTitle:{
@@ -194,4 +222,4 @@ class Component extends React.Component {
 }
 
 
-export default Component;
+export default withStyles(s)(Component);

@@ -9,27 +9,7 @@
 
 import React, { PropTypes } from 'react';
 import Sheet from '../Sheet';
-const width = {
-    'window': {
-        xsmall:[480],
-        small:[600, 720, 840],
-        medium:[960, 1024],
-        large:[1280, 1440, 1600],
-        xlarge:[1920]
-    },
-    'handset-portait':{
 
-    },
-    'handset-landscape':{
-
-    },
-    'tablet-portrait':{
-
-    },
-    'tablet-landscape':{
-
-    }
-}
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -38,36 +18,20 @@ class Component extends React.Component {
                ...this.context.palette.default.primary,
                ...this.props.style,
             },
-            shadow:[{
-                offset: {
-                   x: '0px',
-                   y: '0px'
-                },
-                blur: {
-                    radius:5,
-                },
-                spread:1,
-           }],
            dragActive:false,
            disabled:false,
            foregroundActive:false,
-           inForeground:false
+           inForeground:false,
+           open:this.props.open,
+           behaviour:this.props.behaviour
         }
     }
 
     getWidthByName = (n) => {
-        switch (this.props.width) {
-            case "small-0":
-                return '600px'
-            case "small-1":
-                return width['window'].small[1]
-            case "small-2":
-                return width['window'].small[2]
-            default:
-                return '100%'
-        }
+        return '100%'
     }
     static propTypes = {
+        open:PropTypes.bool,
         showShadows: PropTypes.bool,
         fullscreen: PropTypes.bool,
         width: PropTypes.string,
@@ -77,7 +41,7 @@ class Component extends React.Component {
         style:PropTypes.object,
         role:PropTypes.string.isRequired,
         depth:PropTypes.number.isRequired,
-        palette:PropTypes.object,
+        behaviour:PropTypes.object,
     }
     static defaultProps = { 
         foreground:new Array(),
@@ -94,21 +58,11 @@ class Component extends React.Component {
                position:'absolute',
                bottom:'0px'
         },
-        palette: {
-            base: {
-                fontFamily: 'Roboto, sans-serif',
-            },
-            primary: {
-                backgroundColor:'',
-                textColor:'',
-                accentColor:'',
-            },
-            secondary: {
-
-            },
-            accent: {
-
-            }
+        open:true,
+        behaviour:{
+            visibility:'permenant',
+            width:'fluid',
+            descriptors:[]
         }
     }
     static contextTypes = {
@@ -121,13 +75,19 @@ class Component extends React.Component {
         window.removeEventListener('resize', this.handleResize);
     }
     componentWillReceiveProps = (nProps) => {
+        var nstate = {style:{}}
         if (nProps.style) {
             if (nProps.style.maxWidth != this.state.maxWidth && nProps.style.maxHeight != this.state.maxHeight) {
-                this.setState({style:{...this.state.style, maxWidth:nProps.style.maxWidth, maxHeight:nProps.style.maxHeight}})
+                nstate = {style:{...this.state.style, maxWidth:nProps.style.maxWidth, maxHeight:nProps.style.maxHeight}}
+            }
+        
+            if (nProps.style.top && nProps.style.left) {
+                nstate = {style:{...this.state.style, ...nstate.style, top:nProps.style.top, left:nProps.style.left}}
             }
         }
-    }
-    calculateSize = () => {
+
+        nstate = {...this.state, style:{...this.state.style, ...nstate.style}, open:(typeof nProps.open != 'undefined')? nProps.open:this.state.open, behaviour:(typeof nProps.behaviour != 'undefined')? nProps.behaviour:this.state.behaviour}
+        this.setState(nstate)
     }
     handleResize = (e) => {
         if (this.props.fullscreen) {
@@ -137,11 +97,13 @@ class Component extends React.Component {
             //check if size is smaller than component or greater than threshold
         }
     }
-    getParentSheets = () => {
-        //return ancestors
-        return this.props.sheets
-    }
     handleClick = (e) => {
+        if (this.props.onClick) {
+            this.props.onClick(e)
+        }
+    }
+    getBoundingClientRect = () => {
+        return this.refs['container'].getBoundingClientRect()
     }
     handleMouseDown = (e) => {
         if (this.props.draggable && !this.props.dragActive) {
@@ -156,10 +118,16 @@ class Component extends React.Component {
     handleDrag = (e) => {
     }
     render() {
-        //console.log(" " + this.props.ind)
-        //console.log(this)
-
-        return (<Sheet role={this.props.role} content={[]} drawers={[]} appbars={[]} draggable='true' onClick={this.handleClick} onDragStart={this.handleDrag} foreground={[]} check={this.props.check} width={this.props.width} {...this.props} style={this.state.style} popover={this.props.popover} depth={this.props.depth}> {this.props.children}</Sheet>)
+        return (<Sheet ref='container' behaviour={this.state.behaviour} 
+                    open={this.state.open} role={this.props.role} 
+                    content={[]} drawers={[]} appbars={[]} 
+                    draggable='false' onClick={this.handleClick} 
+                    onDragStart={this.handleDrag} foreground={[]} 
+                    check={this.props.check} width={this.props.width} 
+                    className={this.props.className} style={this.state.style} 
+                    popover={this.props.popover} depth={this.props.depth}>
+                        {this.props.children}
+                </Sheet>)
     }
 }
 

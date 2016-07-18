@@ -14,7 +14,7 @@ const style = {
     display:'inline-block',
     position:'relative',
     width:'auto',
-    padding:'10px',
+    padding:'0px',
     margin:'0px',
     float:'left'
 }
@@ -53,7 +53,7 @@ class Component extends React.Component {
             },
             titleStyle:{
                 ...titleStyle,
-                ...context.palette.primary['500'],
+                ...context.palette.primary.primary,
             },
             bodyStyle:{
                 ...bodyStyle,

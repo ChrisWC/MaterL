@@ -1,1 +1,1 @@
-require('./fonts/Roboto-Regular.ttf')
+//require('./fonts/Roboto-Regular.ttf')

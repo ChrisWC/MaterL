@@ -26,16 +26,16 @@ import Image from '../Lotus/Image';
 import Palette from '../Material/Palette';
 import Theme from '../Material/Theme';
 import Paper from '../Material/Paper';
-import Icon from '../Material/Icon'
-import CommonFunctions from '../Material/CommonFunctions'
-
+import Icon from '../Material/Icon';
+import CommonFunctions from '../Material/CommonFunctions';
+import Device from '../Material/Device';
 import history from '../../core/history';
 class App extends Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            openLeftDrawer:true,
+            openLeftDrawer:undefined,
         }
     }
     static propTypes = {
@@ -73,7 +73,20 @@ class App extends Component {
     }
 
     render() {
-        const leftDrawer = (<Drawer open={this.state.openLeftDrawer} depth={1}>
+        const openLeftNavigation = (state, pref) => {
+            if (typeof state == 'undefined' && typeof pref == 'undefined') {
+                return this.state.openLeftDrawer;
+            }
+            else if (typeof this.state.openLeftDrawer == 'undefined' && this.state.openLeftDrawer != pref) {
+                this.setState({openLeftDrawer:pref})
+                return pref;
+            }
+            else {
+                this.setState({openLeftDrawer:state})
+                return state;
+            }
+        }
+        const leftDrawer = (<Drawer open={openLeftNavigation} depth={1}>
                 <Menu>
                     <Button contextName="menu" label="About Project" active={false} redirect={"/about"} />
                     <Button contextName="menu" label="Topics">
@@ -92,6 +105,7 @@ class App extends Component {
                             <Button contextName="menu" label="BarDecor" active={false} redirect={"/bar_decor"} />
                             <Button contextName="menu" label="Button" active={false} redirect={"/button"} />
                             <Button contextName="menu" label="Choice" active={false} redirect={"/choice"} />
+                            <Button contextName="menu" label="Device" active={false} redirect={"/device"} />
                             <Button contextName="menu" label="Text Field" active={false} redirect={"/text_field"}/>
                             <Button contextName="menu" label="Appbar" active={false} redirect={"/appbar"} />
                             <Button contextName="menu" label="Drawer" active={false} redirect={"/drawer"} />
@@ -103,12 +117,12 @@ class App extends Component {
                 </Menu>
             </Drawer>)
         const menuButton = (
-                <Button icon={<Icon resolution={"24px"} context={"navigation"} component={"menu"} onClick={()=>{
-                        this.setState({openLeftDrawer:!this.state.openLeftDrawer})
-                    }
-                } />} />
+                <Button icon={<Icon resolution={"24px"} context={"navigation"} component={"menu"}/>} onClick={()=>{
+                        openLeftNavigation(!this.state.openLeftDrawer)
+                    }} label={"Menu"} />
         )
         const component =  !this.props.error ? (
+                <Device>
                 <CommonFunctions
                     redirect={(e, redirect_location) => {
                         e.preventDefault();
@@ -118,7 +132,7 @@ class App extends Component {
                     <Palette priority={"default"} color={"grey"} primary={"50"} secondary={"100"} default={"200"}>
                         <Palette priority={"secondary"} color={"pink"} primary={"500"} secondary={"700"} default={"600"}>
                             <Theme>
-                                <Paper role={"body"}>>
+                                <Paper role={"body"} openLeftNavigation={openLeftNavigation}>
                                 <AppBar icon={menuButton} title={"Material-Lotus"}/>
                                 {leftDrawer}
                                 {this.props.children}
@@ -128,6 +142,7 @@ class App extends Component {
                     </Palette>
                 </Palette>
                 </CommonFunctions>
+                </Device>
         ) : this.props.children;
 
         return component;

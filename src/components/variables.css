@@ -7,25 +7,14 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-@font-face {
-  font-family: 'Roboto-Regular';
-  src: local('Roboto-Regular'), url('../../public/fonts/Roboto-Regular.ttf') format('truetype');
-  font-weight:400;
-  font-style:normal;
-}
+@import 'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=latin-ext';
 
-@font-face {
-  font-family: 'Roboto-Medium';
-  src: local('Roboto-Medium'), url('../../public/fonts/Roboto-Medium.ttf') format('truetype');
-  font-weight:500;
-  font-style:normal;
-}
 :root {
   /*
    * Typography
    * ======================================================================== */
 
-  --font-family-base: 'Roboto-Regular';
+  --font-family-base: 'Roboto', sans-serif;
   /*
    * Layout
    * ======================================================================== */
@@ -41,4 +30,14 @@
   --screen-md-min: 992px;  /* Medium screen / desktop */
   --screen-lg-min: 1200px; /* Large screen / wide desktop */
 
+}
+
+* {
+    font-family:'Roboto', sans-serif;
+    font-weight:400;
+    font-size:14px;
+    font-style:normal;
+    font-variant:normal;
+    letter-spacing:0.1px;
+    -webkit-font-smoothing:antialiased;
 }

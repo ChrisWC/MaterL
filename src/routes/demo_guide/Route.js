@@ -30,17 +30,31 @@ import Paper from '../../components/Material/Paper';
 import Drawer from '../../components/Material/Drawer';
 const title = 'React Starter Kit';
 
+console.log(s.root)
 class Route extends React.Component {
 
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            openLeftDrawer:true,
+            openLeftDrawer:false,
         }
     }
     render() {
-      return (
+        const openLeftNavigation = (state, pref) => {
+            if (typeof state == 'undefined' && typeof pref == 'undefined') {
+                return this.state.openLeftDrawer;
+            }
+            else if (typeof this.state.openLeftDrawer == 'undefined' && this.state.openLeftDrawer != pref) {
+                this.setState({openLeftDrawer:pref})
+                return pref;
+            }
+            else {
+                this.setState({openLeftDrawer:state})
+                return state;
+            }
+        }
+        return (
         <div className={s.root}>
             <div className={s.container}>
                 <section>
@@ -61,16 +75,16 @@ class Route extends React.Component {
                     <div className={s.sectionmain}>
                         <Palette color={"pink"}>
                             <Theme>
-                                <Device device={"nexus6"} role={"device-body"}>
+                                <Device device={"nexus6"} role={"device-body"} emulate={true} openLeftNavigation={openLeftNavigation}>
                                         <AppBar icon={
                                             <Button icon={
                                                 <Icon resolution={"24px"} context={"navigation"} component={"menu"} 
                                                     onClick={()=>{
-                                                        this.setState({openLeftDrawer:!this.state.openLeftDrawer})    
+                                                        openLeftNavigation(!this.state.openLeftDrawer)    
                                                     }}/>
                                             }/>
                                         } title={"PHONE DEMO"}/>
-                                        <Drawer open={this.state.openLeftDrawer} depth={1}>
+                                        <Drawer open={openLeftNavigation} depth={1}>
 
                                         </Drawer>
                                         <div>

@@ -40,6 +40,9 @@ class Component extends React.Component {
         sheets:[],
         open:false
     }
+    static contextTypes = {
+        theme: PropTypes.object,
+    }
     handleClick = () => {
         this.setState({clicked:true})
     }
@@ -53,7 +56,7 @@ class Component extends React.Component {
     }
     render() {
         return(
-            <div role={"layer"} style={this.state.style} onClick={this.handleClick}>
+            <div role={"layer"} className={this.context.theme.layer.default} style={this.state.style} onClick={this.handleClick}>
                 {React.Children.map(this.props.foreground, (val, key, arr) => {
                     return React.cloneElement(val, {key:key, 
                         onRequestClose:() => {

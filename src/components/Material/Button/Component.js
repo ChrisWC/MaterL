@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Component.css';
-import cx from 'classnames';
+import classNames from 'classnames';
 
 class Component extends React.Component {
     constructor(props, context) {
@@ -14,19 +14,16 @@ class Component extends React.Component {
                 width:(this.props.width !== undefined)? this.props.width:'auto',
             },
             icon_style:{
-                ...this.context.theme.button.icon,
                 display:'inline-block',
                 float:'left'
             },
             inner_style:{
-                ...this.getDensityStyling(),
                 ...this.getShadow(),
                 ...this.getColor(),
-                paddingLeft:(this.props.menuDepth? ((this.props.menuDepth + 1)*16):16) + "px",
+                paddingLeft:(this.props.menuDepth+1)*16+'px',
                 display:'block',
             },
             title_style:{
-                ...this.getDensityStyling(),
                 display:'inline-block',
                 float:'left',
                 margin:0,
@@ -39,29 +36,14 @@ class Component extends React.Component {
             active:this.props.active
         }
     }
-    getDensityStyling = () => {
-        if (this.props.contextName === 'menu') {
-            return this.context.theme.button.defaultMenu
+    getClassnames = () => {
+        if (this.props.contextName === 'appbar') {
+            return classNames({[this.context.theme.button.appbar]:true})
         }
-        else if (this.props.contextName === 'appbar') {
-            return this.context.theme.button.defaultAppbar
+        else if (this.props.contextName === 'menu') {
+            return classNames({[this.context.theme.button.menu]:true})
         }
-        else if (this.props.raised) {
-            if (this.context.dense || this.props.dense) {
-                return this.context.theme.button.raisedDense
-            }
-            else {
-                return this.context.theme.button.raised
-            }
-        }
-        else {
-            if (this.context.dense || this.props.dense) {
-                return this.context.theme.button.flatDense
-            }
-            else {
-                return this.context.theme.button.flat
-            }
-        }
+        return classNames({[this.context.theme.button.button]:true, [this.context.theme.button.dense]:(this.props.dense)})
     }
     getShadow = () => {
         if (this.props.raised) {
@@ -150,6 +132,7 @@ class Component extends React.Component {
         redirect:null,
         popover:null,
         priority:'default',
+        menuDepth:0
 
     };
     static contextTypes = {
@@ -178,12 +161,12 @@ class Component extends React.Component {
         }
         if (this.props.popover && !this.state.active) {
             //this.setState({inner_style:{...this.state.inner_style, backgroundColor:colors.blue900,}})
-            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(React.cloneElement(this.props.popover, {open:true, handleClose:this.handleClick, minWidth:minWidth, width:'auto', left:left, top:top , ...this.props.popover.props}))
+            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(React.cloneElement(this.props.popover, {open:true, handleClose:this.handleClick, minWidth:minWidth, width:'auto', left:left, top:top, summoningComponent:rect, ...this.props.popover.props}))
             this.setState({active:true})
         }
         else if (this.props.popover && this.state.active) {
             //this.setState({inner_style:{...this.state.inner_style, backgroundColor:colors.blue700,}})
-            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(React.cloneElement(this.props.popover, {open:false, handleClose:this.handleClick, minWidth:minWidth, width:'auto', left:left, top:top , ...this.props.popover.props}))
+            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(React.cloneElement(this.props.popover, {open:false, handleClose:this.handleClick, minWidth:minWidth, width:'auto', left:left, top:top , summoningComponent:rect, ...this.props.popover.props}))
             this.setState({active:false})
         }
 
@@ -219,9 +202,10 @@ class Component extends React.Component {
     }
     render() {
         var color = this.getColor()
+        var cn = this.getClassnames()
         return(
             <div role="button" ref="cont" style={this.state.outer_style} onMouseLeave={() => {this.handleDefault()}} >
-                <div id="inner" style={{...this.state.inner_style, ...this.getColor(), ...this.getShadow() }}  
+                <div id="inner" className={cn} style={{...this.state.inner_style, ...this.getColor(), ...this.getShadow() }}  
                     onMouseDown={() => this.handleMouseDown()} 
                     onMouseUp={() => this.handleMouseUp()}
                     onMouseEnter={() => this.handleHover(true)} 
@@ -231,10 +215,11 @@ class Component extends React.Component {
                         this.handleClick(e)
 
                     }} >
-                    {this.props.icon? React.cloneElement(this.props.icon, {...this.props.icon.props, style:this.state.icon_style,}):null}
+                    {this.props.icon? React.cloneElement(this.props.icon, {...this.props.icon.props, className:this.context.theme.button.icon }):null}
                     {this.props.label? <div style={this.state.title_style} >{this.props.label}</div>:null}
                     {this.props.rightIcon? React.cloneElement(this.props.rightIcon, {style:this.state.icon_style, fill:this.state.icon_style.fill, ...this.props.icon.props, float:'right', paddingRight:'16px'}):null}
                 </div>
+                
             </div>
         );
     }

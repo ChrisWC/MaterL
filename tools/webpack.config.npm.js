@@ -48,11 +48,42 @@ const config = {
     umdNamedDefine:true
   },
   plugins:[
+    new webpack.DefinePlugin({ ...GLOBALS, 'process.env.BROWSER': true, 'process.env':{
+        'NODE_ENV':JSON.stringify('production')
+    }}),
     new AssetsPlugin({
         path: path.resolve(__dirname, '../build'),
         filename:'assets.js',
         processOutput:x => `module.exports = ${JSON.stringify(x)};`,
     }),
+    new webpack.optimize.OccurenceOrderPlugin(true),
+
+    // Search for equal or similar files and deduplicate them in the output
+    // https://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
+    new webpack.optimize.DedupePlugin(),
+
+    // Minimize all JavaScript output of chunks
+    // https://github.com/mishoo/UglifyJS2#compressor-options
+    new webpack.optimize.UglifyJsPlugin({
+        compress: {
+            screw_ie8: true, // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
+            warnings: false,
+            properties: true,
+            drop_console:true,
+            sequences:200,
+            booleans:true,
+            conditionals:true,
+            properties:true,
+            comparisons:true,
+            evaluate:true,
+            hoist_funs:true,
+            if_return:true,
+            join_vars:true,
+            cascade:true,
+            passes:50,
+        },
+    }),
+    new webpack.optimize.AggressiveMergingPlugin(),
   ],
   module: {
     loaders: [

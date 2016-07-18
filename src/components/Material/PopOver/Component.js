@@ -7,28 +7,34 @@ import Paper from '../Paper/'
 
 class Component extends React.Component {
     constructor(props, context) {
-        super(props);
+        super(props, context);
+
 
         this.state = {
-            outer_style:{
-                height:'auto',
-                position:'fixed',
-                display:'inline-block',
+            inner_style:{
                 minWidth:this.props.minWidth,
                 left:this.props.left,
                 top:this.props.top,
                 ...this.props.style
             },
-            inner_style:{
-                height:'auto',
-                position:'relative',
-                display:'inline-block',
-                backgroundColor:'white',
-                ...this.props.style
-            },
             children:[],
             open:this.props.open,
             activeItem:0
+        }
+    }
+    getPosition = (props) => {
+        console.log(this.refs['container'].getBoundingClientRect())
+        var rect = this.refs['container'].getBoundingClientRect()
+        var height = rect.bottom;
+        var position = {
+                minWidth:props.summoningComponent.right - this.props.summoningComponent.left,
+                left:props.summoningComponent.left,
+                top:props.summoningComponent.bottom
+        }
+        if (height > window.innerHeight) {
+            return {...position, top:props.summoningComponent.top -(rect.bottom-rect.top)};
+        } else {
+            return position
         }
     }
     static propTypes = {
@@ -50,7 +56,8 @@ class Component extends React.Component {
         clicked:false,
     };
     static contextTypes = {
-        toForeground: React.PropTypes.func
+        toForeground: React.PropTypes.func,
+        theme: React.PropTypes.object
     }
     handleMenuClick = (index,items) => {
         this.setState({activeItem:index})
@@ -58,7 +65,11 @@ class Component extends React.Component {
     componentWillMount = () => { 
         
     }
-
+    componentDidMount = () => {
+        var position = this.getPosition(this.props)
+        console.log(position)
+        this.setState({inner_style:{...this.state.inner_style, ...position}})
+    }
     componentWillUpdate = (nextProps, nextState) => {
         if (nextState.activeItem != this.state.activeItem) {
             /*this.props.children[this.state.activeItem] = React.cloneElement(this.props.children[this.state.activeItem], {...this.props.children[this.state.activeItem].props, active:false})
@@ -91,15 +102,14 @@ class Component extends React.Component {
     }
     render() {
         return this.state.open? (
-            <div role="popover" style={this.state.outer_style} onClick={(e) => {
+                <Paper role="popover" ref="container" className={this.context.theme.popover.cn} style={this.state.inner_style} onClick={(e) => {
                     e.stopPropagation();
+                    console.log("CLICK")
                 }}>
-                <Paper role="popover" style={this.state.inner_style}>
                     {React.Children.map(this.props.children, (val, key, arr) => {
-                        return React.cloneElement(val, {key:key, style:this.state.style, externalClick:this.props.externalClick, ...val.props})
+                        return React.cloneElement(val, {key:key, externalClick:this.props.externalClick, ...val.props})
                     })}
                 </Paper>
-            </div>
         ):null;
     }
 }

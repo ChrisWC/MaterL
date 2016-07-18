@@ -22,7 +22,7 @@ import CardBody from '../../components/Material/Card/CardBody';
 import Icon from '../../components/Material/Icon'
 import Choice from '../../components/Material/Choice'
 
-const title = 'Materia-L-Button';
+const title = 'Button|Materi-L';
 
 function ButtonRoute(props, context) {
   context.setTitle(title);
@@ -43,7 +43,8 @@ function ButtonRoute(props, context) {
             </section>
             <section>
                 <h3>Non-Dense, Raised, Primary and Secondary</h3>
-                <Button label="Secondary" raised={true}/>
+                <Button label="Default" raised={true} priority={'default'}/>
+                <Button label="Secondary" raised={true} priority={'secondary'}/>
                 <Button label="Primary" raised={true} priority={'primary'}/>
             </section>
             <section>
@@ -53,17 +54,18 @@ function ButtonRoute(props, context) {
             </section>
             <section>
                 <h3>Dense, Flat, Primary and Secondary</h3>
-                <Button label="Secondary" primary={false} dense={true}/>
-                <Button label="Primary" primary={true} dense={true}/>
+                <Button label="Default" primary={false} dense={true} priority={'default'}/>
+                <Button label="Secondary" primary={false} dense={true} priority={'secondary'}/>
+                <Button label="Primary" primary={true} dense={true} priority={'primary'}/>
             </section>
             <section>
                 <h3>Dense, Raised, Primary and Secondary</h3>
-                <Button label="Secondary" primary={false} dense={true} raised={true}/>
-                <Button label="Primary" primary={true} dense={true} raised={true}/>
+                <Button label="Default" primary={false} dense={true} raised={true} priority={'default'}/>
+                <Button label="Secondary" primary={false} dense={true} raised={true} priority={'secondary'}/>
+                <Button label="Primary" primary={true} dense={true} raised={true} priority={'primary'}/>
             </section>
         </div>
         <div className={s.container}>
-            <div style={{width:"100%", paddingLeft:"32px", paddingRight:"32px", overflow:"hidden"}}>
             <Card title={"Flat Buttons"} width={"small-1"}>
                 <CardTitle title={"Flat Buttons"}/>
                 <CardBody>
@@ -150,7 +152,6 @@ function ButtonRoute(props, context) {
                 </CardBody>
             </Card>
         </div>
-    </div>
     </div>
   );
 }

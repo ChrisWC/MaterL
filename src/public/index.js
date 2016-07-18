@@ -1,1 +1,1 @@
-import assets_content from './assets';
+//import assets_content from './assets';
