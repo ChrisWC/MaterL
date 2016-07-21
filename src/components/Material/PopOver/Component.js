@@ -23,7 +23,6 @@ class Component extends React.Component {
         }
     }
     getPosition = (props) => {
-        console.log(this.refs['container'].getBoundingClientRect())
         var rect = this.refs['container'].getBoundingClientRect()
         var height = rect.bottom;
         var position = {
@@ -67,7 +66,6 @@ class Component extends React.Component {
     }
     componentDidMount = () => {
         var position = this.getPosition(this.props)
-        console.log(position)
         this.setState({inner_style:{...this.state.inner_style, ...position}})
     }
     componentWillUpdate = (nextProps, nextState) => {
@@ -87,6 +85,7 @@ class Component extends React.Component {
             //this.props.handleClose();
         }
         if (newProps.externalClick) {
+            this.props.handleClose();
             this.handleClose()
         }
         if (!newProps.open) {
@@ -94,8 +93,8 @@ class Component extends React.Component {
         }
     }
     handleClose = () => {
-        this.props.handleClose();
-        this.setState({'open':false});
+        //this.props.handleClose();
+        this.setState({open:false});
     }
     handleClick = (e, v, context) => {
 
@@ -104,7 +103,6 @@ class Component extends React.Component {
         return this.state.open? (
                 <Paper role="popover" ref="container" className={this.context.theme.popover.cn} style={this.state.inner_style} onClick={(e) => {
                     e.stopPropagation();
-                    console.log("CLICK")
                 }}>
                     {React.Children.map(this.props.children, (val, key, arr) => {
                         return React.cloneElement(val, {key:key, externalClick:this.props.externalClick, ...val.props})

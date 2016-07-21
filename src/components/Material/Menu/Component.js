@@ -54,6 +54,7 @@ class Component extends React.Component {
                         if (val.type.ComposedComponent && val.type.ComposedComponent.defaultProps.role === 'menu') {
                             return React.cloneElement(val, {key:key, context:"menu",toggle:true, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
                                 onClick:(e)=>{
+                                    e.stopPropagation()
                                     this.handleMenuClick(key);
                                     val.props.onClick(e);
                                 }
@@ -66,6 +67,7 @@ class Component extends React.Component {
                                 smenu = React.Children.map(val.props.children, (sval, key, arr) => {
                                     return React.cloneElement(sval, {key:key, menuDepth:(this.state.menuDepth+1), width:this.props.width, sval:sval, context:"menu", open:active, toggle:true, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
                                         onClick:(e)=>{
+                                            e.stopPropagation()
                                             this.handleMenuClick(key);
                                             val.props.onClick(e);
                                         }
@@ -78,6 +80,7 @@ class Component extends React.Component {
                             };
                             smenu = [React.cloneElement(val, {key:key, menuDepth:this.state.menuDepth, open:(this.state.activeItem==key), context:"menu",toggle:true, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
                                 onClick:(e)=>{
+                                    e.stopPropagation()
                                     this.handleMenuClick(key);
                                     if (val.props.onClick) {
                                         val.props.onClick(e);

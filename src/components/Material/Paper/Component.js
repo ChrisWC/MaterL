@@ -10,6 +10,8 @@
 import React, { PropTypes } from 'react';
 import Sheet from '../Sheet';
 
+import Layer from '../Layer';
+
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -25,13 +27,13 @@ class Component extends React.Component {
            open:this.props.open,
            behaviour:this.props.behaviour
         }
+
     }
 
     getWidthByName = (n) => {
         return '100%'
     }
     static propTypes = {
-        open:PropTypes.bool,
         showShadows: PropTypes.bool,
         fullscreen: PropTypes.bool,
         width: PropTypes.string,
@@ -58,7 +60,6 @@ class Component extends React.Component {
                position:'absolute',
                bottom:'0px'
         },
-        open:true,
         behaviour:{
             visibility:'permenant',
             width:'fluid',
@@ -85,8 +86,8 @@ class Component extends React.Component {
                 nstate = {style:{...this.state.style, ...nstate.style, top:nProps.style.top, left:nProps.style.left}}
             }
         }
+        nstate = {...this.state, style:{...this.state.style, ...nstate.style}, behaviour:(typeof nProps.behaviour != 'undefined')? nProps.behaviour:this.state.behaviour}
 
-        nstate = {...this.state, style:{...this.state.style, ...nstate.style}, open:(typeof nProps.open != 'undefined')? nProps.open:this.state.open, behaviour:(typeof nProps.behaviour != 'undefined')? nProps.behaviour:this.state.behaviour}
         this.setState(nstate)
     }
     handleResize = (e) => {
@@ -117,8 +118,39 @@ class Component extends React.Component {
     }
     handleDrag = (e) => {
     }
+    makeOverlay() {
+        if (!this.state.overlay)
+            this.setState({overlay:true})
+    }
+    getAsOverlay() {
+        console.log("OVERLAY")
+        return (<Layer role={'layer'} foreground={[<Sheet ref='container' rules={this.props.rules}
+                    onClick={(e)=>{
+                        e.stopPropagation()
+                        if (this.props.onClick) {
+                            this.props.onClick(e)
+                        }
+                    }}
+                    inLayer={true}
+                    behaviour={this.state.behaviour} 
+                    open={this.state.open} role={this.props.role} 
+                    content={[]} drawers={[]} appbars={[]} 
+                    draggable='false' onClick={this.handleClick} 
+                    onDragStart={this.handleDrag} foreground={[]} 
+                    check={this.props.check} width={this.props.width} 
+                    className={this.props.className} style={this.state.style} 
+                    popover={this.props.popover} depth={this.props.depth}>
+                        {this.props.children}
+                </Sheet>]}/>)
+    }
     render() {
-        return (<Sheet ref='container' behaviour={this.state.behaviour} 
+
+        if (this.props.role == 'drawer') {
+            console.log("DRAWER")
+        }
+        return (<Sheet ref='container' paper={this} rules={this.props.rules}
+                    inLayer={false}
+                    behaviour={this.state.behaviour} 
                     open={this.state.open} role={this.props.role} 
                     content={[]} drawers={[]} appbars={[]} 
                     draggable='false' onClick={this.handleClick} 

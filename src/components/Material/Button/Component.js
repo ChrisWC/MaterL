@@ -3,6 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Component.css';
 import classNames from 'classnames';
 
+import Layer from '../Layer';
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -149,28 +150,40 @@ class Component extends React.Component {
     handleDefault = () => {
         this.setState({openPopovers:false, inner_style:{...this.state.inner_style, ...this.getColor()}})
     }
-    handleClick = (e) => {
+    getPopoverAsOverlay = () => {
         var rect = this.refs['cont'].getBoundingClientRect();
         var minWidth = rect.right - rect.left;
         var left = rect.left;
         var top = rect.bottom;
-        
-
+        return <Layer role={'layer'} foreground={[React.cloneElement(this.props.popover, 
+                    {open:false, handleClose:() =>{
+                            this.setState({active:false})
+                            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getPopoverAsOverlay, false)
+                        }, 
+                        minWidth:minWidth, width:'auto', left:left, 
+                        top:top, summoningComponent:rect, 
+                        ...this.props.popover.props})]}/>
+    }
+    handleClick = (e) => {
+        console.log("BUTTON HANDLE CLICK")
+        console.log(this.state)
         if (this.props.contextName != 'menu') {
             //this.setState({active:!this.state.active})
         }
         if (this.props.popover && !this.state.active) {
             //this.setState({inner_style:{...this.state.inner_style, backgroundColor:colors.blue900,}})
-            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(React.cloneElement(this.props.popover, {open:true, handleClose:this.handleClick, minWidth:minWidth, width:'auto', left:left, top:top, summoningComponent:rect, ...this.props.popover.props}))
+            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getPopoverAsOverlay, true)
             this.setState({active:true})
         }
         else if (this.props.popover && this.state.active) {
             //this.setState({inner_style:{...this.state.inner_style, backgroundColor:colors.blue700,}})
-            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(React.cloneElement(this.props.popover, {open:false, handleClose:this.handleClick, minWidth:minWidth, width:'auto', left:left, top:top , summoningComponent:rect, ...this.props.popover.props}))
+            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getPopoverAsOverlay, false)
+            //this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(React.cloneElement(this.props.popover, {open:false, handleClose:this.handleClick, minWidth:minWidth, width:'auto', left:left, top:top , summoningComponent:rect, ...this.props.popover.props}))
             this.setState({active:false})
         }
 
         if (this.props.onClick !== undefined) {
+            e.stopPropagation()
             this.props.onClick(e)
         }
 
@@ -178,9 +191,12 @@ class Component extends React.Component {
             this.context.commonFunctions.redirect(e, this.props.redirect);
         }
     }
-    handleMouseDown = () => {
+    handleMouseDown = (e) => {
         if (this.props.contextName != 'menu') {
             this.setState({active:true})
+            e.stopPropagation()
+        } else {
+            e.stopPropagation()
         }
     }
     handleMouseUp = () => {
@@ -206,8 +222,8 @@ class Component extends React.Component {
         return(
             <div role="button" ref="cont" style={this.state.outer_style} onMouseLeave={() => {this.handleDefault()}} >
                 <div id="inner" className={cn} style={{...this.state.inner_style, ...this.getColor(), ...this.getShadow() }}  
-                    onMouseDown={() => this.handleMouseDown()} 
-                    onMouseUp={() => this.handleMouseUp()}
+                    onMouseDown={(e) => this.handleMouseDown(e)} 
+                    onMouseUp={(e) => this.handleMouseUp(e)}
                     onMouseEnter={() => this.handleHover(true)} 
                     onMouseOver={() => this.handleHover(true)} 
                     onMouseOut={() => this.handleHover(false)} 

@@ -44,90 +44,167 @@ const defaultTheme = {
         style:{
             width:'370px',
         },
-        rules:{
-            open:(breakpoint)=>{
-                return false;
+        rules:[
+            {
+                breakpoint:{
+                    device:'TABLET'
+                },
+                behaviour:{
+                    visibility:'temporary',
+                    width:'fixed'
+                }
+            },
+            {
+                breakpoint:{
+                    device:'DESKTOP'
+                },
+                behaviour:{
+                    visibility:'temporary',
+                    width:'fixed'
+                }
+            },
+            {
+                breakpoint:{
+                    device:'PHONE',
+                },
+                behaviour:{
+                    visibility:'temporary',
+                    width:'fixed'
+                }
             }
-        }
+        ]
     },
     sheet:{
         autoOpenThreshold:'600px',
+        content_area:s['content-area'],
         widthBreakpoints:{
             'DESKTOP':[
                 {
                     range:[0,480],
                     size:'xsmall',
-                    columns:4
+                    columns:4,
+                    gutter:16
                 },
                 {
                     range:[480,600],
                     size:'xsmall',
-                    columns:8
+                    columns:8,
                 },
                 {
                     range:[600,840],
                     size:'small',
-                    columns:8
+                    columns:8,
+                    gutter:[16,24]
                 },
                 {
                     range:[840,960],
                     size:'small',
+                    columns:12,
+                    gutter:[16,24]
                 },
                 {
                     range:[960,1280],
                     size:'medium',
+                    columns:12,
+                    gutter:24
                 },
                 {
                     range:[1280,1440],
-                    size:'large'
+                    size:'large',
+                    columns:12,
+                    gutter:24
                 },
                 {
                     range:[1440,1600],
-                    size:'large'
+                    size:'large',
+                    columns:12,
+                    gutter:24
                 },
                 {
                     range:[1600,1920],
-                    size:'large'
+                    size:'large',
+                    columns:12,
+                    gutter:24
                 },
                 {
                     range:[1920, -1],
-                    size:'xlarge'
+                    size:'xlarge',
+                    columns:12,
+                    gutter:24
                 }
             ],
             'PHONE':{
                 'PORTAIT':[
                     {
                         range:[0,360],
-                        size:['small']
+                        size:['small'],
+                        columns:4,
+                        gutter:16
                     },
                     {
                         range:[360,400],
-                        size:['medium']
+                        size:['medium'],
+                        columns:4,
+                        gutter:16
                     },
                     {
                         range:[400, -1],
-                        size:['large']
+                        size:['large'],
+                        columns:4,
+                        gutter:16
                     }
                 ],
                 'LANDSCAPE':[
                     {
                         range:[0, 600],
-                        size:['small']
+                        size:['small'],
+                        columns:4,
+                        gutter:[16]
                     },
                     {
                         range:[600, 720],
-                        size:['medium']
+                        size:['medium'],
+                        columns:[8],
+                        gutter:[16,24]
                     },
                     {
                         range:[720, 960],
-                        size:['large']
+                        size:['large'],
+                        columns:[8,12],
+                        gutter:[16,24]
                     }
                 ]
             },
             'TABLET':{
-                'PORTAIT':{
+                'PORTAIT':[
+                    {
+                        range:[600,720],
+                        size:['small'],
+                        columns:8,
+                        gutter:[16,24]
 
-                }
+                    },
+                    {
+                        range:[720,840],
+                        size:['large'],
+                        columns:12,
+                        gutter:[16,24]
+                    }
+                ],
+                'LANDSCAPE':[
+                    {
+                        range:[960,1024],
+                        size:['small'],
+                        columns:12,
+                        gutter:24
+                    },
+                    {
+                        range:[1024,1280],
+                        size:['large'],
+                        columns:12,
+                        gutter:24
+                    }
+                ]
             }
         }
     },

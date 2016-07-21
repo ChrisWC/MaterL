@@ -21,19 +21,9 @@ class Component extends React.Component {
                ...this.props.style,
                ...this.getShadow(this.props.depth)
             },
-            shadow:[{
-                offset: {
-                   x: '0px',
-                   y: '0px'
-                },
-                blur: {
-                    radius:5,
-                },
-                spread:1,
-           }],
            contentArea:{
                top:'64px',
-               left:(this.props.openLeftNavigation && this.props.openLeftNavigation())? this.context.theme.drawer.style.width:'0px',
+               left:'0px',
                right:'0px',
                marginLeft:'0px',
                marginRight:'0px'
@@ -42,20 +32,26 @@ class Component extends React.Component {
            height:'0px',
            contentWidth:'100%',
            disabled:false,
+           foreground:()=>{},
            foregroundActive:false,
            inForeground:false,
            device:this.context.device,
            openLeftNavigation:this.props.openLeftNavigation,
-           open:this.props.open,
-           behaviour:this.props.behaviour
+           open:undefined,
+           openRequest:this.props.open,
+           behaviour:this.props.behaviour,
+           reaction:{
+               open:true,
+               userOpen:undefined
+           }
         }
+
     }
 
     getWidthByName = (n) => {
         return '100%'
     }
     static propTypes = {
-        open: PropTypes.bool,
         showShadows: PropTypes.bool,
         fullscreen: PropTypes.bool,
         width: PropTypes.string,
@@ -71,8 +67,7 @@ class Component extends React.Component {
         behaviour: PropTypes.object
     }
     static defaultProps = { 
-        open:true,
-        foreground:new Array(),
+        foreground:[],
         toolbars: [],
         drawers:[],
         content:[],
@@ -81,11 +76,13 @@ class Component extends React.Component {
         depth:0,
         sheets:[],
         ind:10,
-        openLeftNavigation:(state)=>{},
+        openLeftNavigation:(state, pref)=>{},
         behaviour:{
             visibility:'permenant',
             width:'fluid',
             descriptors:[]
+        },
+        reaction:{
         }
     }
     getShadow = (depth) => {
@@ -106,29 +103,6 @@ class Component extends React.Component {
     getChildContext = () => {
         return {sheets: [this, ...(this.context.sheets? this.context.sheets:[])], rootSheetDim:{width:this.state.width, height:this.state.height} }
     }
-    getBehaviour = () => {
-        //Get Behaviour according to rules
-        return this.state.behaviour
-    }
-    getReaction = () => {
-        //Get Outcome of behaviour, the Reaction
-        var open = true;
-        if (this.state.behaviour.visibility == 'permenant') {
-            open = true;
-        }
-        else if (this.state.behaviour.visibility == 'persistent') {
-            open = this.state.open
-        } else if (this.state.behaviour.visibility == 'temporary') {
-            open = this.state.open
-
-            //if other elements are manipulated then close.
-            //we could use the layer here
-        }
-
-        return {
-            open:open
-        }
-    }
     getBreakpoint = () => {
         var resolution = window.innerWidth
         
@@ -140,28 +114,143 @@ class Component extends React.Component {
                     && (window.innerWidth < formfactor[i].range[1] 
                     || formfactor[i].range[1] == -1)) {
 
-                    return formfactor[i]
+                    return {device:'DESKTOP', ...formfactor[i]}
                 }
             }
         } 
-        else if (typeof this.context.device.orientation != 'undefined' 
+        else if (typeof this.context.device.orientation != 'undefined'
+                    && this.context.device.orientation.toUpperCase().match(/(TABLET|PHONE)/)
                     && this.context.device.orientation.toUpperCase().match(/(LANDSCAPE|PORTRAIT)/)) {
             formfactor = formfactor[this.context.device.orientation.toUpperCase()]
-            console.log("TEST 2")
             for (var i in formfactor) {
                 if (window.innerWidth >= formfactor[i].range[0] 
                     && (window.innerWidth < formfactor[i].range[1] 
                     || formfactor[i].range[1] == -1)) {
 
-                    return formfactor[i]
+                    return {device:this.context.device.device_type, ...formfactor[i]}
                 }
             }
         } 
-        else if (this.context.device.device_type.toUpperCase().match(/(PHONE|TABLET)/)) {
-            //find breakpoint based on resolution
-        }
 
         return {}
+    }
+    getBehaviour = (state_behaviour, props) => {
+        //Get Behaviour according to rules
+        var breakpoint = this.getBreakpoint();
+        var behaviour = {}
+        var rule = {}
+        for (var i in props.rules) {
+            rule = props.rules[i];
+            var match = true;
+            for (var k in rule.breakpoint) {
+                if (rule.breakpoint[k] !== breakpoint[k]) {
+                    match = false
+                }
+            }
+            if (match) {
+                behaviour = {...behaviour, ...rule.behaviour}
+            }
+        }
+
+        var b = {...state_behaviour, ...behaviour};
+
+        return b;
+    }
+    getReaction = (props, context, behaviour) => {
+        //var breakpoint = this.getBreakpoint()
+        var open = this.state.reaction.open;
+        var userOpen = this.state.reaction.userOpen;
+        
+        //get default
+        var openRequestRet = undefined
+        var openRequest = (props.open === undefined)? this.state.openRequest:props.open;
+
+        if (behaviour.visibility == 'permenant' || this.props.inLayer) {
+            open = true;
+        }
+        else if (behaviour.visibility == 'persistent') {
+            if (typeof openRequest === "function") {
+                openRequestRet = props.open()
+            } else {
+                openRequestRet = props.open
+            }
+
+
+            if (openRequestRet === undefined) {
+                open = false;
+
+                if (context.device && context.device.device_type) {
+                    if (context.device.device_type.toUpperCase().match(/DESKTOP/)) {
+                        open = true
+                    } else {
+                        open = false
+                    }
+                }
+            }
+            else if (openRequestRet !== undefined) {
+                //SYNC
+                if (userOpen === undefined) {
+                    open = !open
+                    userOpen = open
+                    if (typeof openRequest == 'function') {
+                        openRequest(open)
+                    }
+                } else {
+                    open = openRequestRet
+                    userOpen = openRequestRet
+                }
+            }
+        } else if (behaviour.visibility == 'temporary') {
+            if (this.props.paper) {
+                this.props.paper.makeOverlay()
+            }
+            if (typeof openRequest === "function") {
+                openRequestRet = props.open()
+            } else {
+                openRequestRet = props.open
+            }
+
+
+            if (openRequestRet === undefined) {
+                //resolve with rules
+                open = false;
+
+                if (context.device && context.device.device_type) {
+                    if (context.device.device_type.toUpperCase().match(/DESKTOP/)) {
+                        open = false
+                    } else {
+                        open = false
+                    }
+                }
+                //resolve user input and preference
+            }
+            else if (openRequestRet !== undefined) {
+                //SYNC
+                if (userOpen === undefined) {
+                    open = !open
+                    userOpen = open
+                    if (typeof openRequest == 'function') {
+                        openRequest(open)
+                    }
+                } else {
+                    open = openRequestRet
+                    userOpen = openRequestRet
+                }
+            }
+
+            if (this.state.reaction.open != open) {
+                if (open) {
+                    //render with layer
+                    this.context.sheets[this.context.sheets.length -1].handleForegroundRequest(this.getAsOverlay, true);            
+                } else {
+                    this.context.sheets[this.context.sheets.length -1].handleForegroundRequest(this.getAsOverlay, false);            
+                }
+            }
+        }
+        return {
+            open:open,
+            userOpen:userOpen
+        }
     }
     componentWillMount = () => {
     }
@@ -182,34 +271,51 @@ class Component extends React.Component {
         nstate = {...nstate, contentWidth:window.innerWidth, breakpoint:this.getBreakpoint()}
         this.setState({...this.state, ...nstate})
     }
-    handleForegroundRequest = (c) => {
+    handleForegroundRequest = (c, a) => {
         /*****************************************************************************
          * take child element and render to foreground -- display over everything else
          * e -- event
          * c -- child component
-         * l -- layer to be rendered too
+         * a -- add or remove
          ****************************************************************************/
-        var found = false
-        found = this.props.foreground.map((val, key, arr) => {
-            if (val == c) {
-                return true
-            }
-        })
-        if (found.length == 0) {
-            this.props.foreground.push(c)
-            this.setState({foregroundActive:true})
+        //console.log("HANDLE FOREGROUND REQUEST");
+        if (a) {
+            this.setState({foregroundActive:true, foreground:c})
+            //console.log(this.props.foreground)
         }
         else {
-            this.props.foreground.splice(0, this.props.foreground.length)
-            this.setState({foregroundActive:false})
+            this.setState({foregroundActive:false, foreground:c})
         }
 
     }
     getParentSheets = () => {
         return this.props.sheets
     }
+    calculateContentArea = () => {
+        var content_left = 0;
+        for (var i in this.refs) {
+            if (i.match(/Drawer/) && this.refs[i].refs['Paper'].refs['container']) {
+                var w = this.refs[i].state.style.width.match(/\d+/g)
+                if (w.length == 1 && this.refs[i].refs['Paper'].refs['container'].state.reaction.open) {
+                    content_left = Math.max(content_left, Number(w[0]))
+                }
+
+            }
+        }
+
+        return {...this.state.contentArea, left:content_left}
+    }
+    handleClose = () => {
+        //this.props.handleClose();
+        if (typeof this.state.openRequest === 'function') {
+            this.state.openRequest(false)
+        }
+    }
     componentWillReceiveProps = (nProps, nContext) => {
-        var nstate = {style:{...this.state.style}, open:(typeof nProps != undefined)? nProps.open:this.state.open};
+        if (this.props.inLayer && (nProps.externalClick || !this.state.reaction.open)) {
+            this.handleClose()
+        }
+        var nstate = {style:{...this.state.style}, openRequest:(typeof nProps != undefined)? nProps.open:this.state.openRequest};
         if (nProps.style) {
             //console.log(this.state.style)
             //console.log(nProps.style)
@@ -223,35 +329,29 @@ class Component extends React.Component {
 
             }
         }
-
-        if (nContext.device) {
-            if (nContext.device.device_type != this.state.device.device_type) {
-                if (nContext.device.device_type == 'Desktop') {
-                    this.props.openLeftNavigation(undefined, true);
-                } else {
-                    this.props.openLeftNavigation(undefined, false);
-                }
-            }
-            nstate = {...nstate, device:nContext.device}
-        }
-
+        var behaviour = this.getBehaviour(nstate, this.props);
+        var r = this.getReaction(nProps, nContext, behaviour)
+        nstate = {...nstate, reaction:r, behaviour:behaviour}
         if (Object.keys(nstate).length > 0) {
-            this.setState({...nstate, behaviour:(typeof nProps.behaviour != 'undefined')? nProps.behaviour:this.state.behaviour});
+            this.setState({...nstate, contentArea:this.calculateContentArea()});
         }
     }
     componentDidMount = () => {
         var nstate = {}
+        var behaviour = this.getBehaviour(this.state.behaviour, this.props);
         if (this.context.sheets && this.props.check == true && this.state.inForeground == false) {
             nstate = {disabled:true, inForeground:true}
         }
         else if (!this.context.sheets || this.context.sheets.length == 0) {
-            var rect = this.refs['sheet'].getBoundingClientRect();
+            var rect = this.getBoundingClientRect() //this.refs['sheet'].getBoundingClientRect();
             nstate = {width:rect.right-rect.left, height:rect.bottom-rect.top}
         }
         nstate = {...nstate, breakpoint:this.getBreakpoint()}
-        this.setState({...this.state, ...nstate})
     
         window.addEventListener('resize', this.handleResize);
+
+        var r = this.getReaction(this.props, this.context, behaviour)
+        this.setState({...this.state, ...nstate, contentArea:this.calculateContentArea(), reaction:r, behaviour:behaviour})
     }
     handleResizeElement = (loc, spec) => {
         if (loc === 'top') {
@@ -265,27 +365,28 @@ class Component extends React.Component {
         return this.refs['sheet'].getBoundingClientRect()
     }
     processProps = (props) => {
-        this.props.toolbars.splice(0, this.props.toolbars.length)
-        this.props.content.splice(0, this.props.content.length) 
-        this.props.drawers.splice(0, this.props.drawers.length)
+        var toolbars = [] //this.props.toolbars.splice(0, this.props.toolbars.length)
+        var content = [] //this.props.content.splice(0, this.props.content.length) 
+        var drawers = []//this.props.drawers.splice(0, this.props.drawers.length)
         React.Children.map(props, (val, key, arr) => {
             if (val != null && val.props != null && val.props !== undefined) {
                 if ((val.props.role && val.props.role == "appbar") || (!val.props.role && val.type.ComposedComponent && val.type.ComposedComponent.defaultProps && val.type.ComposedComponent.defaultProps.role === 'appbar')) {
-                    this.props.toolbars.push(React.cloneElement(val, {key:key, handleResize:this.handleResizeElement, ...val.props}))
+                    toolbars.push(React.cloneElement(val, {key:key, handleResize:this.handleResizeElement, ...val.props}))
                 }
                 else if (val.props.role && val.props.role == "drawer"|| (!val.props.role && val.type.ComposedComponent && val.type.ComposedComponent.defaultProps && val.type.ComposedComponent.defaultProps.role === 'drawer')) {
-                    this.props.drawers.push(React.cloneElement(val, {key:key, open:true, handleResize:this.handleResizeElement, ...val.props}))
-                }
-                else if (val.props.role && val.props.role == "popover"|| (!val.props.role && val.type.ComposedComponent && val.type.ComposedComponent.defaultProps && val.type.ComposedComponent.defaultProps.role === 'popover')) {
-                    //this.props.drawers.push(React.cloneElement(val, {key:key, getParentSheets:this.getParentSheets, ...val.props}))
+                    drawers.push(React.cloneElement(val, {ref:('Drawer'+key), key:key, open:true, handleResize:this.handleResizeElement, ...val.props}))
                 }
                 else {
-                    this.props.content.push(React.cloneElement(val, {key:key, getParentSheets:this.getParentSheets, ...val.props}))
+                    content.push(React.cloneElement(val, {key:key, getParentSheets:this.getParentSheets, ...val.props}))
                 }
             }
 
         })
 
+        return {toolbars:toolbars, content:content, drawers:drawers}
+    }
+    getAsOverlay = () => {
+        return this.props.paper.getAsOverlay();
     }
     handleClick = (e) => {
         if (this.props.onClick) {
@@ -293,18 +394,26 @@ class Component extends React.Component {
         }
     }
     render() {
-        //console.log(this.state.breakpoint)
-        this.processProps(this.props.children)
-        return (this.state.open || this.state.behaviour.visibility == 'permenant')? (
-            <div {...this.props} ref="sheet" style={this.state.style} onClick={this.handleClick}>
-                {this.props.toolbars}
-                {this.props.drawers}
-                {(!this.context.sheets || this.context.sheets.length == 0)? <div style={{position:'absolute', display:'block',  overflow:'hidden', overflowY:'auto', marginLeft:this.state.contentArea.marginLeft, marginRight:this.state.contentArea.marginRight, left:(this.props.drawers.length > 0)? this.state.contentArea.left:'0px', right:this.state.contentArea.right, top:this.state.contentArea.top, bottom:'0px', height:'auto'}}>
-                    {this.props.content}
-                </div>:this.props.content}
-                {this.state.foregroundActive? <Layer backgroundColor={'black'} key={0} role={'layer'} foreground={this.props.foreground} />:null}
+        var el = this.processProps(this.props.children)
+        
+        var shouldRender = (this.state.behaviour.visibility == 'temporary' && this.props.inLayer)
+                            || (this.state.behaviour.visibility != 'temporary' && !this.props.inLayer);
+
+        return (this.state.reaction.open && shouldRender)? (
+            <div {...this.props} ref="sheet" style={this.state.style} onClick={(e) => {
+                        this.handleClick(e)
+                    }
+                }>
+                {el.toolbars}
+                {el.drawers}
+                {(!this.context.sheets || this.context.sheets.length == 0)? <div className={this.context.theme.sheet.content_area} style={{
+                    ...this.calculateContentArea()}}>
+                    {el.content}
+                </div>:el.content}
+                {/*this.state.foregroundActive? <Layer backgroundColor={'black'} key={0} role={'layer'} foreground={this.props.foreground} />:null*/}
+                {this.state.foregroundActive? this.state.foreground():null}
             </div>
-        ): null;
+        ): <div ref="sheet"></div>;
     }
 }
 

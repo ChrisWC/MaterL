@@ -28,8 +28,10 @@ class Component extends React.Component {
                 width:props.width,
                 descriptors:props.descriptors
             },
-            open:this.props.open(),
+            open:this.props.open,
         }
+        //console.log("DRAWER 0")
+        //console.log(this.state)
     }
     static propTypes = {
         open:PropTypes.func,
@@ -61,6 +63,7 @@ class Component extends React.Component {
                 nstate = {...nstate, open:open}
             }
         }
+        
         this.setState({...this.state, ...nstate, style:{...this.state.style, maxWidth:nContext.rootSheetDim.width+'px', maxHeight:nContext.rootSheetDim.height+'px'}, drawer_style:{...this.state.drawer_style,maxWidth:nContext.rootSheetDim.width+'px', maxHeight:nContext.rootSheetDim.height+'px'}})
     }
     handleResize = (e) => {
@@ -85,7 +88,7 @@ class Component extends React.Component {
     }
     render() {
         return (
-            <Paper behaviour={this.state.behaviour} open={this.state.open} role={this.props.role} style={{...this.state.style, ...this.state.drawer_style}} depth={1} className={this.context.theme.drawer.cn}> 
+            <Paper ref='Paper' rules={this.context.theme.drawer.rules} behaviour={this.state.behaviour} open={this.state.open} role={this.props.role} style={{...this.state.style, ...this.state.drawer_style}} depth={1} className={this.context.theme.drawer.cn}> 
                 <div style={{float:'clear', width:'auto', height:'100%', overflow:'hidden', overflowY:'auto', position:'relative'}}>
                     {React.Children.map(this.props.children, (val, key, arr) => {
                         return React.cloneElement(val, {key:key, width:this.state.style.width, onClick:(e)=>{val.props.onClick(e);}, ...val.props})

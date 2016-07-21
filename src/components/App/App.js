@@ -73,13 +73,9 @@ class App extends Component {
     }
 
     render() {
-        const openLeftNavigation = (state, pref) => {
-            if (typeof state == 'undefined' && typeof pref == 'undefined') {
+        const openLeftNavigation = (state) => {
+            if (typeof state == 'undefined') {
                 return this.state.openLeftDrawer;
-            }
-            else if (typeof this.state.openLeftDrawer == 'undefined' && this.state.openLeftDrawer != pref) {
-                this.setState({openLeftDrawer:pref})
-                return pref;
             }
             else {
                 this.setState({openLeftDrawer:state})
@@ -119,7 +115,7 @@ class App extends Component {
         const menuButton = (
                 <Button icon={<Icon resolution={"24px"} context={"navigation"} component={"menu"}/>} onClick={()=>{
                         openLeftNavigation(!this.state.openLeftDrawer)
-                    }} label={"Menu"} />
+                    }} />
         )
         const component =  !this.props.error ? (
                 <Device>
@@ -132,7 +128,7 @@ class App extends Component {
                     <Palette priority={"default"} color={"grey"} primary={"50"} secondary={"100"} default={"200"}>
                         <Palette priority={"secondary"} color={"pink"} primary={"500"} secondary={"700"} default={"600"}>
                             <Theme>
-                                <Paper role={"body"} openLeftNavigation={openLeftNavigation}>
+                                <Paper role={"body"}>
                                 <AppBar icon={menuButton} title={"Material-Lotus"}/>
                                 {leftDrawer}
                                 {this.props.children}
