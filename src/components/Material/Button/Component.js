@@ -42,7 +42,11 @@ class Component extends React.Component {
             return classNames({[this.context.theme.button.appbar]:true})
         }
         else if (this.props.contextName === 'menu') {
-            return classNames({[this.context.theme.button.menu]:true})
+            if (this.props.role === 'header') {
+                return classNames({[this.context.theme.button.drawer_header]:true})
+            } else {
+                return classNames({[this.context.theme.button.menu]:true})
+            }
         }
         return classNames({[this.context.theme.button.button]:true, [this.context.theme.button.dense]:(this.props.dense)})
     }

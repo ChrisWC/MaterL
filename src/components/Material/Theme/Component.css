@@ -60,7 +60,7 @@
     float:left;
 }
 .drawer {
-    width:370px;
+    width:256px;
     top:0px;
     bottom:0px;
     left:0px;
@@ -105,15 +105,44 @@
 }
 .menu-button {
     height:48px;
-    font-weight:500;
+    font-weight:700;
     line-height:48px;
     padding-left:16px;
     padding-right:16px;
     border-radius:0px;
 }
+.drawer-header-button {
+    height:64px;
+    font-weight:500;
+    line-height:64px;
+    padding-left:16px;
+    padding-right:16px;
+    border-radius:0px
+}
+.drawer-header-button i {
+    line-height:64px;
+    margin-right:16px;
+    fill:black;
+    color:black;
+    width:24px;
+}
+.drawer-header-button * {
+    font-weight:400;
+    font-size:24px;
+    float:left;
+    fill:black;
+}
 
 .menu-button * {
     font-weight:500;
+    font-size:13px;
+    float:left;
+    fill:black;
+}
+
+.menu-button .menu-button * {
+    font-weight:400;
+    font-size:13px;
     float:left;
     fill:black;
 }
@@ -157,10 +186,7 @@
 
 .textfield {
     display:inline-block;
-}
-.textfield-floatinghint {
-    display:block;
-    font-size:12px;
+    position:relative;
 }
 .textfield-hint {
     display:block;

@@ -31,6 +31,7 @@ const defaultTheme = {
     },
     button:{
         button:s.button,
+        drawer_header:s['drawer-header-button'],
         menu:s['menu-button'],
         appbar:s['appbar-button'],
         dense:s['dense-button'],
@@ -48,7 +49,6 @@ const defaultTheme = {
     drawer:{
         cn:s['drawer'],
         style:{
-            width:'370px',
         },
         rules:[
             {

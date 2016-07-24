@@ -84,7 +84,7 @@ class App extends Component {
         }
         const leftDrawer = (<Drawer open={openLeftNavigation} depth={1}>
                 <Menu>
-                    <Button icon={<Icon resolution={"24px"} component={"chevron_left"}/>} contextName="menu" label="MaterL" active={false} onClick={()=>{openLeftNavigation(!this.state.openLeftDrawer)}}/>
+                    <Button icon={<Icon resolution={"24px"} component={"chevron_left"}/>} contextName="menu" role="header" label="MaterL" active={false} onClick={()=>{openLeftNavigation(!this.state.openLeftDrawer)}}/>
                     <Button contextName="menu" label="About Project" active={false} redirect={"/about"} />
                     <Button contextName="menu" label="Topics">
                         <Menu>
@@ -131,12 +131,12 @@ class App extends Component {
                         e.preventDefault();
                         history.push(redirect_location);
                     }}>
-                <Palette color={"blue"} primary={"500"} secondary={"700"} default={"800"}>
-                    <Palette priority={"default"} color={"grey"} primary={"50"} secondary={"100"} default={"200"}>
+                <Palette color={"cyan"} primary={"500"} secondary={"700"} default={"800"}>
+                    <Palette priority={"default"} color={"grey"} primary={"50"} secondary={"200"} default={"400"}>
                         <Palette priority={"secondary"} color={"pink"} primary={"500"} secondary={"700"} default={"600"}>
                             <Theme>
                                 <Paper role={"body"}>
-                                <AppBar icon={menuButton} title={"Material-Lotus"}/>
+                                <AppBar icon={menuButton} title={"MaterL"}/>
                                 {leftDrawer}
                                 {this.props.children}
                                 </Paper>
