@@ -1,0 +1,1 @@
+module.exports = {"main":{"js":"/public/lotus-material.js"}};
