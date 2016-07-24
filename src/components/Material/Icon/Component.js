@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Component.css';
+import classNames from 'classnames';
 
 class Component extends React.Component {
     constructor(props) {
@@ -8,6 +10,7 @@ class Component extends React.Component {
         this.state = {
             style: {
                 fill:this.props.style.fill,
+                display:'inline-block',
                 ...this.props.style,
             },
             clientActive:false,
@@ -27,8 +30,9 @@ class Component extends React.Component {
     };
     getIcon = () => {
         var icon = null;
+        var css = "material-icons md-24"
         try {
-            icon = require('!raw!material-design-icons/' + this.props.context + '/svg/production/ic_'+this.props.component+'_'+'24px'+'.svg')//icons.svg[this.props.resolution]
+            icon = (<i style={{height:'100%', verticalAlign:'middle'}} className={css}>{this.props.component}</i>)//require('material-design-icons/' + this.props.context + '/svg/production/ic_'+this.props.component+'_'+'24px'+'.svg')//icons.svg[this.props.resolution]
         }
         catch (e) {
             console.log(e)
@@ -39,10 +43,12 @@ class Component extends React.Component {
     }
     render() {
         return (
-            <div onClick={this.props.onClick} className={this.props.className} style={{...this.state.style}}  dangerouslySetInnerHTML={{__html:this.getIcon()}}/>
+            <div onClick={this.props.onClick} className={this.props.className} style={{...this.state.style}}>
+                {this.getIcon()}
+            </div>
         );
     }
 }
 
 
-export default Component;
+export default withStyles(s)(Component);

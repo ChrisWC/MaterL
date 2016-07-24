@@ -10,15 +10,9 @@
 import React, { PropTypes } from 'react';
 import Paper from '../Paper'
 
-const icon_style = {
-    border:'none',
-    display:'inline-block',
-    height:'24px',
-    margin:'8px 8px',
-    padding:'12px',
-    fill:'white',
-    'float':'left'
-}
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import s from './Component.css';
+import classNames from 'classnames';
 
 class Component extends React.Component {
     constructor(props) {
@@ -44,6 +38,7 @@ class Component extends React.Component {
                 paddingBottom:'15px',
             }
         }
+        console.log("SWATCH")
     }
     static propTypes = {
         role:PropTypes.string.isRequired,
@@ -75,8 +70,16 @@ class Component extends React.Component {
         }
     }
     render() {
+        const css = `
+            p {
+                background-color: {this.context.palette[this.props.color].primary;
+            }
+        `
         return(
             <div>
+                <style>
+                    {css}
+                </style>
                 {React.Children.map(this.props.children, (val, key, arr)=>{
                     return React.cloneElement(val, {key:key, ...val.props})
                 })}
@@ -85,5 +88,4 @@ class Component extends React.Component {
     }
 }
 
-
-export default Component;
+export default withStyles(s)(Component);

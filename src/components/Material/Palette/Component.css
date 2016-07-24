@@ -1,83 +1,114 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
-.root {
-  margin: 0;
-}
-.backgroundbar {
-    width:100%;
-    height:64px;
-    top:0;
-    left:0;
-    background-color:black;
-    padding-left:8px;
-    padding-right:8px;
-    display:block;
-    position:absolute;
-}
-.title {
-    display:inline-block;
-   margin:0;
-   padding:0;
-   border:none;
-   color:'white';
-   padding-left:'8px';
-   height:24px;
-   line-height:64px;
-   font-size:24px;
-   float:left;
-   vertical-align:middle;
-   position:relative;
+.red-50 {
+    background-color:#FFEBEE;
+    color:#000000;
 }
 
-.icon {
-    display:inline-block;
-   margin:0;
-   padding:0;
-   border:none;
-   color:'white';
-   height:64px;
-   line-height:64px;
+.red-100 {
+    background-color:'#FFCDD2';
+    color:'black';
 }
-.link {
-  display: inline-block;
-  padding: 3px 8px;
-  text-decoration: none;
-  font-size: 1.125em; /* ~18px */
+.red-200 {
+    background-color:'#EF9A9A';
+    color:'black';
 }
-.ce {
-    top:50%;
-    -ms-transform: translateY(-50%);
-    -webkit-transform:translateY(-50%);
+.red-300 {
+    background-color:'#E57373';
+    color:'black';
 }
-.link,
-.link:active,
-.link:visited {
-  color: rgba(255, 255, 255, 0.6);
+.red-400 {
+    background-color:'#EF5350';
+    color:'black';
+}
+.red-500 {
+    background-color:'#F44336';
+    color:'black';
+}
+.red-600 {
+    background-color:'#E53935';
+    color:'black';
+}
+.red-700 {
+    background-color:'#D32F2F';
+    color:'black';
+}
+.red-800 {
+    background-color:'#C62828';
+    color:'black';
+}
+.red-900 {
+    background-color:'#B71C1C';
+    color:'black';
+}
+.red-a100 {
+    background-color:'#FF8A80';
+    color:'black';
+}
+.red-a200 {
+    background-color:'#FF5252';
+    color:'black';
+}
+.red-a400 {
+    background-color:'#FF1744';
+    color:'black';
+}
+.red-a700 {
+    background-color:'#D50000';
+    color:'black';
 }
 
-.link:hover {
-  color: rgba(255, 255, 255, 1);
+.blue-50 {
+    background-color:'#E3F2FD';
+    color:'black';
 }
-
-.highlight {
-  margin-right: 8px;
-  margin-left: 8px;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.15);
-  color: #fff;
-}
-
-.highlight:hover {
-  background: rgba(0, 0, 0, 0.3);
-}
-
-.spacer {
-  color: rgba(255, 255, 255, 0.3);
-}
+.blue-100 {
+    background-color:'#BBDEFB';
+    color:'black';
+},
+'200':{
+    backgroundColor:'#90CAF9',
+    color:'black',
+},
+'300':{
+    backgroundColor:'#64B5F6',
+    color:'black',
+},
+'400':{
+    backgroundColor:'#42A5F5',
+    color:'black',
+},
+'500':{
+    backgroundColor:'#2196F3',
+    color:'white',
+},
+'600':{
+    backgroundColor:'#1E88E5',
+    color:'white',
+},
+'700':{
+    backgroundColor:'#1976D2',
+    color:'white',
+},
+'800':{
+    backgroundColor:'#1565C0',
+    color:'white',
+},
+'900':{
+    backgroundColor:'#0D47A1',
+    color:'white',
+},
+'a100':{
+    backgroundColor:'#82B1FF',
+    color:'black',
+},
+'a200':{
+    backgroundColor:'#448AFF',
+    color:'white',
+},
+'a400':{
+    backgroundColor:'#2979FF',
+    color:'white',
+},
+'a700':{
+    backgroundColor:'#2962FF',
+    color:'white',
+},

@@ -1,5 +1,7 @@
 @import '../../variables.css';
 
+
+
 .button {
     font-size:14px;
     font-weight:500;
@@ -51,12 +53,15 @@
     padding-left:16px;
     padding-right:16px;
 }
+.appbar-button i {
+    line-height:64px;
+}
 .appbar-button > * {
     float:left;
 }
 .drawer {
     width:370px;
-    top:64px;
+    top:0px;
     bottom:0px;
     left:0px;
     display:block;
@@ -109,6 +114,15 @@
 
 .menu-button * {
     font-weight:500;
+    float:left;
+    fill:black;
+}
+.menu-button i {
+    line-height:48px;
+    margin-right:16px;
+    fill:black;
+    color:black;
+    width:24px;
 }
 
 .dense-button * {
@@ -116,10 +130,60 @@
     font-weight:500;
 }
 .choice {
+    margin-top:4px;
+    margin-bottom:4px;
     display:inline-block;
     position:relative;
 }
-.choice > * {
+.choice div {
     display:block;
     float:left;
+    line-height:16px;
+}
+.choice-body {
+    margin-left:16px;
+}
+
+.choice p {
+    margin-top:0px;
+    margin-bottom:0px;
+}
+.choice i {
+    display:inline-block;
+    float:left;
+    line-height:16px;
+    height:24px;
+}
+
+.textfield {
+    display:inline-block;
+}
+.textfield-floatinghint {
+    display:block;
+    font-size:12px;
+}
+.textfield-hint {
+    display:block;
+}
+.textfield textarea {
+    background-color:Transparent;
+    padding:0px;
+    border:none;
+    border-radius:0px;
+    padding-top:8px;
+    width:100%;
+    display:block;
+    position:relative;
+    height:16px;
+    line-height:16px;
+    resize:none;
+    outline:none;
+}
+
+.textfield textarea:hover, textarea:active, input:hover, input:active, {
+    outline:none;
+    border:none;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    -moz-box-shadow:none;
 }

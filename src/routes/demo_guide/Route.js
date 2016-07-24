@@ -28,9 +28,8 @@ import Device from '../../components/Material/Device';
 import AppBar from '../../components/Material/AppBar';
 import Paper from '../../components/Material/Paper';
 import Drawer from '../../components/Material/Drawer';
-const title = 'React Starter Kit';
+const title = 'Mater-L';
 
-console.log(s.root)
 class Route extends React.Component {
 
     constructor(props, context) {

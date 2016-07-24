@@ -165,8 +165,6 @@ class Component extends React.Component {
                         ...this.props.popover.props})]}/>
     }
     handleClick = (e) => {
-        console.log("BUTTON HANDLE CLICK")
-        console.log(this.state)
         if (this.props.contextName != 'menu') {
             //this.setState({active:!this.state.active})
         }
@@ -183,7 +181,7 @@ class Component extends React.Component {
         }
 
         if (this.props.onClick !== undefined) {
-            e.stopPropagation()
+            //e.stopPropagation()
             this.props.onClick(e)
         }
 
@@ -194,14 +192,29 @@ class Component extends React.Component {
     handleMouseDown = (e) => {
         if (this.props.contextName != 'menu') {
             this.setState({active:true})
+            //e.stopPropagation()
+        } else {
+            //e.stopPropagation()
+        }
+    }
+    handleTouchStart = (e) => { 
+        if (this.props.contextName != 'menu') {
+            this.setState({active:true})
             e.stopPropagation()
         } else {
             e.stopPropagation()
         }
     }
-    handleMouseUp = () => {
+    handleMouseUp = (e) => {
         if (this.props.contextName != 'menu') {
             this.setState({active:false})
+            //e.stopPropagation()
+        }
+    }
+    handleTouchEnd = (e) => {
+        if (this.props.contextName != 'menu') {
+            this.setState({active:false})
+            e.stopPropagation()
         }
     }
     componentDidMount = () => {
@@ -224,9 +237,11 @@ class Component extends React.Component {
                 <div id="inner" className={cn} style={{...this.state.inner_style, ...this.getColor(), ...this.getShadow() }}  
                     onMouseDown={(e) => this.handleMouseDown(e)} 
                     onMouseUp={(e) => this.handleMouseUp(e)}
-                    onMouseEnter={() => this.handleHover(true)} 
-                    onMouseOver={() => this.handleHover(true)} 
-                    onMouseOut={() => this.handleHover(false)} 
+                    onTouchStart={(e) => this.handleTouchStart(e)}
+                    onTouchEnd={(e) => this.handleTouchEnd(e)}
+                    onMouseEnter={(e) => this.handleHover(true)} 
+                    onMouseOver={(e) => this.handleHover(true)} 
+                    onMouseOut={(e) => this.handleHover(false)} 
                     onClick={(e) => {
                         this.handleClick(e)
 

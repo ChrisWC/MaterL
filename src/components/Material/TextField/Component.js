@@ -1,12 +1,3 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import React, { PropTypes } from 'react';
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
@@ -20,48 +11,121 @@ class Component extends React.Component {
 
         this.state = {
             style: {
-                width:'180px',
             },
             active:!this.props.active,
+            dirty:false,
+            error:true,
             value:""
         }
     }
     static propTypes = {
-        resolution:PropTypes.string,
-        context:PropTypes.string,
-        component:PropTypes.string,
-        role:PropTypes.string,
-        active:PropTypes.bool,
-        determinate:PropTypes.bool,
-        vertical:PropTypes.bool
+        error:PropTypes.bool,
+        valid:PropTypes.bool,
+        required:PropTypes.bool,
+        inset:PropTypes.bool
     };
     static defaultProps = {
-        resolution:'18px',
-        active:false,
-        determinate:false,
-        vertical:false
+        error:false,
+        valid:false,
+        required:false,
+        inset:false
     };
     static contextTypes = {
         palette: React.PropTypes.object,
+        theme: React.PropTypes.object
     };
     handleClick = (e) => {
         this.setState({active:!this.state.active});
     }
-    handleChange = (e) => {
-
+    handleChange = (e, v) => {
+        this.setState({value: e.target.value, dirty:(e.target.value == "")? false:true})
     }
     render() {
+        const css = `
+            @keyframes primary-bar {
+                0% {
+                    background-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
+                    width:10%;
+                    margin:0 45%;
+                }
+                25% {
+                    background-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
+                    width:25%;
+                    margin:0 37.5%;
+                }
+                50% {
+                    background-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
+                    width:60%;
+                    margin:0 20%;
+                }
+                100% {
+                    background-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
+                    width:100%;
+                    margin:0 0;
+                }
+            }
+            .textfield-bar-dirty {
+                border-top-width:0px;
+                border-left-width:0px;
+                border-right-width:0px;
+                border-bottom-width:0px;
+                height:2px;
+                display:block;
+                background-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
+                animation-name:primary-bar;
+                animation-duration:2s;
+                padding:0px;
+                text-align:center;
+            }
+            .textfield-bar-clean {
+                border-top-width:0px;
+                border-left-width:0px;
+                border-right-width:0px;
+                border-bottom-width:0px;
+                height:2px;
+                display:block;
+                background-color:`+this.context.palette['default']['secondary'].backgroundColor+`;
+                padding:0px;
+                text-align:center;
+            }
+            .textfield-bar-error {
+                border-top-width:0px;
+                border-left-width:0px;
+                border-right-width:0px;
+                border-bottom-width:0px;
+                height:2px;
+                display:block;
+                background-color:`+this.context.palette['secondary']['default'].backgroundColor+`;
+                padding:0px;
+                text-align:center;
+            }
+            .textfield-bar-disabled {
+                border-top-width:0px;
+                border-left-width:0px;
+                border-right-width:0px;
+                border-bottom-width:0px;
+                height:2px;
+                display:block;
+                background-color:`+this.context.palette['secondary']['default'].backgroundColor+`;
+                padding:0px;
+                text-align:center;
+            }
+        `
+        console.log(this.state)
         return (
-            <div style={this.state.style} onClick={this.props.onClick}>
-                <div style={{display:'block'}} ref="FloatingHintText">{this.state.active? this.props.floatingHintText:null}</div>
-                <textarea ref="textfield" style={{padding:'0px', border:'none', borderRadius:'0px', padding:'0px', width:this.state.style.width,display:'block', position:'relative', resize:'none'}} rows={1}  onChange={this.handleChange}
-                    value={this.state.active? (this.state.dirty? this.state.value:this.props.hintText):(this.state.dirty? this.state.value:this.props.floatingHintText)}>
+            <div className={this.context.theme.textfield.default} onClick={this.props.onClick}>
+                <style>{css}</style>
+                <div className={this.context.theme.textfield.floatinghint} ref="FloatingHintText">{this.state.active? this.props.floatingHintText:null}</div>
+                <textarea ref="textfield" rows={1}  onChange={this.handleChange}
+                    value={this.state.value}>
                 </textarea>
-                <BarDecor width={180}/>
+                <span style={{width:'180px'}}>
+                    <span className={this.state.dirty? (this.state.error? 'textfield-bar-error':'textfield-bar-dirty'):(this.props.required? (this.state.error? 'textfield-bar-error':'textfield-bar-clean'):'textfield-bar-clean')}></span>
+                </span>
             </div>
         );
     }
 }
 
 
-export default withStyles(s)(Component);
+export default Component;

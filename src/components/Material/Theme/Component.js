@@ -14,7 +14,13 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 const defaultTheme = {
     choice:{
-        default:s.choice
+        default:s.choice,
+        body:s['choice-body'],
+    },
+    textfield:{
+        default:s.textfield,
+        floatinghint:s['textfield-floatinghint'],
+        hint:s['textfield-hint']
     },
     appbar:{
         inset:16,
@@ -50,7 +56,7 @@ const defaultTheme = {
                     device:'TABLET'
                 },
                 behaviour:{
-                    visibility:'temporary',
+                    visibility:'persistent',
                     width:'fixed'
                 }
             },
@@ -59,7 +65,7 @@ const defaultTheme = {
                     device:'DESKTOP'
                 },
                 behaviour:{
-                    visibility:'temporary',
+                    visibility:'persistent',
                     width:'fixed'
                 }
             },
@@ -69,7 +75,7 @@ const defaultTheme = {
                 },
                 behaviour:{
                     visibility:'temporary',
-                    width:'fixed'
+                    width:'overlay'
                 }
             }
         ]
@@ -134,7 +140,7 @@ const defaultTheme = {
                 }
             ],
             'PHONE':{
-                'PORTAIT':[
+                'PORTRAIT':[
                     {
                         range:[0,360],
                         size:['small'],
@@ -176,7 +182,7 @@ const defaultTheme = {
                 ]
             },
             'TABLET':{
-                'PORTAIT':[
+                'PORTRAIT':[
                     {
                         range:[600,720],
                         size:['small'],
@@ -269,6 +275,8 @@ const defaultTheme = {
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
+        console.log("THEME")
+        console.log(s)
     }
     static propTypes = {
         role:PropTypes.string.isRequired,

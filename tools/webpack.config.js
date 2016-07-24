@@ -102,11 +102,11 @@ const config = {
         loader: 'json-loader',
       },
       {
-        test: /\.(svg|txt)$/,
+        test: /\.(txt)$/,
         loader: 'raw-loader',
       },
       {
-        test: /\.(png|jpg|jpeg|gif|ttf|woff|woff2)$/,
+        test: /\.(png|jpg|jpeg|gif|svg|ttf|woff|woff2)$/,
         loader: 'url-loader',
         query: {
           name: DEBUG ? '[path][name].[ext]?[hash]' : '[hash].[ext]',

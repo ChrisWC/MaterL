@@ -8,13 +8,14 @@
  */
 
 @import 'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=latin-ext';
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
 :root {
   /*
    * Typography
    * ======================================================================== */
 
-  --font-family-base: 'Roboto', sans-serif;
+  --font-family-base: 'Roboto', 'Material Icons', sans-serif;
   /*
    * Layout
    * ======================================================================== */
@@ -25,6 +26,7 @@
    * Media queries breakpoints
    * ======================================================================== */
 
+  --primary-color:#f00;
   --screen-xs-min: 480px;  /* Extra small screen / phone */
   --screen-sm-min: 768px;  /* Small screen / tablet */
   --screen-md-min: 992px;  /* Medium screen / desktop */

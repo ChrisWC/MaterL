@@ -19,13 +19,13 @@ class Component extends React.Component {
                position:'fixed',
                top:0,
                left:0,
+               right:0,
+               bottom:0,
             },
             open:this.props.open,
             clicked:false,
             openElements:0
         }
-        console.log("LAYER")
-        console.log(this.props.foreground)
     }
     static propTypes = {
         showShadows: PropTypes.bool,
@@ -60,7 +60,6 @@ class Component extends React.Component {
         return(
             <div role={"layer"} className={this.context.theme.layer.default} style={this.state.style} onClick={this.handleClick}>
                 {React.Children.map(this.props.foreground, (val, key, arr) => {
-                    console.log("RENDER")
                     return React.cloneElement(val, {key:key, 
                         onRequestClose:() => {
                             val.props.onRequestClose();

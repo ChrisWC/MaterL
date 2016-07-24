@@ -29,10 +29,6 @@ class Component extends React.Component {
         }
 
     }
-
-    getWidthByName = (n) => {
-        return '100%'
-    }
     static propTypes = {
         showShadows: PropTypes.bool,
         fullscreen: PropTypes.bool,
@@ -123,7 +119,6 @@ class Component extends React.Component {
             this.setState({overlay:true})
     }
     getAsOverlay() {
-        console.log("OVERLAY")
         return (<Layer role={'layer'} foreground={[<Sheet ref='container' rules={this.props.rules}
                     onClick={(e)=>{
                         e.stopPropagation()
@@ -143,11 +138,10 @@ class Component extends React.Component {
                         {this.props.children}
                 </Sheet>]}/>)
     }
+    getMetrics = () => {
+        return this.refs['container'].getMetrics()
+    }
     render() {
-
-        if (this.props.role == 'drawer') {
-            console.log("DRAWER")
-        }
         return (<Sheet ref='container' paper={this} rules={this.props.rules}
                     inLayer={false}
                     behaviour={this.state.behaviour} 

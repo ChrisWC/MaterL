@@ -8,8 +8,11 @@
  */
 
 import React, { PropTypes } from 'react';
-import Image from '../../Lotus/Image'
 import Icon from '../Icon'
+
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import s from './Component.css';
+import classNames from 'classnames';
 
 class Component extends React.Component {
     constructor(props) {
@@ -17,6 +20,8 @@ class Component extends React.Component {
 
         this.state = {
             style: {
+                fontSize:'16px',
+                lineHeight:'16px',
             },
             active:!this.props.active
         }
@@ -72,11 +77,9 @@ class Component extends React.Component {
     }
     render() {
         return (
-            <div style={this.state.style} onClick={this.props.onClick} className={this.context.theme.choice.default}>
-                <div ref={'icon'} style={{height:'100%'}}>
-                    {this.getIcon(this.props.role, this.state.active)}
-                </div>
-                <div ref={'text'} style={{height:'100%'}}>
+            <div className={this.context.theme.choice} style={this.state.style} onClick={this.props.onClick} className={this.context.theme.choice.default}>
+                {this.getIcon(this.props.role, this.state.active)}
+                <div className={this.context.theme.choice.body} ref={'text'} style={{float:'left'}}>
                     {this.props.children}
                 </div>
             </div>
@@ -85,4 +88,4 @@ class Component extends React.Component {
 }
 
 
-export default Component;
+export default withStyles(s)(Component);

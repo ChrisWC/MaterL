@@ -48,9 +48,6 @@ class Component extends React.Component {
 
     }
 
-    getWidthByName = (n) => {
-        return '100%'
-    }
     static propTypes = {
         showShadows: PropTypes.bool,
         fullscreen: PropTypes.bool,
@@ -108,6 +105,7 @@ class Component extends React.Component {
         
         var formfactor = this.context.theme.sheet.widthBreakpoints[this.context.device.device_type.toUpperCase()];
 
+        
        if (this.context.device.device_type.toUpperCase().match(/DESKTOP/)) {
             for (var i in formfactor) {
                 if (window.innerWidth >= formfactor[i].range[0] 
@@ -119,15 +117,15 @@ class Component extends React.Component {
             }
         } 
         else if (typeof this.context.device.orientation != 'undefined'
-                    && this.context.device.orientation.toUpperCase().match(/(TABLET|PHONE)/)
+                    && this.context.device.device_type.toUpperCase().match(/(TABLET|PHONE)/)
                     && this.context.device.orientation.toUpperCase().match(/(LANDSCAPE|PORTRAIT)/)) {
-            formfactor = formfactor[this.context.device.orientation.toUpperCase()]
+            formfactor = formfactor[this.context.device.orientation.toUpperCase().match(/(LANDSCAPE|PORTRAIT)/)[0]]
             for (var i in formfactor) {
                 if (window.innerWidth >= formfactor[i].range[0] 
                     && (window.innerWidth < formfactor[i].range[1] 
                     || formfactor[i].range[1] == -1)) {
 
-                    return {device:this.context.device.device_type, ...formfactor[i]}
+                    return {device:this.context.device.device_type.toUpperCase(), ...formfactor[i]}
                 }
             }
         } 
@@ -291,11 +289,26 @@ class Component extends React.Component {
     getParentSheets = () => {
         return this.props.sheets
     }
+    getMetrics = () => {
+        if (this.state.behaviour.width == 'overlay') {
+            return {
+                width:'0px',
+            }
+        }
+
+        var rect = this.refs['sheet'].getBoundingClientRect();
+        var width = rect.right - rect.left;
+        var left = rect.left;
+        var top = rect.bottom;
+        return {
+            'width':width+'px',
+        }
+    }
     calculateContentArea = () => {
         var content_left = 0;
         for (var i in this.refs) {
             if (i.match(/Drawer/) && this.refs[i].refs['Paper'].refs['container']) {
-                var w = this.refs[i].state.style.width.match(/\d+/g)
+                var w = this.refs[i].refs['Paper'].getMetrics().width.match(/\d+/g)
                 if (w.length == 1 && this.refs[i].refs['Paper'].refs['container'].state.reaction.open) {
                     content_left = Math.max(content_left, Number(w[0]))
                 }
@@ -317,11 +330,8 @@ class Component extends React.Component {
         }
         var nstate = {style:{...this.state.style}, openRequest:(typeof nProps != undefined)? nProps.open:this.state.openRequest};
         if (nProps.style) {
-            //console.log(this.state.style)
-            //console.log(nProps.style)
             if (nProps.style.maxWidth != this.state.maxWidth && nProps.style.maxHeight != this.state.maxHeight) {
                 nstate = {...nstate, style:{...this.state.style, maxWidth:nProps.style.maxWidth, maxHeight:nProps.style.maxHeight}}
-                //this.genBoxShadowString(this.state.shadow)
             }
 
             if (nProps.style.top) {
@@ -365,9 +375,9 @@ class Component extends React.Component {
         return this.refs['sheet'].getBoundingClientRect()
     }
     processProps = (props) => {
-        var toolbars = [] //this.props.toolbars.splice(0, this.props.toolbars.length)
-        var content = [] //this.props.content.splice(0, this.props.content.length) 
-        var drawers = []//this.props.drawers.splice(0, this.props.drawers.length)
+        var toolbars = []
+        var content = []
+        var drawers = []
         React.Children.map(props, (val, key, arr) => {
             if (val != null && val.props != null && val.props !== undefined) {
                 if ((val.props.role && val.props.role == "appbar") || (!val.props.role && val.type.ComposedComponent && val.type.ComposedComponent.defaultProps && val.type.ComposedComponent.defaultProps.role === 'appbar')) {
@@ -394,7 +404,7 @@ class Component extends React.Component {
         }
     }
     render() {
-        var el = this.processProps(this.props.children)
+        var elements = this.processProps(this.props.children)
         
         var shouldRender = (this.state.behaviour.visibility == 'temporary' && this.props.inLayer)
                             || (this.state.behaviour.visibility != 'temporary' && !this.props.inLayer);
@@ -404,13 +414,12 @@ class Component extends React.Component {
                         this.handleClick(e)
                     }
                 }>
-                {el.toolbars}
-                {el.drawers}
+                {elements.toolbars}
                 {(!this.context.sheets || this.context.sheets.length == 0)? <div className={this.context.theme.sheet.content_area} style={{
                     ...this.calculateContentArea()}}>
-                    {el.content}
-                </div>:el.content}
-                {/*this.state.foregroundActive? <Layer backgroundColor={'black'} key={0} role={'layer'} foreground={this.props.foreground} />:null*/}
+                    {elements.content}
+                </div>:elements.content} 
+                {elements.drawers}
                 {this.state.foregroundActive? this.state.foreground():null}
             </div>
         ): <div ref="sheet"></div>;

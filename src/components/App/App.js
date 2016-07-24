@@ -84,10 +84,17 @@ class App extends Component {
         }
         const leftDrawer = (<Drawer open={openLeftNavigation} depth={1}>
                 <Menu>
+                    <Button icon={<Icon resolution={"24px"} component={"chevron_left"}/>} contextName="menu" label="MaterL" active={false} onClick={()=>{openLeftNavigation(!this.state.openLeftDrawer)}}/>
                     <Button contextName="menu" label="About Project" active={false} redirect={"/about"} />
                     <Button contextName="menu" label="Topics">
                         <Menu>
                             <Button contextName="menu" label="Creating Component Demo's" redirect={"/demo_guide"}/>
+                        </Menu>
+                    </Button>
+                    <Button contextName="menu" label="Layout">
+                        <Menu>
+                            <Button contextName="menu" label="Structure" redirect={"/layout/structure"}/>
+                            <Button contextName="menu" label="Responsive UI" redirect={"/layout/responsive-ui"}/>
                         </Menu>
                     </Button>
                     <Button contextName="menu" label="Style">
