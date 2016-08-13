@@ -34,10 +34,18 @@ function Route({}, context) {
                 Under the Material Specification, text-fields and text-boxes are
                 the same. There function is instead determined by its parameters.
             </p>
-            <TextField hintText="Text" floatingHintText="A Text Field"/>
-            <p>
-                End of Field
-            </p>
+            <TextField value="More Text" hintText="Text" floatingHintText="A Text Field"/><Button icon={<Icon component={"create"}/>} label={"A Button"} priority={"primary"}/>
+            <h3>
+                Disabled
+            </h3>
+            <TextField hintText="Disabled" floatingHintText="Disabled" disabled={true} icon={<Icon component={"create"}/>}/><Button label={"A Button"} priority={"primary"} raised={true}/>
+            <h3>
+                Inline
+            </h3>
+            <section>
+                <TextField hintText="Username" floatingHintText="Enter Username"/><br />
+                <TextField value="password" password={true} hintText="Password" floatingHintText="Enter Password"/>
+            </section>
         </div>
     </div>
   );

@@ -248,13 +248,11 @@ class Component extends React.Component {
                     onMouseOut={(e) => this.handleHover(false)} 
                     onClick={(e) => {
                         this.handleClick(e)
-
                     }} >
-                    {this.props.icon? React.cloneElement(this.props.icon, {...this.props.icon.props, className:this.context.theme.button.icon }):null}
+                    {this.props.icon? React.cloneElement(this.props.icon, {...this.props.icon.props, className:this.context.theme.button.icon, style:{fill:color.fill, color:color.color}}):null}
                     {this.props.label? <div style={this.state.title_style} >{this.props.label}</div>:null}
-                    {this.props.rightIcon? React.cloneElement(this.props.rightIcon, {style:this.state.icon_style, fill:this.state.icon_style.fill, ...this.props.icon.props, float:'right', paddingRight:'16px'}):null}
+                    {this.props.rightIcon? React.cloneElement(this.props.rightIcon, {...this.props.rightIcon.props, className:this.context.theme.button.icon, style:{paddingLeft:'8px', fill:color.fill, color:color.color}}):null}
                 </div>
-                
             </div>
         );
     }

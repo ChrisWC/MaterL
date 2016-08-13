@@ -30,6 +30,7 @@ import Icon from '../Material/Icon';
 import CommonFunctions from '../Material/CommonFunctions';
 import Device from '../Material/Device';
 import history from '../../core/history';
+
 class App extends Component {
     constructor(props, context) {
         super(props, context);

@@ -1139,9 +1139,9 @@ class Component extends React.Component {
             palette:{
                 ...this.context.palette,
                 [this.props.priority]:{
-                    primary:colors[this.props.color][this.props.primary],
-                    secondary:colors[this.props.color][this.props.secondary],
-                    default:colors[this.props.color][this.props.default]
+                    primary:{...colors[this.props.color][this.props.primary], fill:colors[this.props.color][this.props.primary].color},
+                    secondary:{...colors[this.props.color][this.props.secondary], fill:colors[this.props.color][this.props.primary].color},
+                    default:{...colors[this.props.color][this.props.default], fill:colors[this.props.color][this.props.primary].color}
                 }
             }
         }

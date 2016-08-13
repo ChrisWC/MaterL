@@ -275,8 +275,6 @@ const defaultTheme = {
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
-        console.log("THEME")
-        console.log(s)
     }
     static propTypes = {
         role:PropTypes.string.isRequired,

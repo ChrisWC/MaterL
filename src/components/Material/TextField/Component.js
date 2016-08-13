@@ -14,22 +14,27 @@ class Component extends React.Component {
             style: {
             },
             active:false,
-            dirty:false,
+            dirty:(this.props.value.length > 0)? true:false,
             error:false,
-            value:""
+            value:this.props.value,
+            disabled:this.props.disabled,
+            incognito:false
         }
     }
     static propTypes = {
         error:PropTypes.bool,
         valid:PropTypes.bool,
         required:PropTypes.bool,
-        inset:PropTypes.bool
+        inset:PropTypes.bool,
+        hintText:PropTypes.string,
+        value:PropTypes.string.isRequired,
     };
     static defaultProps = {
         error:false,
         valid:false,
         required:false,
-        inset:false
+        inset:false,
+        value:""
     };
     static contextTypes = {
         palette: React.PropTypes.object,
@@ -39,10 +44,19 @@ class Component extends React.Component {
         this.setState({active:!this.state.active});
     }
     handleChange = (e, v) => {
+        if (this.state.disabled) {
+            return
+        }
         this.setState({value: e.target.value, dirty:(e.target.value == "")? false:true})
+
+        if (this.props.onChange) {
+            this.props.onChange(e);
+        }
     }
     handleFocus = (e) => {
-        this.setState({active:true})
+        if (!this.state.disabled) {
+            this.setState({active:true})
+        }
 
         //move floating hint text to top
     }
@@ -53,12 +67,12 @@ class Component extends React.Component {
         const css = `
             @keyframes primary-bar {
                 0% {
-                    background-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
+                    border-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
                     width:10%;
                     margin:0 45%;
                 }
                 100% {
-                    background-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
+                    border-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
                     width:100%;
                     margin:0 0;
                 }
@@ -74,48 +88,55 @@ class Component extends React.Component {
                 }
             }
             .textfield-bar-dirty {
-                border-top-width:0px;
+                border-top-width:1px;
                 border-left-width:0px;
                 border-right-width:0px;
                 border-bottom-width:0px;
-                height:2px;
+                border-style:solid;
+                height:3px;
                 display:block;
-                background-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
+                border-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
                 animation-name:primary-bar;
                 animation-duration:1s;
                 padding:0px;
+                padding-bottom:2px;
                 text-align:center;
             }
             .textfield-bar-clean {
-                border-top-width:0px;
+                border-top-width:1px;
                 border-left-width:0px;
                 border-right-width:0px;
                 border-bottom-width:0px;
-                height:2px;
+                border-style:solid;
+                height:3px;
                 display:block;
-                background-color:`+this.context.palette['default']['default'].backgroundColor+`;
+                border-color:`+this.context.palette['default']['default'].backgroundColor+`;
                 padding:0px;
+                padding-bottom:2px;
                 text-align:center;
             }
             .textfield-bar-error {
-                border-top-width:0px;
+                border-top-width:1px;
                 border-left-width:0px;
                 border-right-width:0px;
                 border-bottom-width:0px;
-                height:2px;
+                border-style:solid;
+                height:3px;
                 display:block;
-                background-color:`+this.context.palette['secondary']['default'].backgroundColor+`;
+                border-color:`+this.context.palette['secondary']['default'].backgroundColor+`;
                 padding:0px;
+                padding-bottom:2px;
                 text-align:center;
             }
             .textfield-bar-disabled {
-                border-top-width:0px;
+                border-top-width:1px;
                 border-left-width:0px;
                 border-right-width:0px;
                 border-bottom-width:0px;
-                height:2px;
+                border-style:dashed;
+                height:3px;
                 display:block;
-                background-color:`+this.context.palette['secondary']['default'].backgroundColor+`;
+                border-color:`+this.context.palette['default']['default'].backgroundColor+`;
                 padding:0px;
                 text-align:center;
             }
@@ -125,7 +146,7 @@ class Component extends React.Component {
                 bottom:0px;
                 left:0px;
                 right:0px;
-                top:8px;
+                top:36px;
                 font-size:16px;
                 height:auto;
             }
@@ -135,8 +156,10 @@ class Component extends React.Component {
                 bottom:0px;
                 left:0px;
                 right:0px;
+                padding-top:16px;
+                padding-bottom:8px;
                 top:0px;
-                font-size:8px;
+                font-size:12px;
                 height:auto;
                 animation-name:floating-hint-animation;
                 animation-duration:0.1s;
@@ -145,22 +168,29 @@ class Component extends React.Component {
                 font-size:8px;
             }
         `
-        console.log(this.state)
         return (
             <div className={this.context.theme.textfield.default} onClick={this.props.onClick}>
                 <style>{css}</style> 
-                
-                <div className={(this.state.active || this.state.dirty)? 'floatinghint-dirty':'floatinghint-clean'} ref="FloatingHintText">{this.state.active? this.props.floatingHintText:"HINT HINT"}</div>
-                <textarea ref="textfield" rows={1}  onChange={this.handleChange}
+                <div style={{float:"left"}}>
+                <div className={(this.state.active || this.state.dirty)? 'floatinghint-dirty':'floatinghint-clean'} ref="FloatingHintText">
+                    {(this.state.active && !this.state.disabled)? this.props.floatingHintText:this.props.hintText}</div>
+                {this.props.password? <input type="password" 
+                    onChange={this.handleChange}
                     onFocus={this.handleFocus}
-                    onBlur={this.handleBlur}
-                    value={this.state.value}>
-                </textarea> 
-                <span style={{width:'100%'}}>
-                    <span className={this.state.dirty? (this.state.error? 'textfield-bar-error':'textfield-bar-dirty'):(this.props.required? (this.state.error? 'textfield-bar-error':'textfield-bar-clean'):'textfield-bar-clean')}></span>
+                    value={this.state.value}
+                    />:<textarea rows={1}  onChange={this.handleChange}
+                        onFocus={this.handleFocus}
+                        onBlur={this.handleBlur}
+                        value={this.state.value}>
+                </textarea>} 
+                <span style={{width:'100%',paddingBottom:'8px'}}>
+                    {this.state.incognito? null:<span className={this.state.disabled? 'textfield-bar-disabled':(this.state.dirty? (this.state.error? 'textfield-bar-error':'textfield-bar-dirty'):(this.props.required? (this.state.error? 'textfield-bar-error':'textfield-bar-clean'):'textfield-bar-clean'))}></span>}
                 </span>
-                <div className={'helptext'}>Hint Text</div>
-
+                <div className={'helptext'}>{this.props.helpText}</div>
+                </div>
+                <div style={{float:"left"}}>
+                    {this.props.icon? this.props.icon:null}
+                </div>
             </div>
         );
     }

@@ -64,6 +64,10 @@ function ButtonRoute(props, context) {
                 <Button label="Secondary" primary={false} dense={true} raised={true} priority={'secondary'}/>
                 <Button label="Primary" primary={true} dense={true} raised={true} priority={'primary'}/>
             </section>
+            <section>
+                <h3>Button With Icon on Left</h3>
+                <Button icon={<Icon component={"create"}/>} rightIcon={<Icon component={"create"}/>} label="Button" priority={'primary'} raised={true}/>
+            </section>
         </div>
         <div className={s.container}>
             <Card title={"Flat Buttons"} width={"small-1"}>
