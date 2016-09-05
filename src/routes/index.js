@@ -34,8 +34,11 @@ import card from './card';
 import shadows from './shadows';
 import demo_guide from './demo_guide';
 import device from './device';
-import responsive_ui from './responsive_ui'
-import structure from './structure'
+import responsive_ui from './responsive_ui';
+import structure from './structure';
+import upcoming from './upcoming';
+import slider from './slider';
+
 import { Provider } from 'react-redux';
 
 export default {
@@ -45,6 +48,8 @@ export default {
   children: [
     home,
     responsive_ui,
+    slider,
+    upcoming,
     structure,
     button,
     card,

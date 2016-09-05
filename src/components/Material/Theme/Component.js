@@ -221,22 +221,21 @@ const defaultTheme = {
         default:s['layer']
     },
     card:{
-        textTitle:{
-            leftInset:16,
-            rightInset:16,
-            topInset:24,
-            bottomInset:24,
+        container:s['card'],
+        title:{
+            container:s['cardtitle'],
+            primary:s['primarytext'],
+            avatar:s['avatar'],
+            secondary:s['secondarytext']
         },
-        text:{
-            inset:16,
+        body:{
+            container:s['cardbody'],
+        },
+        media:{
+            container:s['cardmedia'],
         },
         actions:{
-            inset:8,
-        },
-        style:{
-            boder:'1px solid black',
-            borderRadius:'2px',
-            overflow:'hidden'
+            container:s['cardactions'],
         }
     },
     shadows:{

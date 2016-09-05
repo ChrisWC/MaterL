@@ -108,6 +108,7 @@ class App extends Component {
                         <Menu>
                             <Button contextName="menu" label="BarDecor" active={false} redirect={"/bar_decor"} />
                             <Button contextName="menu" label="Button" active={false} redirect={"/button"} />
+                            <Button contextName="menu" label="Card" active={false} redirect={"/card"}/>
                             <Button contextName="menu" label="Choice" active={false} redirect={"/choice"} />
                             <Button contextName="menu" label="Device" active={false} redirect={"/device"} />
                             <Button contextName="menu" label="Text Field" active={false} redirect={"/text_field"}/>
@@ -116,6 +117,7 @@ class App extends Component {
                             <Button contextName="menu" label="Menu" active={false} redirect={"/menu"} />
                             <Button contextName="menu" label="Paper" active={false} redirect={"/paper"} />
                             <Button contextName="menu" label="Icon" active={false} redirect={"/icon"} />
+                            <Button contextName="menu" label="Slider" active={false} redirect={"slider"} />
                         </Menu>
                     </Button>
                 </Menu>

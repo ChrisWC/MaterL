@@ -8,13 +8,12 @@
  */
 
 import React, { PropTypes } from 'react';
-import Paper from '../Paper';
 
 const style = {
     display:'inline-block',
     position:'relative',
     width:'auto',
-    padding:'10px',
+    padding:'0px',
     margin:'0px',
     float:'left'
 }
@@ -45,13 +44,8 @@ class Component extends React.Component {
 
         this.state = {
             titleStyle:{
-                ...titleStyle,
                 ...context.palette.primary['500'],
             },
-            bodyStyle:{
-                ...bodyStyle,
-                padding:context.theme.card.text.inset + 'px',
-            }
         }
     }
     static propTypes = {
@@ -64,18 +58,10 @@ class Component extends React.Component {
         palette: PropTypes.object
     }
     render() {
-        return(
-            <div style={style} role={'card'}>
-                <Paper role={"card"} width={this.props.width} style={inner_style} depth={1}>
-                    <div className={s.title} style={this.state.titleStyle}>
-                        <span style={{position:'relative'}}>{this.props.title}</span>
-                    </div>
-                    <div style={this.state.bodyStyle}>
-                        {this.props.children}
-                    </div>
-                </Paper>
-            </div>
-        );
+        return this.props.src ? (
+            <div className={this.context.theme.card.media.container} role={'card'}>
+                <img width={'100%'} style={{backgroundColor:'black'}} src={this.props.src}/>
+            </div>):null;
     }
 }
 

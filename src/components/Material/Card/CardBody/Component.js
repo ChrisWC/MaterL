@@ -45,11 +45,9 @@ class Component extends React.Component {
         this.state = {
             titleStyle:{
                 ...titleStyle,
-                ...context.palette.primary['500'],
             },
             bodyStyle:{
                 ...bodyStyle,
-                padding:context.theme.card.text.inset + 'px',
             }
         }
     }
@@ -64,7 +62,7 @@ class Component extends React.Component {
     }
     render() {
         return(
-            <div style={this.state.bodyStyle} role={'card'}>
+            <div className={this.context.theme.card.body.container} role={'card'}>
                 {this.props.children}
             </div>
         );

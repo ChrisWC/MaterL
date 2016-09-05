@@ -235,3 +235,128 @@
     -webkit-box-shadow:none;
     -moz-box-shadow:none;
 }
+.primarytext {
+
+}
+.secondarytext {
+
+}
+.avatar {
+
+}
+.card {
+    margin:5px;
+    display:inline-block;
+    position:relative;
+    float:clear;
+    height:auto;
+    border-radius:2px;
+    overflow:hidden;
+}
+
+.cardtitle {
+    overflow:auto;
+    padding-bottom:16px;
+}
+.cardtitle > div >.primarytext {
+    font-size:24px;
+    line-height:24px;
+    padding-top:24px;
+    padding-bottom:0px;
+    padding-left:16px;
+    padding-right:16px;
+}
+.cardtitle > div {
+    display:inline-block;
+}
+.cardtitle > div > .secondarytext {
+    font-size:14px;
+    line-height:14px;
+    padding-top:8px;
+    padding-left:16px;
+    padding-right:16px;
+}
+
+.cardtitle > .avatar {
+    padding-top:16px;
+    padding-left:16px;
+    width:40px;
+    display:inline-block;
+    float:left;
+}
+.cardtitle > .avatar > img {
+    height:40px;
+    width:40px;
+    border-radius:90px;
+}
+.cardtitle > .avatar + div > .primarytext {
+    font-size:14px;
+    line-height:14px;
+    padding-top:20px;
+}
+.cardtitle > .avatar + div > .primarytext + .secondarytext {
+    padding-top:4px;
+}
+.cardtitle-largetitle {
+    padding-top:24px;
+    padding-bottom:16px;
+}
+.cardtitle-supportingactionsortext {
+    padding-top:16px;
+    padding-bottom:16px;
+}
+.cardtitle-largetitle-supportingactionsortext {
+    padding-top:24px;
+    padding-bottom:16px;
+}
+
+.cardbody {
+    padding-left:16px;
+    padding-right:16px;
+    padding-top:16px;
+    padding-bottom:16px;
+}
+
+.cardbody > p {
+    font-size:14px;
+    padding:0px;
+    margin:0px;
+}
+
+.card > .cardbody:last-child {
+    padding-bottom:24px;
+}
+
+.card > .cardtitle:last-child {
+    padding-bottom:24px;
+}
+
+.cardactions {
+    padding-left:4px;
+    padding-right:4px;
+    clear:both;
+    display:block;
+    overflow:hidden;
+    height:44px;
+    margin-bottom:4px;
+    margin-top:4px;
+}
+.cardactions > div > .button {
+    margin-left:4px;
+    margin-right:4px;
+    border-radius:0px;
+}
+
+.cardactions > .button {
+    padding-left:4px;
+    padding-right:4px;
+}
+
+.cardmedia {
+    width:100%;
+    display:block;
+}
+
+.cardtitle + .cardbody {
+    padding-top:0px;
+}

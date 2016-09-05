@@ -43,3 +43,31 @@
     letter-spacing:0.1px;
     -webkit-font-smoothing:antialiased;
 }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family:'Roboto', sans-serif;
+}
+
+h1 {
+    font-size:112px;
+    font-weight:200;
+    font-variant:normal;
+}
+h2 {
+    font-size:56px;
+}
+h3 {
+    font-size:45px;
+}
+h4 {
+    font-size:34px;
+    font-variant:normal
+}
+h5 {
+    font-size:24px;
+    font-variant:normal;
+}
+h6 {
+    font-size:20px;
+    font-variant:medium;
+}

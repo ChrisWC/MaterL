@@ -10,7 +10,10 @@
 import React, { PropTypes } from 'react';
 import Layer from '../Layer';
 import ScrollBar from '../ScrollBar';
-
+import classNames from 'classnames';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import ResponsiveUI from './ResponsiveUI';
+//import s from './Component.css';
 class Component extends React.Component {
     constructor(props,context) {
         super(props,context);
@@ -29,7 +32,6 @@ class Component extends React.Component {
                marginRight:'0px'
            },
            width:'0px',
-           height:'0px',
            contentWidth:'100%',
            disabled:false,
            foreground:()=>{},
@@ -51,7 +53,8 @@ class Component extends React.Component {
     static propTypes = {
         showShadows: PropTypes.bool,
         fullscreen: PropTypes.bool,
-        width: PropTypes.string,
+        width: PropTypes.number,
+        columns: PropTypes.number,
         foreground: PropTypes.array.isRequired,
         backgroundColor: PropTypes.string,
         ind:PropTypes.number,
@@ -403,28 +406,43 @@ class Component extends React.Component {
             this.props.onClick(e)
         }
     }
+    genCSS = () => {
+        var css = Object.keys(this.state.style).map((val, index, arr) => {
+            var name = val.replace(/([A-Z])/g, (str) => {return '-'+str.toLowerCase();})
+            return ``+name+`:`+this.state.style[val]+`;`
+        })
+        var css_template = '';
+        for (var i = 0; i < css.length; i++) {
+            css_template += ("\t" + css[i] + "\n")
+        }
+        return css_template
+    }
     render() {
         var elements = this.processProps(this.props.children)
         
         var shouldRender = (this.state.behaviour.visibility == 'temporary' && this.props.inLayer)
                             || (this.state.behaviour.visibility != 'temporary' && !this.props.inLayer);
 
+        //console.log(this.state.breakpoint)
+        var css = `.sheet-`+this.props.role+` {`+"\n"+this.genCSS()+`}`
         return (this.state.reaction.open && shouldRender)? (
-            <div {...this.props} ref="sheet" style={this.state.style} onClick={(e) => {
+            <div {...this.props} ref="sheet" className={classNames({['sheet-'+this.props.role]:true, [this.props.className]:true})} onClick={(e) => {
                         this.handleClick(e)
                     }
                 }>
+                <style>
+                    {css}
+                </style>
                 {elements.toolbars}
-                {(!this.context.sheets || this.context.sheets.length == 0)? <div className={this.context.theme.sheet.content_area} style={{
+                {(!this.context.sheets || this.context.sheets.length == 0)? <ResponsiveUI className={this.context.theme.sheet.content_area} style={{
                     ...this.calculateContentArea()}}>
                     {elements.content}
-                </div>:elements.content} 
+                </ResponsiveUI>:<ResponsiveUI>{elements.content}</ResponsiveUI>} 
                 {elements.drawers}
                 {this.state.foregroundActive? this.state.foreground():null}
             </div>
         ): <div ref="sheet"></div>;
     }
 }
-
 
 export default Component;

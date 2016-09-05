@@ -45,12 +45,8 @@ class Component extends React.Component {
 
         this.state = {
             titleStyle:{
-                ...titleStyle,
-                ...context.palette.primary['500'],
             },
             bodyStyle:{
-                ...bodyStyle,
-                padding:context.theme.card.text.inset + 'px',
             }
         }
     }
@@ -66,14 +62,6 @@ class Component extends React.Component {
     render() {
         return(
             <div style={style} role={'card'}>
-                <Paper role={"card"} width={this.props.width} style={inner_style} depth={1}>
-                    <div className={s.title} style={this.state.titleStyle}>
-                        <span style={{position:'relative'}}>{this.props.title}</span>
-                    </div>
-                    <div style={this.state.bodyStyle}>
-                        {this.props.children}
-                    </div>
-                </Paper>
             </div>
         );
     }

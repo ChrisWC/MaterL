@@ -20,6 +20,8 @@ import ArcDecor from '../../components/Material/ArcDecor';
 import Card from '../../components/Material/Card';
 import CardTitle from '../../components/Material/Card/CardTitle';
 import CardBody from '../../components/Material/Card/CardBody';
+import CardActions from '../../components/Material/Card/CardActions';
+import CardMedia from '../../components/Material/Card/CardMedia';
 
 import Icon from '../../components/Material/Icon'
 import Choice from '../../components/Material/Choice'
@@ -30,10 +32,87 @@ function Route({}, context) {
   return (
     <div className={s.root}>
         <div className={s.container}>
-        <Card width={"small-1"}>
-            <CardTitle title={"Card"}/>
+        <p>
+            Cards should have a title, descriptive text, and controls
+        </p>
+        <Card style={{width:"360px",height:"480px"}}>
+            <CardTitle title={"A Simple Text Card"}/>
             <CardBody>
+                <p>A Card can be simply made out of text. This text
+                should have 16px empty space between title and the beginning of the
+                description. The specification also specifies that if nothing is 
+                below this element then there should be 24px of padding.</p>
             </CardBody>
+        </Card>
+        <Card>
+            <CardTitle title={"Squirrel"}/>
+            <CardMedia src={"http://www.livescience.com/images/i/000/025/221/original/squirrel.jpg?interpolation=lanczos-none&downsize=*:1000"}/>
+            <CardBody>
+                <p>
+                    This is mean to be an area in which you 
+                    can describe the card. You may use other
+                    components within the CardBody. But, should
+                    follow the conventions set out in the 
+                    specification
+                </p>
+            </CardBody>
+            <CardActions>
+                <Button label="Action 1" priority={"primary"}/>
+                <Button label="Action 2" priority={"primary"}/>
+            </CardActions>
+        </Card>
+        <Card>
+            <CardTitle title={"Squirrel"} subtitle={"A Fierce Beast"}/>
+            <CardMedia src={"http://www.livescience.com/images/i/000/025/221/original/squirrel.jpg?interpolation=lanczos-none&downsize=*:1000"}/>
+            <CardBody>
+                <p>
+                    This is mean to be an area in which you 
+                    can describe the card. You may use other
+                    components within the CardBody. But, should
+                    follow the conventions set out in the 
+                    specification
+                </p>
+            </CardBody>
+            <CardActions>
+                <Button label="Action 1" priority={"primary"}/>
+                <Button label="Action 2" priority={"primary"}/>
+            </CardActions>
+        </Card>
+        <Card>
+            <CardTitle title={"Squirrel"} subtitle={"A Fierce Beast"} 
+                avatar={"http://www.livescience.com/images/i/000/025/221/original/squirrel.jpg?interpolation=lanczos-none&downsize=*:1000"}/>
+            <CardMedia />
+            <CardBody>
+                <p>
+                    This is mean to be an area in which you 
+                    can describe the card. You may use other
+                    components within the CardBody. But, should
+                    follow the conventions set out in the 
+                    specification
+                </p>
+            </CardBody>
+            <CardActions>
+                <Button label="Action 1" priority={"primary"}/>
+                <Button label="Action 2" priority={"primary"}/>
+            </CardActions>
+        </Card>
+        <Card>
+            <CardTitle title={"Squirrel"} 
+                avatar={"http://www.livescience.com/images/i/000/025/221/original/squirrel.jpg?interpolation=lanczos-none&downsize=*:1000"}/>
+            <CardMedia />
+            <CardBody>
+                <p>
+                    This is mean to be an area in which you 
+                    can describe the card. You may use other
+                    components within the CardBody. But, should
+                    follow the conventions set out in the 
+                    specification
+                </p>
+            </CardBody>
+            <CardActions>
+                <Button label="Action 1" priority={"primary"}/>
+                <Button label="Action 2" priority={"primary"}/>
+            </CardActions>
         </Card>
         </div>
     </div>

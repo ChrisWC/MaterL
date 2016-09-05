@@ -27,7 +27,6 @@ class Component extends React.Component {
            open:this.props.open,
            behaviour:this.props.behaviour
         }
-
     }
     static propTypes = {
         showShadows: PropTypes.bool,
@@ -133,7 +132,7 @@ class Component extends React.Component {
                     draggable='false' onClick={this.handleClick} 
                     onDragStart={this.handleDrag} foreground={[]} 
                     check={this.props.check} width={this.props.width} 
-                    className={this.props.className} style={this.state.style} 
+                    style={this.state.style} className={this.props.className}
                     popover={this.props.popover} depth={this.props.depth}>
                         {this.props.children}
                 </Sheet>]}/>)
@@ -150,8 +149,8 @@ class Component extends React.Component {
                     draggable='false' onClick={this.handleClick} 
                     onDragStart={this.handleDrag} foreground={[]} 
                     check={this.props.check} width={this.props.width} 
-                    className={this.props.className} style={this.state.style} 
-                    popover={this.props.popover} depth={this.props.depth}>
+                    style={this.state.style} className={this.props.className} 
+                    popover={this.props.popover}  depth={this.props.depth}>
                         {this.props.children}
                 </Sheet>)
     }

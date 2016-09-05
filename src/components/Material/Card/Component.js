@@ -10,34 +10,7 @@
 import React, { PropTypes } from 'react';
 import Paper from '../Paper';
 
-const style = {
-    display:'inline-block',
-    position:'relative',
-    width:'auto',
-    padding:'0px',
-    margin:'0px',
-    float:'left'
-}
-
 const inner_style = {
-    margin:'0px',
-    display:'inline-block',
-    position:'relative',
-    float:'clear'
-}
-const titleStyle = {
-    height:'48px',
-    display:'block',
-    lineHeight:'48px',
-    paddingLeft:'24px',
-    paddingRight:'24px',
-    position:'relative'
-}
-const bodyStyle = {
-    padding:'10px',
-    display:'inline-block',
-    position:'relative',
-    height:'100%',
 }
 class Component extends React.Component {
     constructor(props, context) {
@@ -45,24 +18,14 @@ class Component extends React.Component {
 
         this.state = {
             style:{
-                ...style
+                ...this.props.style
             },
-            inner_style:{
-                ...inner_style,
-                ...context.theme.card.style
-            },
-            titleStyle:{
-                ...titleStyle,
-                ...context.palette.primary.primary,
-            },
-            bodyStyle:{
-                ...bodyStyle,
-                padding:context.theme.card.text.inset + 'px',
-            }
         }
     }
     static propTypes = {
         title: PropTypes.string,
+        columns: PropTypes.number,
+        width: PropTypes.string
     };
     static defaultProps = {
     };
@@ -72,11 +35,9 @@ class Component extends React.Component {
     }
     render() {
         return(
-            <div style={this.state.style} role={'card'}>
-                <Paper role={"card"} width={this.props.width} style={this.state.inner_style} depth={1}>    
-                    {this.props.children}
-                </Paper>
-            </div>
+            <Paper role={"card"} width={this.props.width} style={this.state.style} columns={this.props.columns} className={this.context.theme.card.container} depth={1}>    
+                {this.props.children}
+            </Paper>
         );
     }
 }
