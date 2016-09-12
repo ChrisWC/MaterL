@@ -10,23 +10,28 @@
 .root {
   margin: 0;
 }
+.cycle {
 
+}
+.grow {
+
+}
+.progress {
+
+}
 .link {
   display: inline-block;
   padding: 3px 8px;
   text-decoration: none;
   font-size: 1.125em; /* ~18px */
 }
-.card {
+.drawer {
+    width:320px;
+    height:100%;
+    background:grey;
     float:left;
-    position:relative;
-}
-.body {
-}
-.title {
-    padding:'0px';
-    height:'72px';
-    width:'100%';
+    overflow:auto;
+    position:fixed;
 }
 .link,
 .link:active,
