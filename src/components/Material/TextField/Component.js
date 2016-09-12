@@ -17,7 +17,6 @@ import React, { PropTypes } from 'react';
 
 import classNames from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Component.css';
 import BarDecor from '../BarDecor';
 /****************************************************************
  ****************************************************************/
