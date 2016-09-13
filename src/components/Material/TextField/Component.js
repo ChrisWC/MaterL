@@ -238,6 +238,7 @@ class Component extends React.Component {
                 top:24px;
                 line-height:16px;
                 font-size:16px;
+                height:16px;
                 height:auto;
             }
             .floatinghint-dirty {

@@ -147,9 +147,10 @@ class App extends Component {
                         <Palette priority={"secondary"} color={"pink"} primary={"500"} secondary={"700"} default={"600"}>
                             <Theme>
                                 <Paper role={"body"}>
-                                <AppBar icon={menuButton} title={"MaterL"} right={<TextField hintText={"Search"} 
+                                <AppBar icon={menuButton} title={"MaterL"} right={<div><div style={{float:"left"}}><TextField hintText={"Search"} 
                                     icon={<Icon resolution={"24px"} component={"search"}/>}
-                                    dropdown={true} getOptions={(v) => {return ['Option 1', 'Option 2', 'Option 3']} }/>}/>
+                                    dropdown={true} getOptions={(v) => {return ['Option 1', 'Option 2', 'Option 3']} }/>
+                                    </div><div style={{float:"left"}}><Icon component={"menu"}/></div></div>}/>
                                 {leftDrawer}
                                 {this.props.children}
                                 </Paper>
