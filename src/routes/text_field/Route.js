@@ -46,6 +46,16 @@ function Route({}, context) {
                 <TextField hintText="Username" floatingHintText="Enter Username"/><br />
                 <TextField value="password" password={true} hintText="Password" floatingHintText="Enter Password"/>
             </section>
+            <section>
+                <p>TextField as a selector:</p>
+                <TextField dropdown={true} hintText="Fill suggestions" floatingHintText="Enter Text" 
+                    getOptions={(val) => {
+                        return ["Option 1", "Option 2", "Option 3"]
+                    }}/><br />
+            </section>
+            <section>
+
+            </section>
         </div>
     </div>
   );

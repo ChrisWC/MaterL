@@ -35,17 +35,23 @@ class Component extends React.Component {
         }
     }
     getPosition = (props) => {
-        var rect = this.refs['container'].getBoundingClientRect()
-        var height = rect.bottom;
-        var position = {
-                minWidth:props.summoningComponent.right - this.props.summoningComponent.left,
-                left:props.summoningComponent.left,
-                top:props.summoningComponent.bottom
-        }
-        if (height > window.innerHeight) {
-            return {...position, top:props.summoningComponent.top -(rect.bottom-rect.top)};
-        } else {
-            return position
+        if (this.state.open) {
+            var cont = this.refs['container']
+            console.log(this.state)
+            console.log(cont)
+            console.log(this.refs)
+            var rect = this.refs['container'].getBoundingClientRect()
+            var height = rect.bottom;
+            var position = {
+                    minWidth:props.summoningComponent.right - this.props.summoningComponent.left,
+                    left:props.summoningComponent.left,
+                    top:props.summoningComponent.bottom
+            }
+            if (height > window.innerHeight) {
+                return {...position, top:props.summoningComponent.top -(rect.bottom-rect.top)};
+            } else {
+                return position
+            }
         }
     }
     static propTypes = {
@@ -106,6 +112,7 @@ class Component extends React.Component {
     }
     handleClose = () => {
         //this.props.handleClose();
+        console.log("HANDLE CLOSE")
         this.setState({open:false});
     }
     handleClick = (e, v, context) => {

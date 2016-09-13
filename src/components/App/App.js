@@ -37,6 +37,7 @@ import Icon from '../Material/Icon';
 import CommonFunctions from '../Material/CommonFunctions';
 import Device from '../Material/Device';
 import history from '../../core/history';
+import TextField from '../Material/TextField';
 
 class App extends Component {
     constructor(props, context) {
@@ -146,7 +147,9 @@ class App extends Component {
                         <Palette priority={"secondary"} color={"pink"} primary={"500"} secondary={"700"} default={"600"}>
                             <Theme>
                                 <Paper role={"body"}>
-                                <AppBar icon={menuButton} title={"MaterL"}/>
+                                <AppBar icon={menuButton} title={"MaterL"} right={<TextField hintText={"Search"} 
+                                    icon={<Icon resolution={"24px"} component={"search"}/>}
+                                    dropdown={true} getOptions={(v) => {return ['Option 1', 'Option 2', 'Option 3']} }/>}/>
                                 {leftDrawer}
                                 {this.props.children}
                                 </Paper>

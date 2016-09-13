@@ -50,8 +50,12 @@ class Component extends React.Component {
     static contextTypes = {
         theme: PropTypes.object
     }
-    handleMenuClick = (index) => {
-        this.setState({activeItem:index})
+    handleMenuClick = (e, key) => {
+        this.setState({activeItem:key})
+        
+        if (this.props.handleChange) {
+            this.props.handleChange(e, key)
+        }
     }
     render() {
         return(
@@ -62,7 +66,7 @@ class Component extends React.Component {
                             return React.cloneElement(val, {key:key, context:"menu",toggle:true, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
                                 onClick:(e)=>{
                                     e.stopPropagation()
-                                    this.handleMenuClick(key);
+                                    this.handleMenuClick(e, key);
                                     val.props.onClick(e);
                                 }
                             });
@@ -75,7 +79,7 @@ class Component extends React.Component {
                                     return React.cloneElement(sval, {key:key, menuDepth:(this.state.menuDepth+1), width:this.props.width, sval:sval, context:"menu", open:active, toggle:true, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
                                         onClick:(e)=>{
                                             e.stopPropagation()
-                                            this.handleMenuClick(key);
+                                            this.handleMenuClick(e, key);
                                             val.props.onClick(e);
                                         }
                                     });
@@ -88,7 +92,7 @@ class Component extends React.Component {
                             smenu = [React.cloneElement(val, {key:key, menuDepth:this.state.menuDepth, open:(this.state.activeItem==key), context:"menu",toggle:true, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
                                 onClick:(e)=>{
                                     e.stopPropagation()
-                                    this.handleMenuClick(key);
+                                    this.handleMenuClick(e, key);
                                     if (val.props.onClick) {
                                         val.props.onClick(e);
                                     };

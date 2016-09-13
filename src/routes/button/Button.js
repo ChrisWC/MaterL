@@ -16,6 +16,7 @@ import Menu from '../../components/Material/Menu/';
 import Button from '../../components/Material/Button';
 import PopOver from '../../components/Material/PopOver';
 import Card from '../../components/Material/Card';
+import DropDown from '../../components/Material/DropDown';
 import CardTitle from '../../components/Material/Card/CardTitle';
 import CardBody from '../../components/Material/Card/CardBody';
 
@@ -108,7 +109,7 @@ function ButtonRoute(props, context) {
                 <CardBody>
                     <div>
                     <p>This is an example of a Dropdown Button. Dropdown buttons display multiple sections</p>
-                    <Button context={"footer"} label="Footer Button" raised={true}></Button>
+                    <DropDown label={"dropdown"} raised={true} options={["Option 1", "Option 2", "Option 3"]}/>
                     <Button context={"dialog"} label="Dialog Button" raised={true}></Button>
                     </div>
                 </CardBody>

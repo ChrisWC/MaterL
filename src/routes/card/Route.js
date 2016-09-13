@@ -35,7 +35,7 @@ function Route({}, context) {
         <p>
             Cards should have a title, descriptive text, and controls
         </p>
-        <Card style={{width:"360px",height:"480px"}}>
+        <Card style={{width:"360px"}}>
             <CardTitle title={"A Simple Text Card"}/>
             <CardBody>
                 <p>A Card can be simply made out of text. This text
@@ -65,13 +65,18 @@ function Route({}, context) {
             <CardTitle title={"Squirrel"} subtitle={"A Fierce Beast"}/>
             <CardMedia src={"http://www.livescience.com/images/i/000/025/221/original/squirrel.jpg?interpolation=lanczos-none&downsize=*:1000"}/>
             <CardBody>
-                <p>
                     This is mean to be an area in which you 
                     can describe the card. You may use other
                     components within the CardBody. But, should
                     follow the conventions set out in the 
-                    specification
-                </p>
+                    specification.
+                    This text should be revealed by scrolling.
+                    dfsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasd
+                    aafffffffffffffffffffffffffffffff
+                    dsafffffffffffffffffffffffffffffffff
+                    asdffffffffffffffffff
+                    asdffffffffffffffffffffffffffffffffffff
+                    adsfffffffffffffffffff
             </CardBody>
             <CardActions>
                 <Button label="Action 1" priority={"primary"}/>
@@ -88,7 +93,7 @@ function Route({}, context) {
                     can describe the card. You may use other
                     components within the CardBody. But, should
                     follow the conventions set out in the 
-                    specification
+                    specification.
                 </p>
             </CardBody>
             <CardActions>

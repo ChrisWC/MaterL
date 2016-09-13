@@ -211,8 +211,8 @@
     padding:0px;
     border:none;
     border-radius:0px;
-    padding-top:36px;
-    padding-bottom:8px;
+    padding-top:24px;
+    padding-bottom:4px;
     width:100%;
     display:block;
     position:relative;
@@ -223,7 +223,9 @@
     outline:none;
 }
 .textfield i {
-    padding-top:36px;
+    position:relative;
+    right:24px;
+    padding-top:20px;
     padding-bottom:8px;
 }
 /*.textfield-dense textarea, input {
@@ -263,11 +265,16 @@
     display:inline-block;
     position:relative;
     float:clear;
+    clear:both;
     height:auto;
     border-radius:2px;
+    overflow:auto;
+}
+.card > div {
+    position:relative;
+    clear:both;
     overflow:hidden;
 }
-
 .cardtitle {
     overflow:auto;
     padding-bottom:16px;
@@ -329,8 +336,13 @@
     padding-right:16px;
     padding-top:16px;
     padding-bottom:16px;
+    display:inline-block;
+    overflow:hidden;
+    position:relative;
 }
-
+.cardbody * {
+    overflow:hidden;
+}
 .cardbody > p {
     font-size:14px;
     padding:0px;
@@ -354,6 +366,10 @@
     height:44px;
     margin-bottom:4px;
     margin-top:4px;
+}
+.cardactions:last-child {
+    position:absolute;
+    bottom:0;
 }
 .cardactions > div > .button {
     margin-left:4px;

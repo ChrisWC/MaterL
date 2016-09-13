@@ -89,7 +89,7 @@ class Component extends React.Component {
                 {this.props.icon? React.cloneElement(this.props.icon, {...this.props.icon.props, contextName:'appbar'}):null}
                 </span>
                 <span style={this.state.title_style}>{this.props.title}</span>
-                <div style={{position:'relative', paddingRight:'8px', float:'right', paddingTop:'4px', paddingBottom:'4px', display:'block', lineHeight:'48px', height:'48px'}}>
+                <div style={{paddingRight:'8px', float:'right'}}>
                     {this.props.right }
                 </div>
             </Paper>

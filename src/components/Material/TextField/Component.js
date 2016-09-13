@@ -18,6 +18,11 @@ import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import BarDecor from '../BarDecor';
+import PopOver from '../PopOver';
+import Layer from '../Layer';
+import Menu from '../Menu';
+import Button from '../Button';
+import Icon from '../Icon';
 /****************************************************************
  ****************************************************************/
 class Component extends React.Component {
@@ -42,20 +47,61 @@ class Component extends React.Component {
         inset:PropTypes.bool,
         hintText:PropTypes.string,
         value:PropTypes.string.isRequired,
+        dropdown:PropTypes.bool,
+        getOptions:PropTypes.function
     };
     static defaultProps = {
         error:false,
         valid:false,
         required:false,
         inset:false,
-        value:""
+        value:"",
+        dropdwon:false,
+        getOptions:(val) => {
+            //should generate a filtered list using val
+            //ideally an id associated with the value, if valid, will
+            //be stored outside of this function (e.g. redux)
+            return []
+        }
     };
     static contextTypes = {
+        sheets: React.PropTypes.arrayOf(React.PropTypes.object),
         palette: React.PropTypes.object,
         theme: React.PropTypes.object
     };
+    getPopoverAsOverlay = () => {
+        var rect = this.refs['cont'].getBoundingClientRect();
+        var minWidth = rect.right - rect.left;
+        var left = rect.left;
+        var top = rect.bottom;
+        var popover = this.getPopOver();
+        return <Layer role={'layer'} foreground={[React.cloneElement(popover, 
+                    {open:false, handleClose:() =>{
+                            this.setState({active:false})
+                            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getPopoverAsOverlay, false)
+                        }, 
+                        minWidth:minWidth, width:'auto', left:left, 
+                        top:top, summoningComponent:rect, 
+                        ...popover.props})]}/>
+    }
+
     handleClick = (e) => {
-        this.setState({active:!this.state.active});
+        console.log("CLICK")
+        if (!this.props.dropdown) {
+            this.setState({active:!this.state.active});
+        }
+        if (this.props.dropdown && !this.state.active) {
+            console.log("TEGFDFGFDSGDFGDFGDFGFD")
+            //this.setState({inner_style:{...this.state.inner_style, backgroundColor:colors.blue900,}})
+            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getPopoverAsOverlay, true)
+            this.setState({active:true})
+        }
+        else if (this.props.dropdown && this.state.active) {
+            //this.setState({inner_style:{...this.state.inner_style, backgroundColor:colors.blue700,}})
+            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getPopoverAsOverlay, false)
+            //this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(React.cloneElement(this.props.popover, {open:false, handleClose:this.handleClick, minWidth:minWidth, width:'auto', left:left, top:top , summoningComponent:rect, ...this.props.popover.props}))
+            this.setState({active:false})
+        }
     }
     handleChange = (e, v) => {
         if (this.state.disabled) {
@@ -68,14 +114,43 @@ class Component extends React.Component {
         }
     }
     handleFocus = (e) => {
+
+        if (this.props.dropdown && !this.state.disabled) {
+            console.log("TEGFDFGFDSGDFGDFGDFGFD")
+            //this.setState({inner_style:{...this.state.inner_style, backgroundColor:colors.blue900,}})
+            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getPopoverAsOverlay, true)
+        }
         if (!this.state.disabled) {
             this.setState({active:true})
         }
-
         //move floating hint text to top
     }
     handleBlur = (e) => {
+        /*if (this.props.dropdown && !this.state.disabled) {
+            //this.setState({inner_style:{...this.state.inner_style, backgroundColor:colors.blue700,}})
+            this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getPopoverAsOverlay, false)
+            //this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(React.cloneElement(this.props.popover, {open:false, handleClose:this.handleClick, minWidth:minWidth, width:'auto', left:left, top:top , summoningComponent:rect, ...this.props.popover.props}))
+        }*/
         this.setState({active:false})
+    }
+    getPopOver = () => {
+        var options = this.props.getOptions(this.state.value)
+        return (
+            <PopOver role="popover" {...this.props}>
+                <Menu handleChange={(e, v) => {
+                        console.log(v)
+
+                        this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getPopoverAsOverlay, false)
+                        this.setState({...this.state, value:options[v], dirty:true, active:false})
+                    }}>
+                    {options.length == 0? 
+                        <Button contextName="menu" label={"Nothing Here."}/>:
+                            options.map((val, ind, arr) => {
+                                return <Button contextName="menu" label={val}/>
+                            })}
+                </Menu>
+            </PopOver>
+        )
     }
     render() {
         const css = `
@@ -109,7 +184,7 @@ class Component extends React.Component {
                 border-style:solid;
                 height:3px;
                 display:block;
-                border-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
+                border-color:`+this.context.palette['default']['default'].backgroundColor+`;
                 animation-name:primary-bar;
                 animation-duration:1s;
                 padding:0px;
@@ -160,7 +235,8 @@ class Component extends React.Component {
                 bottom:0px;
                 left:0px;
                 right:0px;
-                top:36px;
+                top:24px;
+                line-height:16px;
                 font-size:16px;
                 height:auto;
             }
@@ -170,8 +246,8 @@ class Component extends React.Component {
                 bottom:0px;
                 left:0px;
                 right:0px;
-                padding-top:16px;
-                padding-bottom:8px;
+                padding-top:4px;
+                padding-bottom:4px;
                 top:0px;
                 font-size:12px;
                 height:auto;
@@ -183,7 +259,7 @@ class Component extends React.Component {
             }
         `
         return (
-            <div className={this.context.theme.textfield.default} onClick={this.props.onClick}>
+            <div ref={'cont'} className={this.context.theme.textfield.default} onClick={this.props.onClick}>
                 <style>{css}</style> 
                 <div style={{float:"left"}}>
                 <div className={(this.state.active || this.state.dirty)? 'floatinghint-dirty':'floatinghint-clean'} ref="FloatingHintText">
@@ -202,9 +278,8 @@ class Component extends React.Component {
                 </span>
                 <div className={'helptext'}>{this.props.helpText}</div>
                 </div>
-                <div style={{float:"left"}}>
                     {this.props.icon? this.props.icon:null}
-                </div>
+                    {this.props.dropdown && !this.props.icon ? <Icon component={"arrow_drop_down"}/>:null}
             </div>
         );
     }
