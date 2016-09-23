@@ -22,7 +22,6 @@ const inner_style = {
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
-        console.log(this.props.columnWidth)
         this.state = {
             style:{
                 ...this.props.style,
