@@ -87,6 +87,10 @@ class Component extends React.Component {
             if (nProps.style.top && nProps.style.left) {
                 nstate = {style:{...this.state.style, ...nstate.style, top:nProps.style.top, left:nProps.style.left}}
             }
+            if (nProps.style.width) {
+                nstate = {...nstate, style:{...nstate.style, width:nProps.style.width}}
+
+            }
         }
         nstate = {...this.state, style:{...this.state.style, ...nstate.style}, behaviour:(typeof nProps.behaviour != 'undefined')? nProps.behaviour:this.state.behaviour}
 

@@ -20,6 +20,12 @@ import s from './Component.css'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 const defaultTheme = {
+    appbar:{
+        default:s.appbar,
+        title:s['appbar-title'],
+        inset:16,
+        zDepth:4,
+    },
     choice:{
         default:s.choice,
         body:s['choice-body'],
@@ -28,10 +34,6 @@ const defaultTheme = {
         default:s.textfield,
         floatinghint:s['textfield-floatinghint'],
         hint:s['textfield-hint']
-    },
-    appbar:{
-        inset:16,
-        zDepth:4,
     },
     menu:{
         menu:s['menu']

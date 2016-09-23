@@ -38,13 +38,15 @@ function Route({}, context) {
             <h3>
                 Disabled
             </h3>
-            <TextField hintText="Disabled" floatingHintText="Disabled" disabled={true} icon={<Icon component={"create"}/>}/><Button label={"A Button"} priority={"primary"} raised={true}/>
+            <div style={{position:'relative'}}>
+            <TextField value="MOre" hintText="Disabled" floatingHintText="Disabled" disabled={false} icon={<Icon component={"create"}/>}/><Button raised={true} icon={<Icon component={"create"}/>} label={"A Button"} priority={"primary"}/><Button label={"A Button"} priority={"primary"}/>
+            </div>
             <h3>
                 Inline
             </h3>
             <section>
                 <TextField hintText="Username" floatingHintText="Enter Username"/><br />
-                <TextField value="password" password={true} hintText="Password" floatingHintText="Enter Password"/>
+                <TextField value="password" password={true} hintText="Password" floatingHintText="Enter Password"/><br />
             </section>
             <section>
                 <p>TextField as a selector:</p>

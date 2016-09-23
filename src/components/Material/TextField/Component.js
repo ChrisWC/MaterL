@@ -24,6 +24,11 @@ import Menu from '../Menu';
 import Button from '../Button';
 import Icon from '../Icon';
 /****************************************************************
+ * Variant Options:
+ *      dropdown -- display a popover with additional information,
+ *          and suggested completions.
+ *      filefield -- prompt user with the file browser and accept 
+ *          the uer selection.
  ****************************************************************/
 class Component extends React.Component {
     constructor(props) {
@@ -48,7 +53,8 @@ class Component extends React.Component {
         hintText:PropTypes.string,
         value:PropTypes.string.isRequired,
         dropdown:PropTypes.bool,
-        getOptions:PropTypes.function
+        filefield:PropTypes.bool,
+        getOptions:PropTypes.func
     };
     static defaultProps = {
         error:false,
@@ -56,6 +62,7 @@ class Component extends React.Component {
         required:false,
         inset:false,
         value:"",
+        filefield:false,
         dropdwon:false,
         getOptions:(val) => {
             //should generate a filtered list using val
@@ -182,13 +189,13 @@ class Component extends React.Component {
                 border-right-width:0px;
                 border-bottom-width:0px;
                 border-style:solid;
-                height:3px;
+                height:0px;
                 display:block;
                 border-color:`+this.context.palette['default']['default'].backgroundColor+`;
                 animation-name:primary-bar;
                 animation-duration:1s;
                 padding:0px;
-                padding-bottom:2px;
+                padding-bottom:8px;
                 text-align:center;
             }
             .textfield-bar-clean {
@@ -197,11 +204,11 @@ class Component extends React.Component {
                 border-right-width:0px;
                 border-bottom-width:0px;
                 border-style:solid;
-                height:3px;
+                height:0px;
                 display:block;
                 border-color:`+this.context.palette['default']['default'].backgroundColor+`;
                 padding:0px;
-                padding-bottom:2px;
+                padding-bottom:8px;
                 text-align:center;
             }
             .textfield-bar-error {
@@ -210,11 +217,11 @@ class Component extends React.Component {
                 border-right-width:0px;
                 border-bottom-width:0px;
                 border-style:solid;
-                height:3px;
+                height:0px;
                 display:block;
                 border-color:`+this.context.palette['secondary']['default'].backgroundColor+`;
                 padding:0px;
-                padding-bottom:2px;
+                padding-bottom:8px;
                 text-align:center;
             }
             .textfield-bar-disabled {
@@ -223,10 +230,11 @@ class Component extends React.Component {
                 border-right-width:0px;
                 border-bottom-width:0px;
                 border-style:dashed;
-                height:3px;
+                height:2px;
                 display:block;
                 border-color:`+this.context.palette['default']['default'].backgroundColor+`;
                 padding:0px;
+                padding-bottom:8px;
                 text-align:center;
             }
             .floatinghint-clean {
@@ -235,11 +243,11 @@ class Component extends React.Component {
                 bottom:0px;
                 left:0px;
                 right:0px;
-                top:24px;
+                top:16px;
+                padding-bottom:8px;
                 line-height:16px;
                 font-size:16px;
-                height:16px;
-                height:auto;
+                height:20px;
             }
             .floatinghint-dirty {
                 position:absolute;
@@ -247,7 +255,7 @@ class Component extends React.Component {
                 bottom:0px;
                 left:0px;
                 right:0px;
-                padding-top:4px;
+                padding-top:0px;
                 padding-bottom:4px;
                 top:0px;
                 font-size:12px;
@@ -274,7 +282,7 @@ class Component extends React.Component {
                         onBlur={this.handleBlur}
                         value={this.state.value}>
                 </textarea>} 
-                <span style={{width:'100%',paddingBottom:'8px'}}>
+                <span style={{width:'100%',paddingBottom:'0px'}}>
                     {this.state.incognito? null:<span className={this.state.disabled? 'textfield-bar-disabled':(this.state.dirty? (this.state.error? 'textfield-bar-error':'textfield-bar-dirty'):(this.props.required? (this.state.error? 'textfield-bar-error':'textfield-bar-clean'):'textfield-bar-clean'))}></span>}
                 </span>
                 <div className={'helptext'}>{this.props.helpText}</div>

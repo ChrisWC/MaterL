@@ -22,27 +22,37 @@ const inner_style = {
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
-
+        console.log(this.props.columnWidth)
         this.state = {
             style:{
-                ...this.props.style
+                ...this.props.style,
+                width:this.props.columnWidth? this.props.columnWidth+'px':this.props.style.width
             },
         }
     }
     static propTypes = {
         title: PropTypes.string,
         columns: PropTypes.number,
-        width: PropTypes.string
+        width: PropTypes.string,
+        style: PropTypes.object
     };
     static defaultProps = {
+        style:{
+            width:200
+        }
     };
     static contextTypes = {
         theme: PropTypes.object,
         palette: PropTypes.object
     }
+    componentWillReceiveProps = (nProps) => {
+        if (nProps.columnWidth && this.props.style && this.props.style.width && nProps.columnWidth > parseInt(this.props.style.width, 10)) {
+            this.setState({style:{...this.state.style, width:nProps.columnWidth + "px"}})
+        }
+    }
     render() {
         return(
-            <Paper role={"card"} width={this.props.width} style={this.state.style} columns={this.props.columns} className={this.context.theme.card.container} depth={1}>    
+            <Paper role={"card"} style={this.state.style} columns={this.props.columns} className={this.context.theme.card.container} depth={1}>    
                 {this.props.children}
             </Paper>
         );

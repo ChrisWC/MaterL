@@ -111,6 +111,7 @@ function ButtonRoute(props, context) {
                     <p>This is an example of a Dropdown Button. Dropdown buttons display multiple sections</p>
                     <DropDown label={"dropdown"} raised={true} options={["Option 1", "Option 2", "Option 3"]}/>
                     <Button context={"dialog"} label="Dialog Button" raised={true}></Button>
+                    <Button label="Primary" priority={'primary'} getfile={true}/>
                     </div>
                 </CardBody>
             </Card>

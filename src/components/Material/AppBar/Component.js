@@ -31,27 +31,10 @@ class Component extends React.Component {
             style:{
                 ...context.palette['primary']['primary'],
                 color:'white',
-                width:'100%',
-                height:'64px',
-                lineHeight:'24px',
-                left:'0px',
-                top:'0px',
-                paddingLeft:'0px',
-                paddingRight:'0px',
-                display:'block',
-                position:'absolute',
             },
             title_style: {
-                display:'inline-block',
-                margin:'0px',
-                padding:'0px',
-                border:'none',
                 color:'white',
                 paddingLeft:this.props.icon? '0px':'24px',
-                height:'64px',
-                lineHeight:'64px',
-                fontSize:'24px',
-                float:'left'
             }
         }
 
@@ -68,7 +51,8 @@ class Component extends React.Component {
         role:"appbar"
     }
     static contextTypes = {
-        palette: React.PropTypes.object
+        palette: React.PropTypes.object,
+        theme: React.PropTypes.object
     }
     static childContextTypes = {
         backgroundColor: React.PropTypes.object,
@@ -84,11 +68,11 @@ class Component extends React.Component {
     }
     render() {
         return(
-            <Paper style={this.state.style} depth={4} {...this.props} {...this.defaultProps}>
+            <Paper style={this.state.style} className={this.context.theme.appbar.default} depth={4} {...this.props} {...this.defaultProps}>
                 <span style={{float:'left'}}>
                 {this.props.icon? React.cloneElement(this.props.icon, {...this.props.icon.props, contextName:'appbar'}):null}
                 </span>
-                <span style={this.state.title_style}>{this.props.title}</span>
+                <span style={this.state.title_style} className={this.context.theme.appbar.title}>{this.props.title}</span>
                 <div style={{paddingRight:'8px', float:'right'}}>
                     {this.props.right }
                 </div>

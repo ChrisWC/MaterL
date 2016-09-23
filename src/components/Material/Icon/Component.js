@@ -25,9 +25,6 @@ class Component extends React.Component {
 
         this.state = {
             style: {
-                fill:this.props.style.fill,
-                display:'inline-block',
-                ...this.props.style,
             },
             clientActive:false,
         }

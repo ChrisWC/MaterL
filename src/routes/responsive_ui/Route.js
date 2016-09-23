@@ -25,18 +25,39 @@ import Icon from '../../components/Material/Icon'
 import Choice from '../../components/Material/Choice'
 const title = 'React Starter Kit';
 
+import ResponsiveUI from '../../components/Material/Sheet/ResponsiveUI'
 function Route({}, context) {
   context.setTitle(title);
   return (
-    <div className={s.root}>
-        <div className={s.container}>
-        <Card width={"small-1"}>
-            <CardTitle title={"Card"}/>
-            <CardBody>
-            </CardBody>
-        </Card>
-        </div>
-    </div>
+        <ResponsiveUI responsive={true}>
+            <Card style={{width:'150px', height:'316px'}}>
+            1
+            </Card>
+            <Card style={{width:'150px', height:'150px'}}>
+            2
+            </Card>
+            <Card style={{width:'150px', height:'150px'}}>
+            3
+            </Card>
+            <Card style={{width:'150px', height:'150px'}}>
+            </Card>
+            <Card style={{width:'150px', height:'150px'}}>
+            </Card>
+            <Card style={{width:'150px', height:'150px'}}>
+            </Card>
+            <Card style={{width:'150px', height:'316px'}}>
+            </Card>
+            <Card style={{width:'150px', height:'150px'}}>
+            </Card>
+            <Card style={{width:'150px', height:'150px'}}>
+            </Card>
+            <Card style={{width:'150px', height:'316px'}}>
+            </Card>
+            <Card style={{width:'150px', height:'150px'}}>
+            </Card>
+            <Card style={{width:'150px', height:'150px'}}>
+            </Card>
+        </ResponsiveUI>
   );
 }
 

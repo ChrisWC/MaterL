@@ -27,15 +27,13 @@ import Icon from '../../components/Material/Icon'
 import Choice from '../../components/Material/Choice'
 const title = 'React Starter Kit';
 
+import ResponsiveUI from '../../components/Material/Sheet/ResponsiveUI'
 function Route({}, context) {
   context.setTitle(title);
   return (
-    <div className={s.root}>
-        <div className={s.container}>
-        <p>
-            Cards should have a title, descriptive text, and controls
-        </p>
-        <Card style={{width:"360px"}}>
+    <div>
+        <ResponsiveUI responsive={true}>
+        <Card style={{width:"200px"}}>
             <CardTitle title={"A Simple Text Card"}/>
             <CardBody>
                 <p>A Card can be simply made out of text. This text
@@ -119,7 +117,7 @@ function Route({}, context) {
                 <Button label="Action 2" priority={"primary"}/>
             </CardActions>
         </Card>
-        </div>
+        </ResponsiveUI>
     </div>
   );
 }

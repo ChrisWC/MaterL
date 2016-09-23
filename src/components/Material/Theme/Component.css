@@ -28,7 +28,6 @@
 }
 
 .button i {
-    float:left;
     line-height:36px;
     padding-right:8px;
 }
@@ -62,7 +61,29 @@
     line-height:32px;
     vertical-align:middle;
 }
-
+.appbar {
+    color:white;
+    width:100%;
+    height:64px;
+    line-height:24px;
+    left:0px;
+    top:0px;
+    padding-left:0px;
+    padding-right:0px;
+    display:block;
+    position:absolute;
+}
+.appbar-title {
+    display:inline-block;
+    margin:0px;
+    padding:0px;
+    border:none;
+    color:white;
+    height:64px;
+    line-height:64px;
+    font-size:24px;
+    float:left;
+}
 .appbar-button {
     float:left;
     font-size:24px;
@@ -201,8 +222,10 @@
 }
 
 .textfield {
+    clear:all;
     display:inline-block;
     position:relative;
+    top:0px;
 }
 .textfield-hint {
     display:block;
@@ -212,7 +235,7 @@
     padding:0px;
     border:none;
     border-radius:0px;
-    padding-top:24px;
+    padding-top:16px;
     padding-bottom:4px;
     width:100%;
     display:block;
@@ -224,10 +247,14 @@
     outline:none;
 }
 .textfield i {
-    position:relative;
-    right:24px;
-    padding-top:20px;
-    padding-bottom:4px;
+    position:absolute;
+    right:0px;
+    line-height:24px;
+    height:24px;
+    padding-top:12px;
+    padding-bottom:0px;
+    display:inline-block;
+    overflow:hidden;
 }
 /*.textfield-dense textarea, input {
     background-color:Transparent;
@@ -270,6 +297,7 @@
     height:auto;
     border-radius:2px;
     overflow:auto;
+    box-sizing:border-box;
 }
 .card > div {
     position:relative;
