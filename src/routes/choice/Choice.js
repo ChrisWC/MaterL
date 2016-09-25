@@ -26,8 +26,7 @@ const title = 'React Starter Kit';
 function ChoiceRoute({}, context) {
   context.setTitle(title);
   return (
-    <div className={s.root}>
-        <div className={s.container}>
+    <div>
             <p>This is an example of the Choice Component. Choice components can be
             use as Select Many, Select One, or Enable/Disable Components.</p>
             <Choice role="check" active={false}> This is a choice. </Choice> <br />
@@ -35,7 +34,6 @@ function ChoiceRoute({}, context) {
             <Choice role="star" active={false}> This is a choice. </Choice> <br />
             <Choice role="check" active={false}> <p>First Line. <br/>
             Second Line. <br/></p></Choice> <br />
-        </div>
     </div>
   );
 }

@@ -24,10 +24,11 @@ import Choice from '../../components/Material/Choice'
 
 const title = 'React Starter Kit';
 
+import ResponsiveUI from '../../components/Material/Sheet/ResponsiveUI'
 function PopoverRoute(props, context) {
   context.setTitle(title);
   return (
-      <div style={{width:"100%", paddingLeft:"32px", paddingRight:"32px", overflow:"hidden"}}>
+      <ResponsiveUI responsive={true}>
         <Card title={"Popovers"} width={"small-0"}>
             <CardTitle title={"Popover Component"}/>
             <CardBody>
@@ -54,7 +55,7 @@ function PopoverRoute(props, context) {
             </div>
             </CardBody>
         </Card>
-    </div>
+    </ResponsiveUI>
   );
 }
 

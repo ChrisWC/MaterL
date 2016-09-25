@@ -29,33 +29,39 @@ import ResponsiveUI from '../../components/Material/Sheet/ResponsiveUI'
 function Route({}, context) {
   context.setTitle(title);
   return (
-        <ResponsiveUI responsive={true}>
-            <Card style={{width:'150px', height:'316px'}}>
-            1
+        <ResponsiveUI responsive={true} numOfCols={4}>
+            <Card role={"sidepanel"} position={"left"} columnSpan={2} >
+                <CardTitle title={"Sidepanel"} />
+                <CardBody>
+                    <h2>Side Panel</h2>
+                </CardBody>
             </Card>
-            <Card style={{width:'150px', height:'150px'}}>
-            2
+            <Card style={{width:'20px'}}>
+                <CardBody>
+                    1
+                </CardBody>
             </Card>
-            <Card style={{width:'150px', height:'150px'}}>
-            3
+            <Card style={{width:'20px', height:'150px'}}>
             </Card>
-            <Card style={{width:'150px', height:'150px'}}>
+            <Card style={{width:'20px', height:'150px'}}>
             </Card>
-            <Card style={{width:'150px', height:'150px'}}>
+            <Card style={{width:'20px', height:'150px'}}>
             </Card>
-            <Card style={{width:'150px', height:'150px'}}>
+            <Card style={{width:'20px', height:'150px'}}>
             </Card>
-            <Card style={{width:'150px', height:'316px'}}>
+            <Card style={{width:'20px', height:'150px'}}>
             </Card>
-            <Card style={{width:'150px', height:'150px'}}>
+            <Card style={{width:'20px', height:'150px'}}>
             </Card>
-            <Card style={{width:'150px', height:'150px'}}>
+            <Card style={{width:'20px', height:'150px'}}>
             </Card>
-            <Card style={{width:'150px', height:'316px'}}>
+            <Card style={{width:'20px', height:'150px'}}>
             </Card>
-            <Card style={{width:'150px', height:'150px'}}>
+            <Card style={{width:'20px', height:'316px'}}>
             </Card>
-            <Card style={{width:'150px', height:'150px'}}>
+            <Card style={{width:'20px', height:'150px'}}>
+            </Card>
+            <Card style={{width:'20px', height:'150px'}}>
             </Card>
         </ResponsiveUI>
   );

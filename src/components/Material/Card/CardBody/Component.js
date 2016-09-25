@@ -17,21 +17,7 @@
 import React, { PropTypes } from 'react';
 import Paper from '../../Paper';
 
-const style = {
-    display:'inline-block',
-    position:'relative',
-    width:'auto',
-    padding:'10px',
-    margin:'0px',
-    float:'left'
-}
-
-const inner_style = {
-    margin:'0px',
-    display:'inline-block',
-    position:'relative',
-    float:'clear'
-}
+import classNames from 'classnames';
 const titleStyle = {
     height:'48px',
     display:'block',
@@ -50,12 +36,10 @@ class Component extends React.Component {
         super(props, context);
 
         this.state = {
-            titleStyle:{
-                ...titleStyle,
+            style:{
+                height:'auto',
+                width:'100%'
             },
-            bodyStyle:{
-                ...bodyStyle,
-            }
         }
     }
     static propTypes = {
@@ -65,12 +49,34 @@ class Component extends React.Component {
     };
     static contextTypes = {
         theme: PropTypes.object,
-        palette: PropTypes.object
+        palette: PropTypes.object,
+        theme_component_id: PropTypes.object
+    }
+    genCSS = () => {
+       var css = Object.keys(this.state.style).map((val, index, arr) => {
+            var name = val.replace(/([A-Z])/g, (str) => {return '-'+str.toLowerCase();})
+            return ``+name+`:`+this.state.style[val]+`;`
+        })
+        var css_template = '';
+        for (var i = 0; i < css.length; i++) {
+            css_template += ("\t" + css[i] + "\n")
+        }
+        return css_template
+    }
+    componentWillReceiveProps = (nProps) => {
+    }
+    getCSSStyle = () => {
+        return "\n"+`.card-body_`+this.state.theme_id+` {`+"\n"+this.genCSS()+`}`+"\n";
     }
     render() {
         return(
-            <div className={this.context.theme.card.body.container} role={'card'}>
+            <div>
+            <style>
+                {this.getCSSStyle()}
+            </style>
+            <div ref="cont" className={classNames({[this.context.theme.card.body.container]:true,['card-body_'+this.state.theme_id]:true})} role={'card'}>
                 {this.props.children}
+            </div>
             </div>
         );
     }

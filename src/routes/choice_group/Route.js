@@ -18,8 +18,7 @@ const title = 'React Starter Kit';
 function Route({}, context) {
   context.setTitle(title);
   return (
-    <div className={s.root}>
-        <div className={s.container}>
+    <div>
             <h1> Sliders </h1>
             <p>
                 A slider should be discreet, and may contain a label to describe
@@ -37,7 +36,6 @@ function Route({}, context) {
                 be customizable by the user.
             </p>
             <Slider/>
-        </div>
     </div>
   );
 }

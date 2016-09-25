@@ -115,7 +115,6 @@ class Component extends React.Component {
         
         var formfactor = this.context.theme.sheet.widthBreakpoints[this.context.device.device_type.toUpperCase()];
 
-        
        if (this.context.device.device_type.toUpperCase().match(/DESKTOP/)) {
             for (var i in formfactor) {
                 if (window.innerWidth >= formfactor[i].range[0] 
@@ -388,21 +387,22 @@ class Component extends React.Component {
         var toolbars = []
         var content = []
         var drawers = []
-        React.Children.map(props, (val, key, arr) => {
-            if (val != null && val.props != null && val.props !== undefined) {
-                if ((val.props.role && val.props.role == "appbar") || (!val.props.role && val.type.ComposedComponent && val.type.ComposedComponent.defaultProps && val.type.ComposedComponent.defaultProps.role === 'appbar')) {
-                    toolbars.push(React.cloneElement(val, {key:key, handleResize:this.handleResizeElement, ...val.props}))
+        if (props != undefined) {
+            React.Children.map(props, (val, key, arr) => {
+                if (val != null && val.props != null && val.props !== undefined && val.type) {
+                    if ((val.props.role && val.props.role == "appbar") || (!val.props.role && val.type.ComposedComponent && val.type.ComposedComponent.defaultProps && val.type.ComposedComponent.defaultProps.role === 'appbar')) {
+                        toolbars.push(React.cloneElement(val, {key:key, handleResize:this.handleResizeElement, ...val.props}))
+                    }
+                    else if (val.props.role && val.props.role == "drawer"|| (!val.props.role && val.type.ComposedComponent && val.type.ComposedComponent.defaultProps && val.type.ComposedComponent.defaultProps.role === 'drawer')) {
+                        drawers.push(React.cloneElement(val, {ref:('Drawer'+key), key:key, open:true, handleResize:this.handleResizeElement, ...val.props}))
+                    }
+                    else {
+                        content.push(React.cloneElement(val, {key:key, getParentSheets:this.getParentSheets, ...val.props}))
+                    }
                 }
-                else if (val.props.role && val.props.role == "drawer"|| (!val.props.role && val.type.ComposedComponent && val.type.ComposedComponent.defaultProps && val.type.ComposedComponent.defaultProps.role === 'drawer')) {
-                    drawers.push(React.cloneElement(val, {ref:('Drawer'+key), key:key, open:true, handleResize:this.handleResizeElement, ...val.props}))
-                }
-                else {
-                    content.push(React.cloneElement(val, {key:key, getParentSheets:this.getParentSheets, ...val.props}))
-                }
-            }
 
-        })
-
+            })
+        }
         return {toolbars:toolbars, content:content, drawers:drawers}
     }
     getAsOverlay = () => {
@@ -441,10 +441,10 @@ class Component extends React.Component {
                     {css}
                 </style>
                 {elements.toolbars}
-                {(!this.context.sheets || this.context.sheets.length == 0)? <ResponsiveUI className={this.context.theme.sheet.content_area} style={{
+                {(!this.context.sheets || this.context.sheets.length == 0)? <div className={this.context.theme.sheet.content_area} style={{
                     ...this.calculateContentArea()}}>
                     {elements.content}
-                </ResponsiveUI>:<ResponsiveUI>{elements.content}</ResponsiveUI>} 
+                </div>:<div>{elements.content}</div>} 
                 {elements.drawers}
                 {this.state.foregroundActive? this.state.foreground():null}
             </div>

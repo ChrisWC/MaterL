@@ -150,7 +150,9 @@ class App extends Component {
                                 <AppBar icon={menuButton} title={"MaterL"} right={<div><TextField hintText={"Search"} 
                                     icon={<Icon resolution={"24px"} component={"search"}/>}
                                     dropdown={true} getOptions={(v) => {return ['Option 1', 'Option 2', 'Option 3']} }/>
-                                    <Button icon={<Icon component={"menu"}/>}/></div>}/>
+                                    <Button icon={<Icon component={"filter_list"}/>}/>
+                                    <Button icon={<Icon resolution={"24px"} component={"account_circle"}/>}/>
+                                    </div>}/>
                                 {leftDrawer}
                                 {this.props.children}
                                 </Paper>

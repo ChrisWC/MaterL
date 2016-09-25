@@ -15,7 +15,9 @@
 *****************************************************************************/
 
 @import '../../variables.css';
-
+* {
+    vertical-align:top;
+}
 .button {
     font-size:14px;
     font-weight:500;
@@ -29,7 +31,7 @@
 
 .button i {
     line-height:36px;
-    padding-right:8px;
+    padding-right:0px;
 }
 .button > * {
     padding-left:8px;
@@ -84,6 +86,20 @@
     font-size:24px;
     float:left;
 }
+.appbar .button {
+    float:left;
+    font-size:24px;
+    line-height:64px;
+    height:64px;
+    border-radius:0px;
+    border:none;
+    margin:0px;
+    padding-left:16px;
+    padding-right:16px;
+}
+.appbar .button i {
+    line-height:64px;
+}
 .appbar-button {
     float:left;
     font-size:24px;
@@ -99,6 +115,9 @@
     line-height:64px;
 }
 .appbar-button > * {
+    float:left;
+}
+.appbar .button > * {
     float:left;
 }
 .drawer {
@@ -279,6 +298,9 @@
     -webkit-box-shadow:none;
     -moz-box-shadow:none;
 }
+.appbar .textfield {
+    margin-top:10px;
+}
 .primarytext {
 
 }
@@ -292,11 +314,11 @@
     margin:5px;
     display:inline-block;
     position:relative;
-    float:clear;
+    clear:all;
     clear:both;
     height:auto;
     border-radius:2px;
-    overflow:auto;
+    overflow:visible;
     box-sizing:border-box;
 }
 .card > div {
@@ -368,6 +390,7 @@
     display:inline-block;
     overflow:hidden;
     position:relative;
+    box-sizing:border-box;
 }
 .cardbody * {
     overflow:hidden;
@@ -385,7 +408,16 @@
 .card > .cardtitle:last-child {
     padding-bottom:24px;
 }
-
+.responsive-ui {
+    position:relative;
+    left:0px;
+    top:0px;
+    height:100%;
+    margin-right:0px;
+    bottom:-1px;
+    right:-1px;
+    box-sizing:border-box;
+}
 .cardactions {
     padding-left:4px;
     padding-right:4px;
@@ -395,10 +427,6 @@
     height:44px;
     margin-bottom:4px;
     margin-top:4px;
-}
-.cardactions:last-child {
-    position:absolute;
-    bottom:0;
 }
 .cardactions > div > .button {
     margin-left:4px;
@@ -413,6 +441,8 @@
 
 .cardmedia {
     width:100%;
+    height:auto;
+    overflow:hidden;
     display:block;
 }
 

@@ -43,8 +43,7 @@ class Route extends React.Component {
     }
     render() {
       return (
-        <div className={s.root}>
-            <div className={s.container}>
+        <div>
                 <section>
                     <h1 className={s.sectionHeader}>Device and Device Info Components</h1>
                     <p>
@@ -71,7 +70,6 @@ class Route extends React.Component {
                 <section style={{display:'inline-block', width:'100%'}}>
                     <DeviceInfo />
                 </section>
-            </div>
         </div>
       );
   }

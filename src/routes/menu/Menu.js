@@ -23,10 +23,11 @@ import Icon from '../../components/Material/Icon'
 
 const title = 'React Starter Kit';
 
+import ResponsiveUI from '../../components/Material/Sheet/ResponsiveUI'
 function MenuRoute({}, context) {
   context.setTitle(title);
   return (
-      <div>
+      <ResponsiveUI responsive={true}>
         <Card title={"Menu"} width={"small-1"}>
             <CardTitle title={"Menu Component"}/>
             <CardBody>
@@ -63,7 +64,7 @@ function MenuRoute({}, context) {
             </div>
             </CardBody>
         </Card>
-    </div>
+    </ResponsiveUI>
   );
 }
 

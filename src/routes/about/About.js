@@ -15,8 +15,7 @@ const title = 'React Starter Kit';
 
 function About(props, context) {
   return (
-    <div className={s.root}>
-        <div className={s.container}>
+    <div>
             <h1> About </h1>
             <p>This project is currently under active development and many features have not begun being implemented
             or are not fully implemented. Due to its current status it has not been release to the public and will not be
@@ -28,7 +27,6 @@ function About(props, context) {
             so it may be used in any project wanting to adopt it. Commonly desired functionality is able to be included for
             use within projects by using the function wrapper to define it.
             </p>
-        </div>
     </div>
   );
 }

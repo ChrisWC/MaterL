@@ -25,10 +25,11 @@ import Icon from '../../components/Material/Icon'
 import Choice from '../../components/Material/Choice'
 const title = 'React Starter Kit';
 
+import ResponsiveUI from '../../components/Material/Sheet/ResponsiveUI'
 function BarDecorRoute({}, context) {
   context.setTitle(title);
   return (
-    <div>
+    <ResponsiveUI responsive={true}>
         <Card title={"Bar Decor"} width={"small-1"}>
             <CardTitle title={"Checkbox Choice"}/>
             <CardBody>
@@ -49,7 +50,7 @@ function BarDecorRoute({}, context) {
                 </div>
             </CardBody>
         </Card>
-    </div>
+    </ResponsiveUI>
   );
 }
 

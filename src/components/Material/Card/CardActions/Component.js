@@ -17,45 +17,9 @@
 import React, { PropTypes } from 'react';
 import Paper from '../../Paper';
 
-const style = {
-    display:'inline-block',
-    position:'relative',
-    width:'auto',
-    padding:'10px',
-    margin:'0px',
-    float:'left'
-}
-
-const inner_style = {
-    margin:'0px',
-    display:'inline-block',
-    position:'relative',
-    float:'clear'
-}
-const titleStyle = {
-    height:'48px',
-    display:'block',
-    lineHeight:'48px',
-    paddingLeft:'24px',
-    paddingRight:'24px',
-    overflow:'hidden'
-}
-const bodyStyle = {
-    padding:'10px',
-    display:'inline-block',
-    position:'relative',
-    height:'100%',
-}
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
-
-        this.state = {
-            titleStyle:{
-            },
-            bodyStyle:{
-            }
-        }
     }
     static propTypes = {
         title: PropTypes.string,

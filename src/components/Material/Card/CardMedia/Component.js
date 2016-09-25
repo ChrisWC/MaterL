@@ -53,21 +53,74 @@ class Component extends React.Component {
             titleStyle:{
                 ...context.palette.primary['500'],
             },
+            style:{
+                height:'auto',
+                width:'100%',
+                display:'inline-block'
+            },
         }
     }
     static propTypes = {
         title: PropTypes.string,
+        width: PropTypes.number.isRequired
     };
     static defaultProps = {
     };
     static contextTypes = {
         theme: PropTypes.object,
-        palette: PropTypes.object
+        palette: PropTypes.object,
+        theme_component_id: PropTypes.object
+    }
+    componentWillReceiveProps = (nProps) => {
+        /*if (this.refs['cont']) {
+            var rect = this.refs['cont'].getBoundingClientRect()
+            var height = rect.bottom - rect.top;
+            var nheight = height
+            height = parseInt(this.state.style.height, 10)
+            var width = rect.right - rect.left*/
+            var width = this.props.width
+            if (nProps.width) {
+                width = nProps.width
+            }
+            var theme_id = this.state.theme_id;
+            if (theme_id === undefined) {
+                theme_id = this.context.theme_component_id.next().value
+            }
+            var nheight = width*(2.0/3.0)
+
+            //var dimChange = height == nheight
+            
+            var height = nheight
+ 
+            /*if (dimChange && this.props.dimChange) {
+                this.props.dimChange(nheight)
+            }
+            this.setState({...this.state.style, theme_id:theme_id, style:{...this.state.style, height:height+'px', width:width+'px'}})
+        }*/
+    }
+    componentDidMount = () => {
+    }
+    genCSS = () => {
+       var css = Object.keys(this.state.style).map((val, index, arr) => {
+            var name = val.replace(/([A-Z])/g, (str) => {return '-'+str.toLowerCase();})
+            return ``+name+`:`+this.state.style[val]+`;`
+        })
+        var css_template = '';
+        for (var i = 0; i < css.length; i++) {
+            css_template += ("\t" + css[i] + "\n")
+        }
+        return css_template
+    }
+    getCSSStyle = () => {
+        return "\n"+`.card-media_`+this.state.theme_id+` {`+"\n"+this.genCSS()+`}`+"\n";
     }
     render() {
         return this.props.src ? (
-            <div className={this.context.theme.card.media.container} role={'card'}>
-                <img width={'100%'} style={{backgroundColor:'black'}} src={this.props.src}/>
+            <div ref="cont" className={this.context.theme.card.media.container} role={'card'}>
+                <style>
+                    {this.getCSSStyle()}
+                </style>
+                <img className={'card-media_'+this.state.theme_id} src={this.props.src}/>
             </div>):null;
     }
 }

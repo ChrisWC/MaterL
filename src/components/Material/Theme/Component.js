@@ -247,6 +247,9 @@ const defaultTheme = {
             container:s['cardactions'],
         }
     },
+    responsiveui:{
+        container:s['responsive-ui'],
+    },
     shadows:{
         "0":{
             boxShadow:"0px 2px 2px 1px rgba(0,0,0,0.2)"
@@ -283,6 +286,9 @@ const defaultTheme = {
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
+
+        this.state = {
+        }
     }
     static propTypes = {
         role:PropTypes.string.isRequired,
@@ -293,12 +299,21 @@ class Component extends React.Component {
         theme:defaultTheme
     }
     static childContextTypes = {
-        theme: React.PropTypes.object
+        theme: React.PropTypes.object,
+        theme_component_id: React.PropTypes.object
     }
 
     getChildContext = () => {
         return {
-            theme: this.props.theme
+            theme: this.props.theme,
+            theme_component_id: function*() {
+                var id = 0;
+
+                while (true) {
+                    id += 1;
+                    yield id;
+                }
+            }()
         }
     }
     render() {

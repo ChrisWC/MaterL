@@ -23,49 +23,15 @@ import Icon from '../../components/Material/Icon'
 
 const title = 'React Starter Kit';
 
+import ResponsiveUI from '../../components/Material/Sheet/ResponsiveUI'
 function IconRoute({}, context) {
   context.setTitle(title);
   return (
-      <div>
-        <Card title={"Material Icons"}> 
+      <ResponsiveUI responsive={true}>
+        <Card> 
             <CardTitle title={"Material Navigation Icons"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"apps"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"arrow_back"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"arrow_downward"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"arrow_drop_down"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"arrow_drop_down_circle"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"arrow_drop_up"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"arrow_forward"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"arrow_upward"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"cancel"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"check"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"chevron_left"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"chevron_right"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"close"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"expand_less"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"expand_more"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"first_page"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"fullscreen"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"fullscreen_exit"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"last_page"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"menu"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"more_horiz"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"more_vert"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"refresh"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"subdirectory_arrow_left"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"subdirectory_arrow_right"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"unfold_less"}/>
-            <Icon resolution={"24px"} context={"navigation"} component={"unfold_more"}/>
-            <Icon resolution={"24px"} context={"toggle"} component={"check_box"}/>
-            <Icon resolution={"24px"} context={"toggle"} component={"check_box_outline_blank"}/>
-            <Icon resolution={"24px"} context={"toggle"} component={"indeterminate_check_box"}/>
-            <Icon resolution={"24px"} context={"toggle"} component={"radio_button_checked"}/>
-            <Icon resolution={"24px"} context={"toggle"} component={"radio_button_unchecked"}/>
-            <Icon resolution={"24px"} context={"toggle"} component={"star"}/>
-            <Icon resolution={"24px"} context={"toggle"} component={"star_border"}/>
-            <Icon resolution={"24px"} context={"toggle"} component={"star_half"}/>
         </Card>
-    </div>
+    </ResponsiveUI>
   );
 }
 

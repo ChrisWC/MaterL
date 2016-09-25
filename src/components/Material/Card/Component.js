@@ -17,6 +17,7 @@
 import React, { PropTypes } from 'react';
 import Paper from '../Paper';
 
+import ResponsiveUI from '../Sheet/ResponsiveUI'
 const inner_style = {
 }
 class Component extends React.Component {
@@ -25,7 +26,7 @@ class Component extends React.Component {
         this.state = {
             style:{
                 ...this.props.style,
-                width:this.props.columnWidth? this.props.columnWidth+'px':this.props.style.width
+                width:this.props.columnWidth? (this.props.columnWidth*this.props.columnSpan + (this.props.gutterSize*(this.props.columnSpan-1)))+'px':this.props.style.width
             },
         }
     }
@@ -37,8 +38,11 @@ class Component extends React.Component {
     };
     static defaultProps = {
         style:{
-            width:200
-        }
+            width:'5px',
+            height:'auto',
+        },
+        columnSpan:4,
+        gutterSize:8
     };
     static contextTypes = {
         theme: PropTypes.object,
@@ -46,13 +50,24 @@ class Component extends React.Component {
     }
     componentWillReceiveProps = (nProps) => {
         if (nProps.columnWidth && this.props.style && this.props.style.width && nProps.columnWidth > parseInt(this.props.style.width, 10)) {
-            this.setState({style:{...this.state.style, width:nProps.columnWidth + "px"}})
+            this.setState({style:{...this.state.style, width:(nProps.columnWidth*nProps.columnSpan + (nProps.gutterSize*(nProps.columnSpan-1))) + "px"}})
         }
+    }
+    getCSS = () => {
+        var css = ``
+        for (var child in this.props.children) {
+            if (this.props.children[child].getCSSStyle !== undefined) {
+                css += child.getCSSStyle()
+            }
+        }
+        return css
     }
     render() {
         return(
             <Paper role={"card"} style={this.state.style} columns={this.props.columns} className={this.context.theme.card.container} depth={1}>    
-                {this.props.children}
+                    {this.props.children != undefined? React.Children.map(this.props.children, (val, keys, ind) =>{
+                        return React.cloneElement(val, {...val.props, width:parseFloat(this.state.style.width, 10)})
+                    }):<div>No Content Found.</div>}
             </Paper>
         );
     }

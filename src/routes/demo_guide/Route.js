@@ -54,8 +54,7 @@ class Route extends React.Component {
             }
         }
         return (
-        <div className={s.root}>
-            <div className={s.container}>
+        <div>
                 <section>
                     <h1 className={s.sectionHeader}>Creating Demos</h1>
                     <p>
@@ -106,7 +105,6 @@ class Route extends React.Component {
                         </p>
                     </div>
                 </section>
-            </div>
         </div>
       );
   }

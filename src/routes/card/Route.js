@@ -31,9 +31,8 @@ import ResponsiveUI from '../../components/Material/Sheet/ResponsiveUI'
 function Route({}, context) {
   context.setTitle(title);
   return (
-    <div>
-        <ResponsiveUI responsive={true}>
-        <Card style={{width:"200px"}}>
+    <ResponsiveUI responsive={true} numOfCols={2}>
+        <Card>
             <CardTitle title={"A Simple Text Card"}/>
             <CardBody>
                 <p>A Card can be simply made out of text. This text
@@ -117,8 +116,7 @@ function Route({}, context) {
                 <Button label="Action 2" priority={"primary"}/>
             </CardActions>
         </Card>
-        </ResponsiveUI>
-    </div>
+    </ResponsiveUI>
   );
 }
 
