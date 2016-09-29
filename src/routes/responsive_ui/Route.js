@@ -26,44 +26,67 @@ import Choice from '../../components/Material/Choice'
 const title = 'React Starter Kit';
 
 import ResponsiveUI from '../../components/Material/Sheet/ResponsiveUI'
+const test_arr = [0, 1, 2, 3, 4, 5]
+function TCard(props, context) {
+    return (<Card {...props}><CardBody>1</CardBody></Card>)
+}
 function Route({}, context) {
   context.setTitle(title);
   return (
-        <ResponsiveUI responsive={true} numOfCols={4}>
-            <Card role={"sidepanel"} position={"left"} columnSpan={2} >
+        <div>
+        <section>
+            <h1> RESPONSIVE UI </h1>
+        </section>
+        <ResponsiveUI responsive={true}>
+            <Card role={"sidepanel"} position={"left"}>
                 <CardTitle title={"Sidepanel"} />
                 <CardBody>
                     <h2>Side Panel</h2>
                 </CardBody>
             </Card>
-            <Card style={{width:'20px'}}>
+            <Card>
                 <CardBody>
                     1
                 </CardBody>
             </Card>
-            <Card style={{width:'20px', height:'150px'}}>
+            <Card>
             </Card>
-            <Card style={{width:'20px', height:'150px'}}>
+            <Card>
             </Card>
-            <Card style={{width:'20px', height:'150px'}}>
+            <Card>
             </Card>
-            <Card style={{width:'20px', height:'150px'}}>
+            <Card>
             </Card>
-            <Card style={{width:'20px', height:'150px'}}>
+            <Card>
             </Card>
-            <Card style={{width:'20px', height:'150px'}}>
+            <Card>
             </Card>
-            <Card style={{width:'20px', height:'150px'}}>
+            <Card>
             </Card>
-            <Card style={{width:'20px', height:'150px'}}>
+            <Card>
             </Card>
-            <Card style={{width:'20px', height:'316px'}}>
+            <Card>
             </Card>
-            <Card style={{width:'20px', height:'150px'}}>
+            <Card>
             </Card>
-            <Card style={{width:'20px', height:'150px'}}>
+            <Card>
             </Card>
         </ResponsiveUI>
+        <ResponsiveUI responsive={true}>
+            {test_arr.map((val, ind, arr) => {
+                return (<TCard />)
+            })}
+        </ResponsiveUI>
+        <h1>Siblings Components (Above)</h1>
+        <h1>Nested Responsive UI</h1>
+        <ResponsiveUI responsive={true}>
+            <h1>T</h1>
+            <ResponsiveUI responsive={true} columnSpan={4}>
+                <h1>T2</h1>
+            </ResponsiveUI>
+            <h1>T3</h1>
+        </ResponsiveUI>
+        </div>
   );
 }
 

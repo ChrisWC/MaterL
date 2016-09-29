@@ -20,6 +20,7 @@
 
 import React, { PropTypes } from 'react';
 
+import classNames from 'classnames';
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -29,6 +30,8 @@ class Component extends React.Component {
         for (var i = 0; i < this.props.children.length; i++) {
             r.push({id:i, left:0, top:0})
         }
+        
+        
         this.state = {
             columnCount:this.props.numOfCols,
             columnSize:200,
@@ -42,8 +45,9 @@ class Component extends React.Component {
             ],
             style:{
                 width:'100%',
-                height:'100%'
-            }
+                height:'auto'
+            },
+            theme_id:context.theme_component_id.next().value
         }
     }
     static propTypes = {
@@ -58,7 +62,9 @@ class Component extends React.Component {
     static contextTypes = {
         theme: PropTypes.object,
         palette: PropTypes.object,
-        device: React.PropTypes.object
+        device: React.PropTypes.object,
+        theme_component_id: PropTypes.object,
+        updateDOM: PropTypes.func,
     }
     findNColumn = (cols, col, l) => {
         var min = 0;
@@ -78,6 +84,29 @@ class Component extends React.Component {
             this.setState({heights:nheights});
         }
     }
+    static childContextTypes = {
+        updateDOM: React.PropTypes.func,
+    }
+    getChildContext = () => {
+        return {
+            updateDOM:() => {
+                var r = this.refs['container'].getBoundingClientRect()
+                var nstate = this.state
+                var bp = this.getBreakpoint()
+                nstate['breakpoint'] = bp
+                nstate['columnCount'] = bp['columns']
+                nstate['gutterSize'] = isNaN(bp['gutter'])? bp['gutter'][0]:bp['gutter']
+                nstate['columnSize'] = (r.right-(r.left + (nstate.columnCount+1)*nstate.gutterSize))/this.state.columnCount
+                var nr = this.updateDOM(nstate, this.props)
+                nstate['r'] = nr['r']
+                nstate['style']['height'] = nr['h'] + 'px'
+                this.setState(nstate)
+                if (this.context.updateDOM) {
+                    this.context.updateDOM()
+                }
+            }
+        }
+    }
     componentWillMount = () => {
     }
     componentDidMount = () => {
@@ -89,8 +118,9 @@ class Component extends React.Component {
             nstate['columnCount'] = bp['columns']
             nstate['gutterSize'] = isNaN(bp['gutter'])? bp['gutter'][0]:bp['gutter']
             nstate['columnSize'] = (r.right-(r.left + (nstate.columnCount+1)*nstate.gutterSize))/this.state.columnCount
-            var nr = this.updateDOM(this.state)
-            nstate['r'] = nr
+            var nr = this.updateDOM(nstate, this.props)
+            nstate['r'] = nr['r']
+            nstate['style']['height'] = nr['h'] + 'px'
             this.setState(nstate)
         })
         var r = this.refs['container'].getBoundingClientRect()
@@ -101,11 +131,14 @@ class Component extends React.Component {
         nstate['columnCount'] = bp['columns']
         nstate['gutterSize'] = isNaN(bp['gutter'])? bp['gutter'][0]:bp['gutter']
         nstate['columnSize'] = (r.right-(r.left + (nstate.columnCount+1)*nstate.gutterSize))/this.state.columnCount
-        var nr = this.updateDOM(this.state)
-        nstate['r'] = nr
+        var nr = this.updateDOM(nstate, this.props)
+        nstate['r'] = nr['r']
+        nstate['style']['height'] = nr['h'] + 'px'
 
 
         this.setState(nstate)
+    }
+    componentWillReceiveProps = (nProps) => {
     }
     getNextColumns = (m, nr, columnSpan) => {
         var span = []
@@ -140,10 +173,34 @@ class Component extends React.Component {
         return lspan
 
     }
-    shouldComponentUpdate = (nProps, nState) => {
-        var nr = this.updateDOM(nState)
-        nState.r = nr
-        return true;
+    componentDidUpdate = (nProps, nState) => {
+        var r = this.refs['container'].getBoundingClientRect()
+        var nstate = this.state
+
+        var bp = this.getBreakpoint()
+        nstate['breakpoint'] = bp
+        nstate['columnCount'] = bp['columns']
+        nstate['gutterSize'] = isNaN(bp['gutter'])? bp['gutter'][0]:bp['gutter']
+        nstate['columnSize'] = (r.right-(r.left + (nstate.columnCount+1)*nstate.gutterSize))/nstate.columnCount
+        var nr = this.updateDOM(nstate, this.props)
+        nstate['r'] = nr['r']
+        nstate['style']['height'] = nr['h'] + 'px'
+        this.state = nstate
+        //
+        if (nProps.children.length != this.props.children.length) {
+            this.setState(nstate)
+            //this.forceUpdate()
+        }
+        if (nr['r'].length != this.state['r'].length) {
+            this.setState(nstate)
+        }
+        var nheight = parseFloat(nState.style.height, 10)
+        var pheight = parseFloat(this.state.style.height, 10)
+        if (nheight != pheight) {
+            this.context.updateDOM()
+        }
+        //nState.r = nr
+        //return true;
     }
     getBreakpoint = () => {
         var rect = this.refs['container'].getBoundingClientRect()
@@ -176,18 +233,18 @@ class Component extends React.Component {
 
         return {}
     }
-    updateDOM = (nState) => {
+    updateDOM = (nState, props) => {
         var m = []
         var n = [];
         var mLeft = nState.gutterSize;
         var nr = [];
         var nTop = 0;
-
+        var mxHeight = 0.0;
         var children = []
-        if (!Array.isArray(this.props.children)) {
-            children = [this.props.children]
+        if (!Array.isArray(props.children)) {
+            children = [props.children]
         } else {
-            children = this.props.children
+            children = props.children
         }
 
         var sidepanels_left = []
@@ -219,12 +276,14 @@ class Component extends React.Component {
             //nr.push({id:i, left:mLeft, top:nTop})
             mLeft += sidepanels_left[i].props.columnSpan != undefined? (sidepanels_left[i].props.columnSpan*nState.columnSize + ((sidepanels_left[i].props.columnSpan)*nState.gutterSize)):(1*nState.columnSize+nState.gutterSize)
         }
-        console.log(mLeft)
         for (var i in components) {
             var ai = sidepanels_left.length + parseInt(i,10)
             var columnSpan = components[i].props.columnSpan;
             columnSpan = columnSpan? columnSpan:1;
+            console.log(columnSpan)
+            columnSpan = (columnSpan <= this.state.columnCount)? columnSpan:this.state.columnCount;
 
+            console.log(columnSpan)
             var cols = this.getNextColumns(m, nr, columnSpan)
 
             for (var j = 0; j < cols.length; j++) {
@@ -234,11 +293,9 @@ class Component extends React.Component {
             n = m[j]
             var nro = {id:i, left:mLeft, top:nTop}
             //n.push(i)
-            console.log(ai)
-            console.log(this.refs[ai])
-            if (this.refs[ai].getBoundingClientRect) {
+            if (this.refs[ai] &&this.refs[ai].getBoundingClientRect) {
                 var r = this.refs[ai].getBoundingClientRect()
-                if (n.length > 1) {
+                if (n && n.length > 1) {
                     var mn = n[n.length-2]
                     nTop = nr[mn]['bottom']
                     mLeft = nr[mn]['left']
@@ -248,7 +305,12 @@ class Component extends React.Component {
                 nro['top'] = nTop
                 nro['bottom'] = nTop + height
                 nro['left'] = mLeft
-                console.log(mLeft)
+                nro['right'] = mLeft + width
+                nro['width'] = width
+                nro['height'] = r.height
+                if (mxHeight < nro['bottom']) {
+                    mxHeight = nro['bottom'];
+                }
                 nr.push(nro)
                 mLeft += (width + nState.gutterSize)
             }
@@ -258,19 +320,39 @@ class Component extends React.Component {
         nTop = 0
         
         for (var i = 0; i < sidepanels_left.length; i++) {
-            nre.push({id:i, left:mLeft, top:nTop})
+            var width =  (sidepanels_left[i].props.columnSpan*nState.columnSize + ((sidepanels_left[i].props.columnSpan)*nState.gutterSize))
+            var rect = this.refs[i].getBoundingClientRect()
+            nre.push({id:i, left:mLeft, top:nTop, right:(mLeft + width), bottom:(nTop + (rect.bottom - rect.top))})
             mLeft += sidepanels_left[i].props.columnSpan != undefined? (sidepanels_left[i].props.columnSpan*nState.columnSize + ((sidepanels_left[i].props.columnSpan)*nState.gutterSize)):(1*nState.columnSize+nState.gutterSize)
         }
         for (n in nr) {
             nre.push(nr[n])
         }
-        return nre
+        return {'r':nre, 'h':mxHeight}
+    }
+    genCSS = () => {
+       var css = Object.keys(this.state.style).map((val, index, arr) => {
+            var name = val.replace(/([A-Z])/g, (str) => {return '-'+str.toLowerCase();})
+            return ``+name+`:`+this.state.style[val]+`;`
+        })
+        var css_template = '';
+        for (var i = 0; i < css.length; i++) {
+            css_template += ("\t" + css[i] + "\n")
+        }
+        return css_template
+    }
+    getCSSStyle = () => {
+        return "\n"+`.responsiveui_`+this.state.theme_id+` {`+"\n"+this.genCSS()+`}`+"\n";
     }
     render() {
         var components = 0
         var sidepanel_left = 0
         return(
             <div {...this.props} ref={'container'} className={this.context.theme.responsiveui.container}>
+                <style>
+                    {this.getCSSStyle()}
+                </style>
+                <div className={classNames({['responsiveui_'+this.state.theme_id]:true})}>
                 {React.Children.map(this.props.children, (val, key, arr) =>{
                     var r = this.state.r && this.state.r.length > 0? this.state.r[key]:{top:0, left:0}
                     var rkey = ""
@@ -283,9 +365,9 @@ class Component extends React.Component {
                         components++;
                         rkey = components
                     }
-
-                    return <div ref={key} style={{display:"inline-block", position:"absolute", top:r.top, left:r.left}}>{React.cloneElement(val, {...val.props, columnWidth:(this.state.columnSize), gutterSize:(this.state.gutterSize), id_key:key})}</div>;
+                    return <div ref={key} style={{display:"inline-block", position:"absolute", top:r.top + 'px', left:r.left + 'px', width:r.width+'px'}}>{React.cloneElement(val, {...val.props, columnWidth:(this.state.columnSize), gutterSize:(this.state.gutterSize), id_key:key})}</div>;
                 })}
+                </div>
             </div>
         );
     }

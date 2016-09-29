@@ -54,10 +54,11 @@ class Component extends React.Component {
                 ...context.palette.primary['500'],
             },
             style:{
-                height:'auto',
-                width:'100%',
+                height:this.props.width? (this.props.width + 'px'):'10px',
+                width:this.props.width? (this.props.width + 'px'):'10px',
                 display:'inline-block'
             },
+            theme_id:context.theme_component_id.next().value
         }
     }
     static propTypes = {
@@ -69,7 +70,8 @@ class Component extends React.Component {
     static contextTypes = {
         theme: PropTypes.object,
         palette: PropTypes.object,
-        theme_component_id: PropTypes.object
+        theme_component_id: PropTypes.object,
+        updateDOM: PropTypes.func
     }
     componentWillReceiveProps = (nProps) => {
         /*if (this.refs['cont']) {
@@ -97,8 +99,19 @@ class Component extends React.Component {
             }
             this.setState({...this.state.style, theme_id:theme_id, style:{...this.state.style, height:height+'px', width:width+'px'}})
         }*/
+        if (nProps.width && parseFloat(this.state.style.width, 10) && parseFloat(this.state.style.width, 10) != parseFloat(nProps.width, 10)) {
+            this.setState({...this.state, style:{...this.state.style, height:nProps.width+'px', width:nProps.width+'px'}})
+            //this.context.updateDOM()
+        }
     }
     componentDidMount = () => {
+    }
+    componentDidUpdate = (pProps, pState) => {
+        var nwidth = parseFloat(pState.style.width, 10)
+        var pwidth = parseFloat(this.state.style.width, 10)
+        if (nwidth != pwidth) {
+            this.context.updateDOM()
+        }
     }
     genCSS = () => {
        var css = Object.keys(this.state.style).map((val, index, arr) => {

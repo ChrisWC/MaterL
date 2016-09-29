@@ -31,7 +31,9 @@ import ResponsiveUI from '../../components/Material/Sheet/ResponsiveUI'
 function Route({}, context) {
   context.setTitle(title);
   return (
-    <ResponsiveUI responsive={true} numOfCols={2}>
+    <ResponsiveUI responsive={true}>
+        <ResponsiveUI responsive={true} columnSpan={12}>
+        <h2 columnSpan={4}>Multiple Cards</h2>
         <Card>
             <CardTitle title={"A Simple Text Card"}/>
             <CardBody>
@@ -68,12 +70,6 @@ function Route({}, context) {
                     follow the conventions set out in the 
                     specification.
                     This text should be revealed by scrolling.
-                    dfsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasd
-                    aafffffffffffffffffffffffffffffff
-                    dsafffffffffffffffffffffffffffffffff
-                    asdffffffffffffffffff
-                    asdffffffffffffffffffffffffffffffffffff
-                    adsfffffffffffffffffff
             </CardBody>
             <CardActions>
                 <Button label="Action 1" priority={"primary"}/>
@@ -116,6 +112,28 @@ function Route({}, context) {
                 <Button label="Action 2" priority={"primary"}/>
             </CardActions>
         </Card>
+    </ResponsiveUI>
+    <ResponsiveUI responsive={true} columnSpan={12}>
+        <h2 columnSpan={6}>Card With a Header</h2>
+
+        <Card columnSpan={4}>
+            <CardTitle title={"Squirrel"}/>
+            <CardMedia src={"http://www.livescience.com/images/i/000/025/221/original/squirrel.jpg?interpolation=lanczos-none&downsize=*:1000"}/>
+            <CardBody>
+                <p>
+                    This is mean to be an area in which you 
+                    can describe the card. You may use other
+                    components within the CardBody. But, should
+                    follow the conventions set out in the 
+                    specification
+                </p>
+            </CardBody>
+            <CardActions>
+                <Button label="Action 1" priority={"primary"}/>
+                <Button label="Action 2" priority={"primary"}/>
+            </CardActions>
+        </Card>
+    </ResponsiveUI>
     </ResponsiveUI>
   );
 }

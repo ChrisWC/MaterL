@@ -104,6 +104,7 @@ const defaultTheme = {
                     range:[480,600],
                     size:'xsmall',
                     columns:8,
+                    gutter:16
                 },
                 {
                     range:[600,840],

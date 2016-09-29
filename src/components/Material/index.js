@@ -20,3 +20,4 @@ export {default as CardMedia} from './Card/CardMedia';
 export {default as CardTitle} from './Card/CardTitle';
 export {default as CardActions} from './Card/CardActions';
 export {default as DropDown} from './DropDown';
+export {default as ResponsiveUI} from './Sheet/ResponsiveUI';

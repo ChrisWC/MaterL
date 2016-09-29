@@ -69,7 +69,7 @@ const config = {
             screw_ie8: true, // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
             warnings: false,
             properties: true,
-            drop_console:true,
+            drop_console:false,
             sequences:200,
             booleans:true,
             conditionals:true,

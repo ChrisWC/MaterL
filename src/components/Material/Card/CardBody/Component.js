@@ -37,9 +37,10 @@ class Component extends React.Component {
 
         this.state = {
             style:{
-                height:'auto',
+                height:'50px',
                 width:'100%'
             },
+            theme_id:context.theme_component_id.next().value
         }
     }
     static propTypes = {

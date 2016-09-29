@@ -29,6 +29,7 @@ class Component extends React.Component {
                 width:this.props.columnWidth? (this.props.columnWidth*this.props.columnSpan + (this.props.gutterSize*(this.props.columnSpan-1)))+'px':this.props.style.width
             },
         }
+        console.log(this.props.columnWidth)
     }
     static propTypes = {
         title: PropTypes.string,

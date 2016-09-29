@@ -1,1 +1,1 @@
-export {AppBar, Button, Card, CardActions, CardBody, CardMedia, CardTitle, Choice, CommonFunctions, Device, DeviceInfo, Drawer, DropDown, Icon, Layer, Menu, Paper, PopOver, Palette, Sheet, TextField, Theme} from  './Material';
+export {AppBar, Button, Card, CardActions, CardBody, CardMedia, CardTitle, Choice, CommonFunctions, Device, DeviceInfo, Drawer, DropDown, Icon, Layer, Menu, Paper, PopOver, ResponsiveUI, Palette, Sheet, TextField, Theme} from  './Material';
