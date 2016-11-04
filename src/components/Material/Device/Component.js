@@ -16,7 +16,7 @@
 
 import { canUseDOM } from 'fbjs/lib/ExecutionEnvironment';
 import React, { PropTypes } from 'react';
-import Paper from '../Paper';
+import Sheet from '../Sheet';
 /****************************************************************
  * A linear control with animations and 'reflexes', it
  * is the base class for scroll bars and progress bars.
@@ -136,11 +136,11 @@ class Component extends React.Component {
     render() {
         return this.props.emulate? (
             <div style={this.state.style}>
-                <Paper {...this.props} depth={1} role={"device"} width={this.props.width} height={'700px'} style={{display:'block', position:'relative', height:this.state.style.height, width:this.state.style.width}}>
+                <Sheet {...this.props} depth={1} role={"device"} width={this.props.width} height={'700px'} style={{display:'block', position:'relative', height:this.state.style.height, width:this.state.style.width}}>
                     {React.Children.map(this.props.children, (val, key, arr) => {
                         return React.cloneElement(val, {...val.props, key:key});
                     })}
-                </Paper>
+                </Sheet>
             </div>
         ):(
             <div>

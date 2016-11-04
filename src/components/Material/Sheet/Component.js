@@ -13,13 +13,18 @@
 *   See the License for the specific language governing permissions and
 *   limitations under the License.
 *****************************************************************************/
+/****************************************************************************
+ * Sheet -- A container for elements with width, height, position (x, y, z)
+ *
+ *
+ ***************************************************************************/
 
 import React, { PropTypes } from 'react';
 import Layer from '../Layer';
 import ScrollBar from '../ScrollBar';
 import classNames from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import ResponsiveUI from './ResponsiveUI';
+//import ResponsiveUI from './ResponsiveUI';
 //import s from './Component.css';
 class Component extends React.Component {
     constructor(props,context) {
@@ -28,6 +33,7 @@ class Component extends React.Component {
         this.state = {
            style:{
                backgroundColor:this.props.backgroundColor,
+               ...this.context.palette.default.primary,
                ...this.props.style,
                ...this.getShadow(this.props.depth)
             },
@@ -52,9 +58,9 @@ class Component extends React.Component {
            reaction:{
                open:true,
                userOpen:undefined
-           }
+           },
+           theme_id:context.theme_component_id.next().value
         }
-
     }
 
     static propTypes = {
@@ -81,8 +87,17 @@ class Component extends React.Component {
         showShadows:true,
         fullscreen:false,
         depth:0,
+        style:{
+               height:'100%',
+               width:'100%',
+               top:'0px',
+               position:'absolute',
+               bottom:'0px'
+        },
         sheets:[],
         ind:10,
+        inLayer:false,
+        open:undefined,
         openLeftNavigation:(state, pref)=>{},
         behaviour:{
             visibility:'permenant',
@@ -101,7 +116,9 @@ class Component extends React.Component {
     static contextTypes = {
         sheets: React.PropTypes.arrayOf(React.PropTypes.object),
         theme: React.PropTypes.object,
-        device: React.PropTypes.object
+        palette: React.PropTypes.object,
+        device: React.PropTypes.object,
+        theme_component_id: PropTypes.object,
     }
     static childContextTypes = {
         sheets: React.PropTypes.arrayOf(React.PropTypes.object),
@@ -171,15 +188,14 @@ class Component extends React.Component {
         //get default
         var openRequestRet = undefined
         var openRequest = (props.open === undefined)? this.state.openRequest:props.open;
-
         if (behaviour.visibility == 'permenant' || this.props.inLayer) {
             open = true;
         }
         else if (behaviour.visibility == 'persistent') {
             if (typeof openRequest === "function") {
-                openRequestRet = props.open()
+                openRequestRet = openRequest()
             } else {
-                openRequestRet = props.open
+                openRequestRet = openRequest
             }
 
 
@@ -208,13 +224,10 @@ class Component extends React.Component {
                 }
             }
         } else if (behaviour.visibility == 'temporary') {
-            if (this.props.paper) {
-                this.props.paper.makeOverlay()
-            }
             if (typeof openRequest === "function") {
-                openRequestRet = props.open()
+                openRequestRet = openRequest()
             } else {
-                openRequestRet = props.open
+                openRequestRet = openRequest
             }
 
 
@@ -254,6 +267,7 @@ class Component extends React.Component {
                 }
             }
         }
+        
         return {
             open:open,
             userOpen:userOpen
@@ -262,6 +276,10 @@ class Component extends React.Component {
     componentWillMount = () => {
     }
     componentWillUpdate = (nextProps, nextState) => {
+    }
+    componentDidMount = () => {
+
+        window.addEventListener('resize', this.handleResize);
     }
     componentWillUnmount = () => {
         window.removeEventListener('resize', this.handleResize);
@@ -275,7 +293,7 @@ class Component extends React.Component {
         else {
             //check if size is smaller than component or greater than threshold
         }
-        nstate = {...nstate, contentWidth:window.innerWidth, breakpoint:this.getBreakpoint()}
+        nstate = {...nstate, style:{...this.state.style, maxWidth:window.innerWidth}, contentWidth:window.innerWidth, breakpoint:this.getBreakpoint()}
         this.setState({...this.state, ...nstate})
     }
     handleForegroundRequest = (c, a) => {
@@ -316,9 +334,9 @@ class Component extends React.Component {
     calculateContentArea = () => {
         var content_left = 0;
         for (var i in this.refs) {
-            if (i.match(/Drawer/) && this.refs[i].refs['Paper'].refs['container']) {
+            if (i.match(/Drawer/) && this.refs[i].refs['Paper'].refs['sheet']) {
                 var w = this.refs[i].refs['Paper'].getMetrics().width.match(/\d+/g)
-                if (w.length == 1 && this.refs[i].refs['Paper'].refs['container'].state.reaction.open) {
+                if (w.length == 1 && this.refs[i].refs['Paper'].state.reaction.open) {
                     content_left = Math.max(content_left, Number(w[0]))
                 }
 
@@ -340,6 +358,19 @@ class Component extends React.Component {
         var nstate = {style:{...this.state.style}, openRequest:(typeof nProps != undefined)? nProps.open:this.state.openRequest};
         if (nProps.style) {
             if (nProps.style.maxWidth != this.state.maxWidth && nProps.style.maxHeight != this.state.maxHeight) {
+                nstate = {style:{...nstate.style, maxWidth:nProps.style.maxWidth, maxHeight:nProps.style.maxHeight}}
+            }
+        
+            if (nProps.style.top && nProps.style.left) {
+                nstate = {style:{...nstate.style, ...nstate.style, top:nProps.style.top, left:nProps.style.left}}
+            }
+            if (nProps.style.width) {
+                nstate = {...nstate, style:{...nstate.style, width:nProps.style.width}}
+
+            }
+        }
+        /*if (nProps.style) {
+            if (nProps.style.maxWidth != this.state.maxWidth && nProps.style.maxHeight != this.state.maxHeight) {
                 nstate = {...nstate, style:{...this.state.style, maxWidth:nProps.style.maxWidth, maxHeight:nProps.style.maxHeight}}
             }
 
@@ -347,7 +378,7 @@ class Component extends React.Component {
                 nstate = {...nstate, style:{...this.state.style, ...nstate.style, top:nProps.style.top, bottom:nProps.style.bottom, left:nProps.style.left}}
 
             }
-        }
+        }*/
         var behaviour = this.getBehaviour(nstate, this.props);
         var r = this.getReaction(nProps, nContext, behaviour)
         nstate = {...nstate, reaction:r, behaviour:behaviour}
@@ -406,7 +437,22 @@ class Component extends React.Component {
         return {toolbars:toolbars, content:content, drawers:drawers}
     }
     getAsOverlay = () => {
-        return this.props.paper.getAsOverlay();
+        return (<Layer role={'layer'} foreground={[<Component ref='container' rules={this.props.rules}
+                    onClick={(e)=>{
+                        e.stopPropagation()
+                        if (this.props.onClick) {
+                            this.props.onClick(e)
+                        }
+                    }}
+                    inLayer={true}
+                    behaviour={this.state.behaviour} 
+                    open={this.state.open} role={this.props.role} 
+                    draggable='false' onClick={this.handleClick} 
+                    width={this.props.width} 
+                    style={this.state.style} className={this.props.className}
+                    popover={this.props.popover} depth={this.props.depth}>
+                        {this.props.children}
+                </Component>]}/>)
     }
     handleClick = (e) => {
         if (this.props.onClick) {
@@ -430,10 +476,9 @@ class Component extends React.Component {
         var shouldRender = (this.state.behaviour.visibility == 'temporary' && this.props.inLayer)
                             || (this.state.behaviour.visibility != 'temporary' && !this.props.inLayer);
 
-        //console.log(this.state.breakpoint)
-        var css = `.sheet-`+this.props.role+` {`+"\n"+this.genCSS()+`}`
+        var css = `.sheet-`+this.props.role+"_"+this.state.theme_id+` {`+"\n"+this.genCSS()+`}`
         return (this.state.reaction.open && shouldRender)? (
-            <div {...this.props} ref="sheet" className={classNames({['sheet-'+this.props.role]:true, [this.props.className]:true})} onClick={(e) => {
+            <div {...this.props} ref="sheet" className={classNames({['sheet-'+this.props.role+"_"+this.state.theme_id]:true, [this.props.className]:true})} onClick={(e) => {
                         this.handleClick(e)
                     }
                 }>

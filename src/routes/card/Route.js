@@ -27,11 +27,20 @@ import Icon from '../../components/Material/Icon'
 import Choice from '../../components/Material/Choice'
 const title = 'React Starter Kit';
 
+import EmptyCellList from '../../components/Material/Layout/EmptyCellList'
 import ResponsiveUI from '../../components/Material/Sheet/ResponsiveUI'
 function Route({}, context) {
   context.setTitle(title);
   return (
-    <ResponsiveUI responsive={true}>
+    <div>
+        <section>
+            <EmptyCellList sort='col' width={800} height={800} renderEmptyCells={true}>
+                <Card style={{width:'120px', height:'80px'}}/>
+                <Card style={{width:'120px', height:'80px'}}/>
+                <Card style={{width:'120px', height:'80px'}}/>
+            </EmptyCellList>
+        </section>
+        <h1>Responsive Area</h1>
         <ResponsiveUI responsive={true} columnSpan={12}>
         <h2 columnSpan={4}>Multiple Cards</h2>
         <Card>
@@ -134,7 +143,7 @@ function Route({}, context) {
             </CardActions>
         </Card>
     </ResponsiveUI>
-    </ResponsiveUI>
+    </div>
   );
 }
 

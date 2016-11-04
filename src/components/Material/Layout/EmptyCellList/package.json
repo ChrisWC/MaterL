@@ -1,5 +1,5 @@
 {
-  "name": "Paper",
+  "name": "SparseCellMatrix",
   "version": "0.0.0",
   "private": true,
   "main": "./Component.js"

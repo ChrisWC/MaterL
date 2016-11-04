@@ -45,7 +45,7 @@ function Route({}, context) {
                 Inline
             </h3>
             <section>
-                <TextField hintText="Username" floatingHintText="Enter Username"/><br />
+                <TextField hintText="Username" floatingHintText="Enter Username" helpText="Sample help text"/><br />
                 <TextField value="password" password={true} hintText="Password" floatingHintText="Enter Password"/><br />
             </section>
             <section>

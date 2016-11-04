@@ -74,31 +74,6 @@ class Component extends React.Component {
         updateDOM: PropTypes.func
     }
     componentWillReceiveProps = (nProps) => {
-        /*if (this.refs['cont']) {
-            var rect = this.refs['cont'].getBoundingClientRect()
-            var height = rect.bottom - rect.top;
-            var nheight = height
-            height = parseInt(this.state.style.height, 10)
-            var width = rect.right - rect.left*/
-            var width = this.props.width
-            if (nProps.width) {
-                width = nProps.width
-            }
-            var theme_id = this.state.theme_id;
-            if (theme_id === undefined) {
-                theme_id = this.context.theme_component_id.next().value
-            }
-            var nheight = width*(2.0/3.0)
-
-            //var dimChange = height == nheight
-            
-            var height = nheight
- 
-            /*if (dimChange && this.props.dimChange) {
-                this.props.dimChange(nheight)
-            }
-            this.setState({...this.state.style, theme_id:theme_id, style:{...this.state.style, height:height+'px', width:width+'px'}})
-        }*/
         if (nProps.width && parseFloat(this.state.style.width, 10) && parseFloat(this.state.style.width, 10) != parseFloat(nProps.width, 10)) {
             this.setState({...this.state, style:{...this.state.style, height:nProps.width+'px', width:nProps.width+'px'}})
             //this.context.updateDOM()

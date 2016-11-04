@@ -21,12 +21,12 @@
 .button {
     font-size:14px;
     font-weight:500;
-    padding-left:16px;
-    padding-right:16px;
+    padding-left:8px;
+    padding-right:8px;
     height:36px;
     line-height:36px;
     border-radius:2px;
-    margin:4px
+    margin:4px;
 }
 
 .button i {
@@ -42,7 +42,61 @@
     font-weight:500;
     float:left;
 }
-
+.expansion-panel {
+    border-bottom-width:0.5px;
+    border-bottom-style:solid;
+    padding-left:16px;
+    padding-right:16px;
+    border-bottom-color:rgba(202,202,202,0.870588);
+}
+.expansion-panel-header {
+    height:50px;
+    line-height:50px;
+    position:relative;
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:center;
+    justify-content:space-between;
+}
+.expansion-panel-body {
+}
+.expansion-panel-label {
+    float:left;
+    padding-right:8px;
+    padding-left:0px;
+    flex-basis:auto;
+    flex-grow:1;
+}
+.expansion-panel-value {
+    float:left;
+    display:flex;
+    flex-wrap:nowrap;
+    padding-left:8px;
+    padding-right:8px;
+    justify-content:center;
+    flex-grow:2;
+}
+.expansion-panel-button {
+    float:right;
+    padding-left:8px;
+    position:relative;
+    align-self:flex-end;
+}
+.expansion-panel .textfield {
+    width:100%;
+}
+.expansion-panel .title {
+    font-size:15px;
+    height:15px;
+    line-height:15px;
+    display:block;
+}
+.expansion-panel .subtitle {
+    font-size:12px;
+    height:12px;
+    line-height:12px;
+    display:block;
+}
 .icon-button {
     border:none;
     height:100%;
@@ -94,8 +148,8 @@
     border-radius:0px;
     border:none;
     margin:0px;
-    padding-left:16px;
-    padding-right:16px;
+    padding-left:8px;
+    padding-right:8px;
 }
 .appbar .button i {
     line-height:64px;
@@ -239,15 +293,19 @@
     line-height:16px;
     height:24px;
 }
-
+.appbar .textfield {
+    height:64px;
+}
 .textfield {
     clear:all;
     display:inline-block;
     position:relative;
     top:0px;
+    height:50px;
 }
 .textfield-hint {
     display:block;
+    overflow:hidden;
 }
 .textfield textarea, input {
     background-color:Transparent;
@@ -264,33 +322,17 @@
     font-size:16px;
     resize:none;
     outline:none;
-}
-.textfield i {
-    position:absolute;
-    right:0px;
-    line-height:24px;
-    height:24px;
-    padding-top:12px;
-    padding-bottom:0px;
-    display:inline-block;
     overflow:hidden;
 }
-/*.textfield-dense textarea, input {
-    background-color:Transparent;
-    padding:0px;
-    border:none;
-    border-radius:0px;
-    padding-top:36px;
-    padding-bottom:4px;
-    width:100%;
-    display:block;
+.textfield i {
     position:relative;
-    height:16px;
-    line-height:16px;
-    font-size:13px;
-    resize:none;
-    outline:none;
-}*/
+    display:block;
+    padding-left:0px;
+    padding-right:0px;
+    box-sizing:border-box;
+    overflow:hidden;
+    height:auto;
+}
 .textfield textarea:hover, textarea:active, input:hover, input:active, {
     outline:none;
     border:none;
@@ -299,7 +341,9 @@
     -moz-box-shadow:none;
 }
 .appbar .textfield {
-    margin-top:10px;
+    margin-top:0px;
+    line-height:100%;
+    vertical-align:middle;
 }
 .primarytext {
 
@@ -311,7 +355,6 @@
 
 }
 .card {
-    margin:5px;
     display:inline-block;
     position:relative;
     clear:all;
@@ -319,6 +362,7 @@
     height:auto;
     border-radius:2px;
     overflow:visible;
+    margin:8px;
     box-sizing:border-box;
 }
 .card > div {
@@ -410,12 +454,11 @@
 }
 .responsive-ui {
     position:relative;
+    display:inline-block;
     left:0px;
     top:0px;
-    height:auto;
+    width:100%;
     margin-right:0px;
-    bottom:-1px;
-    right:-1px;
     box-sizing:border-box;
 }
 .cardactions {

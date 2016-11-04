@@ -38,11 +38,13 @@ class Component extends React.Component {
         context:PropTypes.string,
         component:PropTypes.string,
         role:PropTypes.string,
-        active:PropTypes.bool
+        active:PropTypes.bool,
+        onChange:PropTypes.func
     };
     static defaultProps = {
         resolution:'18px',
-        active:false
+        active:false,
+        onChange:(e)=>{}
     };
     static contextTypes = {
         theme: PropTypes.object
@@ -81,6 +83,8 @@ class Component extends React.Component {
     }
     handleClick = (e) => {
         this.setState({active:!this.state.active});
+        e.target.value = !this.state.active;
+        this.props.onChange(e);
     }
     render() {
         return (

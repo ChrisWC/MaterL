@@ -15,7 +15,6 @@
 *****************************************************************************/
 
 import React, { PropTypes } from 'react';
-import Paper from '../Paper';
 /****************************************************************
  * A linear control with animations and 'reflexes', it
  * is the base class for scroll bars and progress bars.

@@ -32,13 +32,12 @@ import ColorPicker from '../Lotus/ColorPicker';
 import Image from '../Lotus/Image';
 import Palette from '../Material/Palette';
 import Theme from '../Material/Theme';
-import Paper from '../Material/Paper';
 import Icon from '../Material/Icon';
 import CommonFunctions from '../Material/CommonFunctions';
 import Device from '../Material/Device';
 import history from '../../core/history';
 import TextField from '../Material/TextField';
-
+import Sheet from '../Material/Sheet';
 class App extends Component {
     constructor(props, context) {
         super(props, context);
@@ -104,6 +103,7 @@ class App extends Component {
                         <Menu>
                             <Button contextName="menu" label="Structure" redirect={"/layout/structure"}/>
                             <Button contextName="menu" label="Responsive UI" redirect={"/layout/responsive-ui"}/>
+                            <Button contextName="menu" label="Empty Cell List" redirect={"/layout/ecl"}/>
                         </Menu>
                     </Button>
                     <Button contextName="menu" label="Style">
@@ -125,7 +125,8 @@ class App extends Component {
                             <Button contextName="menu" label="Menu" active={false} redirect={"/menu"} />
                             <Button contextName="menu" label="Paper" active={false} redirect={"/paper"} />
                             <Button contextName="menu" label="Icon" active={false} redirect={"/icon"} />
-                            <Button contextName="menu" label="Slider" active={false} redirect={"slider"} />
+                            <Button contextName="menu" label="Slider" active={false} redirect={"/slider"} />
+                            <Button contextName="menu" label="Expansion Panel" active={false} redirect={"/expansion_panel"} />
                         </Menu>
                     </Button>
                 </Menu>
@@ -146,8 +147,8 @@ class App extends Component {
                     <Palette priority={"default"} color={"grey"} primary={"50"} secondary={"200"} default={"400"}>
                         <Palette priority={"secondary"} color={"pink"} primary={"500"} secondary={"700"} default={"600"}>
                             <Theme>
-                                <Paper role={"body"}>
-                                <AppBar icon={menuButton} title={"MaterL"} right={<div><TextField hintText={"Search"} 
+                                <Sheet role={"body"}>
+                                <AppBar icon={menuButton} title={"MaterL"} right={<div><TextField discreet={true} hintText={"Search"} 
                                     icon={<Icon resolution={"24px"} component={"search"}/>}
                                     dropdown={true} getOptions={(v) => {return ['Option 1', 'Option 2', 'Option 3']} }/>
                                     <Button icon={<Icon component={"filter_list"}/>}/>
@@ -155,7 +156,7 @@ class App extends Component {
                                     </div>}/>
                                 {leftDrawer}
                                 {this.props.children}
-                                </Paper>
+                                </Sheet>
                             </Theme>
                         </Palette>
                     </Palette>

@@ -15,9 +15,9 @@
 *****************************************************************************/
 
 import React, { PropTypes } from 'react';
-import Paper from '../Paper';
+import Sheet from '../Sheet';
+//mport ResponsiveUI from '../Sheet/ResponsiveUI'
 
-import ResponsiveUI from '../Sheet/ResponsiveUI'
 const inner_style = {
 }
 class Component extends React.Component {
@@ -26,10 +26,9 @@ class Component extends React.Component {
         this.state = {
             style:{
                 ...this.props.style,
-                width:this.props.columnWidth? (this.props.columnWidth*this.props.columnSpan + (this.props.gutterSize*(this.props.columnSpan-1)))+'px':this.props.style.width
+                width:this.props.columnWidth? (this.props.columnWidth*this.props.columnSpan + (this.props.gutterSize*(this.props.columnSpan-1)))+'px':this.props.style.width,
             },
         }
-        console.log(this.props.columnWidth)
     }
     static propTypes = {
         title: PropTypes.string,
@@ -50,9 +49,14 @@ class Component extends React.Component {
         palette: PropTypes.object
     }
     componentWillReceiveProps = (nProps) => {
-        if (nProps.columnWidth && this.props.style && this.props.style.width && nProps.columnWidth > parseInt(this.props.style.width, 10)) {
-            this.setState({style:{...this.state.style, width:(nProps.columnWidth*nProps.columnSpan + (nProps.gutterSize*(nProps.columnSpan-1))) + "px"}})
+        var nstate = {...this.state}
+        if (nProps.columnWidth && nProps.gutterSize && nProps.columnSpan && this.props.style && this.props.style.width && nProps.columnWidth > parseInt(this.props.style.width, 10)) {
+            nstate = {...nstate,style:{...this.state.style, width:(nProps.columnWidth*nProps.columnSpan + (nProps.gutterSize*(nProps.columnSpan-1))) + "px"}}
         }
+        if (nProps.style) {
+            //nstate = {...nstate, style:{...nstate.style, left:nProps.style.left, top:nProps.style.top}}
+        }
+        this.setState(nstate)
     }
     getCSS = () => {
         var css = ``
@@ -63,13 +67,16 @@ class Component extends React.Component {
         }
         return css
     }
+    getBoundingClientRect = () => {
+        return this.refs['sheet'].getBoundingClientRect()
+    }
     render() {
         return(
-            <Paper role={"card"} style={this.state.style} columns={this.props.columns} className={this.context.theme.card.container} depth={1}>    
+            <Sheet ref='sheet' {...this.props} role={"card"} style={this.state.style} columns={this.props.columns} className={this.context.theme.card.container} depth={1}>    
                     {this.props.children != undefined? React.Children.map(this.props.children, (val, keys, ind) =>{
                         return React.cloneElement(val, {...val.props, width:parseFloat(this.state.style.width, 10)})
                     }):<div>No Content Found.</div>}
-            </Paper>
+            </Sheet>
         );
     }
 }

@@ -37,8 +37,8 @@ function Route({}, context) {
         <section>
             <h1> RESPONSIVE UI </h1>
         </section>
-        <ResponsiveUI responsive={true}>
-            <Card role={"sidepanel"} position={"left"}>
+        <ResponsiveUI responsive={true} numOfCols={12}>
+            <Card columnSpan={4}>
                 <CardTitle title={"Sidepanel"} />
                 <CardBody>
                     <h2>Side Panel</h2>

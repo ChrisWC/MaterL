@@ -26,7 +26,7 @@ import Icon from '../../components/Material/Icon';
 import Choice from '../../components/Material/Choice';
 import Device from '../../components/Material/Device';
 import AppBar from '../../components/Material/AppBar';
-import Paper from '../../components/Material/Paper';
+import Paper from '../../components/Material/Sheet';
 import Drawer from '../../components/Material/Drawer';
 const title = 'Mater-L';
 

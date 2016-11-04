@@ -20,7 +20,7 @@ import ArcDecor from '../../components/Material/ArcDecor';
 import Card from '../../components/Material/Card';
 import CardTitle from '../../components/Material/Card/CardTitle';
 import CardBody from '../../components/Material/Card/CardBody';
-import Paper from '../../components/Material/Paper';
+import Paper from '../../components/Material/Sheet';
 import Icon from '../../components/Material/Icon'
 import Choice from '../../components/Material/Choice'
 const title = 'React Starter Kit';

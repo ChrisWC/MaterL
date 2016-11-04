@@ -15,38 +15,55 @@
 *****************************************************************************/
 
 import React, { PropTypes } from 'react';
-
+import PopOver from '../PopOver';
+import Menu from '../Menu';
+import Button from '../Button';
+import Icon from '../Icon';
+/************************
+ * contains title and expansion button and minimum
+ *
+ * will hold multiple values, passed in as children.
+ ************************/
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
+            open:false
         }
     }
     static propTypes = {
-        title: PropTypes.string,
+
+        onChange: PropTypes.func
     };
     static defaultProps = {
+        onChange:(e)=>{},
     };
     static contextTypes = {
         theme: PropTypes.object,
-        palette: PropTypes.object
+        palette: PropTypes.object,
+    }
+    
+    componentWillReceiveProps = (newProps, nContext) => {
+    }
+    componentWillMount = () => {
+    }
+    componentReceiveProps = (nProps, nContext) => {
+    }
+    componentDidMount = () => {
+    }
+    componentWillUnmount = () => {
+    }
+    handleChange = (e, v) => {
+        this.props.onChange(e, v);
     }
     render() {
-        return(
-            <div className={this.context.theme.card.title.container}>
-                {this.props.avatar?
-                    <div className={this.context.theme.card.title.avatar}>
-                    <img src={this.props.avatar}/></div>:null}
-                <div> 
-                <div className={this.context.theme.card.title.primary}>
-                    {this.props.title}
-                </div>
-                {this.props.subtitle? 
-                    <div className={this.context.theme.card.title.secondary}>
-                        {this.props.subtitle}
-                    </div>:null}
-                </div>
+        return (
+            <div ref="container">
+                <style>
+                    {this.props.style}
+                </style>
+                {this.props.children}
             </div>
         );
     }

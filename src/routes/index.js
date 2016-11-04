@@ -38,6 +38,9 @@ import responsive_ui from './responsive_ui';
 import structure from './structure';
 import upcoming from './upcoming';
 import slider from './slider';
+import empty_cell_list from './empty_cell_list'
+import tree from './tree'
+import expansion_panel from './expansion_panel'
 
 import { Provider } from 'react-redux';
 
@@ -48,7 +51,10 @@ export default {
   children: [
     home,
     responsive_ui,
+    expansion_panel,
+    empty_cell_list,
     slider,
+    tree,
     upcoming,
     structure,
     button,
@@ -82,5 +88,4 @@ export default {
         </Provider>
     );
   },
-
 };

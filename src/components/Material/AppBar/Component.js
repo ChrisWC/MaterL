@@ -14,8 +14,8 @@
 *   limitations under the License.
 *****************************************************************************/
 import React, { PropTypes } from 'react';
-import Paper from '../Paper';
 
+import Sheet from '../Sheet';
 const icon_style = {
     border:'none',
     display:'inline-block',
@@ -68,7 +68,7 @@ class Component extends React.Component {
     }
     render() {
         return(
-            <Paper style={this.state.style} className={this.context.theme.appbar.default} depth={4} {...this.props} {...this.defaultProps}>
+            <Sheet style={this.state.style} className={this.context.theme.appbar.default} depth={4} {...this.props} {...this.defaultProps}>
                 <span style={{float:'left'}}>
                 {this.props.icon? React.cloneElement(this.props.icon, {...this.props.icon.props, contextName:'appbar'}):null}
                 </span>
@@ -76,7 +76,7 @@ class Component extends React.Component {
                 <div style={{height:'64px', float:'right'}}>
                     {this.props.right }
                 </div>
-            </Paper>
+            </Sheet>
         );
     }
 }

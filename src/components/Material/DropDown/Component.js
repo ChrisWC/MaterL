@@ -15,11 +15,11 @@
 *****************************************************************************/
 
 import React, { PropTypes } from 'react';
-import Paper from '../Paper';
 import PopOver from '../PopOver';
 import Menu from '../Menu';
 import Button from '../Button';
 import Icon from '../Icon';
+
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -32,9 +32,11 @@ class Component extends React.Component {
     }
     static propTypes = {
         options: PropTypes.array,
-        value: PropTypes.number
+        value: PropTypes.number,
+        onChange: PropTypes.func
     };
     static defaultProps = {
+        onChange:(e)=>{},
     };
     static contextTypes = {
         theme: PropTypes.object,
@@ -53,8 +55,9 @@ class Component extends React.Component {
     componentWillUnmount = () => {
     }
     handleChange = (e, v) => {
-        console.log(v)
         this.setState({...this.state, value:v, value_label:this.state.listed_options[Number(v)]})
+        e.target.value = v;
+        this.props.onChange(e, v);
     }
     render() {
         return (

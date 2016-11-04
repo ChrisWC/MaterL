@@ -15,7 +15,6 @@
 *****************************************************************************/
 
 import React, { PropTypes } from 'react';
-import Paper from '../../Paper';
 
 import classNames from 'classnames';
 const titleStyle = {
@@ -37,7 +36,7 @@ class Component extends React.Component {
 
         this.state = {
             style:{
-                height:'50px',
+                height:'auto',
                 width:'100%'
             },
             theme_id:context.theme_component_id.next().value

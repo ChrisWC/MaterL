@@ -21,15 +21,17 @@
 import React, { PropTypes } from 'react';
 
 import classNames from 'classnames';
+
+//import EmptyCellList from '../../Layout/EmptyCellList'
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        var r = []
+        /*var r = []
 
         for (var i = 0; i < this.props.children.length; i++) {
             r.push({id:i, left:0, top:0})
-        }
+        }*/
         
         
         this.state = {
@@ -40,14 +42,17 @@ class Component extends React.Component {
             ],
             m:[
             ],
-            r:r,
+            r:[],
             heights:[
             ],
+            children:{
+                empty_cells:[],
+                cells:[]
+            },
             style:{
                 width:'100%',
                 height:'auto'
             },
-            theme_id:context.theme_component_id.next().value
         }
     }
     static propTypes = {
@@ -108,6 +113,15 @@ class Component extends React.Component {
         }
     }
     componentWillMount = () => {
+    
+        var r = []
+
+        if (this.props.children) {
+            for (var i = 0; i < this.props.children.length; i++) {
+                r.push({id:i, left:0, top:0})
+            }
+        }
+        this.setState({theme_id:this.context.theme_component_id.next().value})
     }
     componentDidMount = () => {
         window.addEventListener('resize', () => {
@@ -127,6 +141,7 @@ class Component extends React.Component {
         var nstate = this.state
         
         var bp = this.getBreakpoint()
+        
         nstate['breakpoint'] = bp
         nstate['columnCount'] = bp['columns']
         nstate['gutterSize'] = isNaN(bp['gutter'])? bp['gutter'][0]:bp['gutter']
@@ -134,7 +149,6 @@ class Component extends React.Component {
         var nr = this.updateDOM(nstate, this.props)
         nstate['r'] = nr['r']
         nstate['style']['height'] = nr['h'] + 'px'
-
 
         this.setState(nstate)
     }
@@ -194,13 +208,6 @@ class Component extends React.Component {
         if (nr['r'].length != this.state['r'].length) {
             this.setState(nstate)
         }
-        var nheight = parseFloat(nState.style.height, 10)
-        var pheight = parseFloat(this.state.style.height, 10)
-        if (nheight != pheight) {
-            this.context.updateDOM()
-        }
-        //nState.r = nr
-        //return true;
     }
     getBreakpoint = () => {
         var rect = this.refs['container'].getBoundingClientRect()
@@ -241,49 +248,45 @@ class Component extends React.Component {
         var nTop = 0;
         var mxHeight = 0.0;
         var children = []
-        if (!Array.isArray(props.children)) {
+
+        var unassigned = []
+        var assigned = []
+        var assigned_topleft = []
+        if (props.children && !Array.isArray(props.children)) {
             children = [props.children]
-        } else {
+        } 
+        else if (props.children){
             children = props.children
         }
 
+        for (var c in children) {
+            if (children[c].props && children[c].props.col) {
+                if (children[c].props.row && children[c].props.row == 0 && children[c].props.col == 0) {
+                    assigned_topleft.push(children[c])
+                } else {
+                    assigned.push(children[c])
+                }
+            } else {
+                unassigned.push(children[c])
+            }
+        }
         var sidepanels_left = []
         var sidepanels_top = []
         var components = []
         var columnCount = nState.columnCount;
-        for (var i = 0; i < children.length; i++) {
-            var role = children[i].props.role
-            var position = children[i].props.position
 
-            if (role && (role == 'sidepanel' || role == 'drawer' || role == 'appbar')) {
-                if (position && position == 'left') {
-                    sidepanels_left.push(children[i])
-                    columnCount--;
-                }
-                if (position && position == 'above') {
-                    sidepanels_top.push(children[i])
-                }
-            }
-            else {
-                components.push(children[i])
-            }
-        }
         for (var i = 0; i < columnCount; i++) {
             m.push([])
         }
-        
-        for (var i = 0; i < sidepanels_left.length; i++) {
-            //nr.push({id:i, left:mLeft, top:nTop})
-            mLeft += sidepanels_left[i].props.columnSpan != undefined? (sidepanels_left[i].props.columnSpan*nState.columnSize + ((sidepanels_left[i].props.columnSpan)*nState.gutterSize)):(1*nState.columnSize+nState.gutterSize)
-        }
+        components = components.concat(assigned_topleft)
+        components = components.concat(assigned)
+        components = components.concat(unassigned)
         for (var i in components) {
             var ai = sidepanels_left.length + parseInt(i,10)
-            var columnSpan = components[i].props.columnSpan;
-            columnSpan = columnSpan? columnSpan:1;
-            console.log(columnSpan)
-            columnSpan = (columnSpan <= this.state.columnCount)? columnSpan:this.state.columnCount;
+            var columnSpan = components[i] && components[i].props && components[i].props.columnSpan? components[i].props.columnSpan:1;
+            //columnSpan = columnSpan? columnSpan:1;
+            columnSpan = this.state.columnCount? ((columnSpan <= this.state.columnCount)? columnSpan:this.state.columnCount):columnSpan;
 
-            console.log(columnSpan)
             var cols = this.getNextColumns(m, nr, columnSpan)
 
             for (var j = 0; j < cols.length; j++) {
@@ -301,7 +304,7 @@ class Component extends React.Component {
                     mLeft = nr[mn]['left']
                 }
                 var height = r.bottom - r.top
-                var width = nState.columnSize*columnSpan + nState.gutterSize*(columnSpan-1) //r.right - r.left
+                var width = nState.columnSize && nState.gutterSize? nState.columnSize*columnSpan + nState.gutterSize*(columnSpan-1):0 //r.right - r.left
                 nro['top'] = nTop
                 nro['bottom'] = nTop + height
                 nro['left'] = mLeft
@@ -315,20 +318,7 @@ class Component extends React.Component {
                 mLeft += (width + nState.gutterSize)
             }
         }
-        mLeft =0
-        var nre = []
-        nTop = 0
-        
-        for (var i = 0; i < sidepanels_left.length; i++) {
-            var width =  (sidepanels_left[i].props.columnSpan*nState.columnSize + ((sidepanels_left[i].props.columnSpan)*nState.gutterSize))
-            var rect = this.refs[i].getBoundingClientRect()
-            nre.push({id:i, left:mLeft, top:nTop, right:(mLeft + width), bottom:(nTop + (rect.bottom - rect.top))})
-            mLeft += sidepanels_left[i].props.columnSpan != undefined? (sidepanels_left[i].props.columnSpan*nState.columnSize + ((sidepanels_left[i].props.columnSpan)*nState.gutterSize)):(1*nState.columnSize+nState.gutterSize)
-        }
-        for (n in nr) {
-            nre.push(nr[n])
-        }
-        return {'r':nre, 'h':mxHeight}
+        return {'r':nr, 'h':mxHeight}
     }
     genCSS = () => {
        var css = Object.keys(this.state.style).map((val, index, arr) => {
@@ -344,9 +334,8 @@ class Component extends React.Component {
     getCSSStyle = () => {
         return "\n"+`.responsiveui_`+this.state.theme_id+` {`+"\n"+this.genCSS()+`}`+"\n";
     }
+    
     render() {
-        var components = 0
-        var sidepanel_left = 0
         return(
             <div {...this.props} ref={'container'} className={this.context.theme.responsiveui.container}>
                 <style>
@@ -354,18 +343,8 @@ class Component extends React.Component {
                 </style>
                 <div className={classNames({['responsiveui_'+this.state.theme_id]:true})}>
                 {React.Children.map(this.props.children, (val, key, arr) =>{
-                    var r = this.state.r && this.state.r.length > 0? this.state.r[key]:{top:0, left:0}
-                    var rkey = ""
-                    if (val.props.role && val.props.role == 'sidepanel') {
-                        if (val.props.position && val.props.position == 'left') {
-                            sidepanel_left++;
-                            rkey = "s"+sidepanel_left
-                        }
-                    } else {
-                        components++;
-                        rkey = components
-                    }
-                    return <div ref={key} style={{display:"inline-block", position:"absolute", top:r.top + 'px', left:r.left + 'px', width:r.width+'px'}}>{React.cloneElement(val, {...val.props, columnWidth:(this.state.columnSize), gutterSize:(this.state.gutterSize), id_key:key})}</div>;
+                    var r = this.state.r && this.state.r.length > 0 && this.state.r[key]? this.state.r[key]:{top:0, left:0, width:30}
+                    return <div ref={key} style={{display:"inline-block", position:"absolute", top:r.top + 'px', left:r.left + 'px', width:r.width + 'px'}}>{React.cloneElement(val, {...val.props, columnWidth:this.state.columnSize, gutterSize:this.state.gutterSize, id_key:key})}</div>;
                 })}
                 </div>
             </div>

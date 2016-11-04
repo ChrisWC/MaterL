@@ -15,8 +15,8 @@
 *****************************************************************************/
 
 import React, { PropTypes } from 'react';
-import Paper from '../Paper/'
 
+import Sheet from '../Sheet';
 class Component extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -120,13 +120,13 @@ class Component extends React.Component {
     }
     render() {
         return this.state.open? (
-                <Paper role="popover" ref="container" className={this.context.theme.popover.cn} style={this.state.inner_style} onClick={(e) => {
+                <Sheet role="popover" ref="container" className={this.context.theme.popover.cn} style={this.state.inner_style} onClick={(e) => {
                     e.stopPropagation();
                 }}>
                     {React.Children.map(this.props.children, (val, key, arr) => {
                         return React.cloneElement(val, {key:key, externalClick:this.props.externalClick, ...val.props})
                     })}
-                </Paper>
+                </Sheet>
         ):null;
     }
 }

@@ -15,7 +15,6 @@
 *****************************************************************************/
 
 import React, { PropTypes } from 'react';
-import Paper from '../Paper';
 
 const width = {
     'window': {

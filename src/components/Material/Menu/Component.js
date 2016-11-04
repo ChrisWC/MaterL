@@ -15,7 +15,6 @@
 *****************************************************************************/
 
 import React, { PropTypes } from 'react';
-import Paper from '../Paper/'
 
 class Component extends React.Component {
     constructor(props, context) {
@@ -63,7 +62,7 @@ class Component extends React.Component {
                     {this.props.open? React.Children.map(this.props.children, (val, key, arr) => {
                         var active= (this.state.activeItem==key);
                         if (val.type.ComposedComponent && val.type.ComposedComponent.defaultProps.role === 'menu') {
-                            return React.cloneElement(val, {key:key, context:"menu",toggle:true, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
+                            return React.cloneElement(val, {...val.props, key:key, context:"menu",toggle:true, outer_style:{display:'inline-block', width:this.state.width},active:(this.state.activeItem==key),
                                 onClick:(e)=>{
                                     e.stopPropagation()
                                     this.handleMenuClick(e, key);

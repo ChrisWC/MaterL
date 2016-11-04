@@ -15,7 +15,6 @@
 *****************************************************************************/
 
 import React, { PropTypes } from 'react';
-import Paper from '../../Paper';
 
 class Component extends React.Component {
     constructor(props, context) {

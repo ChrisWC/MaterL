@@ -15,7 +15,6 @@
 *****************************************************************************/
 
 import React, { PropTypes } from 'react';
-import Paper from '../Paper'
 import s from './Component.css'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
@@ -29,6 +28,15 @@ const defaultTheme = {
     choice:{
         default:s.choice,
         body:s['choice-body'],
+    },
+    expansion_panel:{
+        default:s['expansion-panel'],
+        container:s['expansion-panel-header'],
+        title:s['title'],
+        subtitle:s['subtitle'],
+        label:s['expansion-panel-label'],
+        value:s['expansion-panel-value'],
+        button:s['expansion-panel-button']
     },
     textfield:{
         default:s.textfield,
@@ -289,32 +297,35 @@ class Component extends React.Component {
         super(props, context);
 
         this.state = {
+            t:this.getThemeComponentId()
         }
+
+        console.log("THEME")
     }
     static propTypes = {
         role:PropTypes.string.isRequired,
         theme:PropTypes.object.isRequired,
     };
+    getThemeComponentId = function*() {
+        var id = 0;
+
+        while (true) {
+            id += 1;
+            yield id;
+        }
+    }
     static defaultProps = {
         role:"palatte",
-        theme:defaultTheme
+        theme:defaultTheme,
     }
     static childContextTypes = {
         theme: React.PropTypes.object,
         theme_component_id: React.PropTypes.object
     }
-
     getChildContext = () => {
         return {
             theme: this.props.theme,
-            theme_component_id: function*() {
-                var id = 0;
-
-                while (true) {
-                    id += 1;
-                    yield id;
-                }
-            }()
+            theme_component_id: this.state.t
         }
     }
     render() {

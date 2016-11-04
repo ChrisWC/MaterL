@@ -5,10 +5,10 @@ export {default as CommonFunctions} from './CommonFunctions';
 export {default as Device} from './Device';
 export {default as DeviceInfo} from './DeviceInfo'
 export {default as Drawer} from './Drawer';
+export {default as ExpansionPanel} from './ExpansionPanel';
 export {default as Icon} from './Icon';
 export {default as Layer} from './Layer';
 export {default as Menu} from './Menu';
-export {default as Paper} from './Paper';
 export {default as PopOver} from './PopOver';
 export {default as Palette} from './Palette';
 export {default as Sheet} from './Sheet';

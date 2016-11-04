@@ -29,20 +29,30 @@ import Icon from '../Icon';
  *          and suggested completions.
  *      filefield -- prompt user with the file browser and accept 
  *          the uer selection.
+ * Options:
+ *      discreet -- show textfield only when active, i.e. when button is pressed
+ *      dense -- show floating hint text to the left it 
+ *               not dense, or over if it is. But, keep the hint text above.
  ****************************************************************/
 class Component extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
 
         this.state = {
             style: {
+                height:'0px'
             },
+            innerleft:'0px',
             active:false,
             dirty:(this.props.value.length > 0)? true:false,
             error:false,
             value:this.props.value,
             disabled:this.props.disabled,
-            incognito:false
+            incognito:false,
+            visible:this.props.discreet? false:true,
+            theme_id:context.theme_component_id.next().value,
+            width:this.props.width,
+            scale_width:true
         }
     }
     static propTypes = {
@@ -54,7 +64,10 @@ class Component extends React.Component {
         value:PropTypes.string.isRequired,
         dropdown:PropTypes.bool,
         filefield:PropTypes.bool,
-        getOptions:PropTypes.func
+        getOptions:PropTypes.func,
+        discreet:PropTypes.bool,
+        dense:PropTypes.bool,
+        width:PropTypes.number
     };
     static defaultProps = {
         error:false,
@@ -64,6 +77,9 @@ class Component extends React.Component {
         value:"",
         filefield:false,
         dropdwon:false,
+        discreet:false,
+        dense:false,
+        width:100,
         getOptions:(val) => {
             //should generate a filtered list using val
             //ideally an id associated with the value, if valid, will
@@ -74,7 +90,8 @@ class Component extends React.Component {
     static contextTypes = {
         sheets: React.PropTypes.arrayOf(React.PropTypes.object),
         palette: React.PropTypes.object,
-        theme: React.PropTypes.object
+        theme: React.PropTypes.object,
+        theme_component_id: PropTypes.object,
     };
     getPopoverAsOverlay = () => {
         var rect = this.refs['cont'].getBoundingClientRect();
@@ -91,14 +108,18 @@ class Component extends React.Component {
                         top:top, summoningComponent:rect, 
                         ...popover.props})]}/>
     }
-
+    componentDidMount = () => {
+        if (this.refs['cont'] && this.refs['innerleft']) {
+        var r = this.refs['cont'].getBoundingClientRect();
+        var r1 = this.refs['innerleft'].getBoundingClientRect();
+        this.setState({...this.state, style:{height:r.height}, innerleft:r1.height})
+        }
+    }
     handleClick = (e) => {
-        console.log("CLICK")
         if (!this.props.dropdown) {
             this.setState({active:!this.state.active});
         }
         if (this.props.dropdown && !this.state.active) {
-            console.log("TEGFDFGFDSGDFGDFGDFGFD")
             //this.setState({inner_style:{...this.state.inner_style, backgroundColor:colors.blue900,}})
             this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getPopoverAsOverlay, true)
             this.setState({active:true})
@@ -121,9 +142,7 @@ class Component extends React.Component {
         }
     }
     handleFocus = (e) => {
-
         if (this.props.dropdown && !this.state.disabled) {
-            console.log("TEGFDFGFDSGDFGDFGDFGFD")
             //this.setState({inner_style:{...this.state.inner_style, backgroundColor:colors.blue900,}})
             this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getPopoverAsOverlay, true)
         }
@@ -145,8 +164,6 @@ class Component extends React.Component {
         return (
             <PopOver role="popover" {...this.props}>
                 <Menu handleChange={(e, v) => {
-                        console.log(v)
-
                         this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getPopoverAsOverlay, false)
                         this.setState({...this.state, value:options[v], dirty:true, active:false})
                     }}>
@@ -160,6 +177,8 @@ class Component extends React.Component {
         )
     }
     render() {
+        var lh = (parseFloat(this.state.style.height) - parseFloat(this.state.innerleft))/2.0;
+        var ih = lh+36;
         const css = `
             @keyframes primary-bar {
                 0% {
@@ -183,7 +202,7 @@ class Component extends React.Component {
                     top:0px;
                 }
             }
-            .textfield-bar-dirty {
+            .textfield-bar-dirty-`+this.state.theme_id+` {
                 border-top-width:1px;
                 border-left-width:0px;
                 border-right-width:0px;
@@ -195,10 +214,10 @@ class Component extends React.Component {
                 animation-name:primary-bar;
                 animation-duration:1s;
                 padding:0px;
-                padding-bottom:8px;
+                padding-bottom:0px;
                 text-align:center;
             }
-            .textfield-bar-clean {
+            .textfield-bar-clean-`+this.state.theme_id+` {
                 border-top-width:1px;
                 border-left-width:0px;
                 border-right-width:0px;
@@ -208,10 +227,11 @@ class Component extends React.Component {
                 display:block;
                 border-color:`+this.context.palette['default']['default'].backgroundColor+`;
                 padding:0px;
-                padding-bottom:8px;
+                padding-bottom:0px;
+                position:relative;
                 text-align:center;
             }
-            .textfield-bar-error {
+            .textfield-bar-error-`+this.state.theme_id+` {
                 border-top-width:1px;
                 border-left-width:0px;
                 border-right-width:0px;
@@ -221,10 +241,10 @@ class Component extends React.Component {
                 display:block;
                 border-color:`+this.context.palette['secondary']['default'].backgroundColor+`;
                 padding:0px;
-                padding-bottom:8px;
+                padding-bottom:0px;
                 text-align:center;
             }
-            .textfield-bar-disabled {
+            .textfield-bar-disabled-`+this.state.theme_id+` {
                 border-top-width:1px;
                 border-left-width:0px;
                 border-right-width:0px;
@@ -234,44 +254,73 @@ class Component extends React.Component {
                 display:block;
                 border-color:`+this.context.palette['default']['default'].backgroundColor+`;
                 padding:0px;
-                padding-bottom:8px;
+                padding-bottom:0px;
                 text-align:center;
             }
-            .floatinghint-clean {
+            .floatinghint-clean-`+this.state.theme_id+` {
                 position:absolute;
                 display:inline-block;
-                bottom:0px;
                 left:0px;
                 right:0px;
                 top:16px;
-                padding-bottom:8px;
+                padding-top:`+lh+`px;
+                padding-bottom:4px;
                 line-height:16px;
                 font-size:16px;
-                height:20px;
+                height:auto;
+                overflow:hidden;
             }
-            .floatinghint-dirty {
+            .floatinghint-dirty-`+this.state.theme_id+` {
+                overflow:hidden;
                 position:absolute;
                 display:inline-block;
                 bottom:0px;
                 left:0px;
                 right:0px;
-                padding-top:0px;
+                top:0px;
+                padding-top:`+lh+`px;
                 padding-bottom:4px;
                 top:0px;
                 font-size:12px;
+                line-height:12px;
                 height:auto;
                 animation-name:floating-hint-animation;
                 animation-duration:0.1s;
             }
-            .helptext {
-                font-size:8px;
+            .helptext-`+this.state.theme_id+` {
+                font-size:10px;
+                line-height:14px;
+                position:realative;
+                height:auto;
+            }
+            .textfield-discreet-hidden-`+this.state.theme_id+` {
+                position:relative;
+                padding-top:`+lh+`px;
+                float:left;
+                width:0px;
+                overflow:hidden;
+            }
+            .textfield-discreet-active-`+this.state.theme_id+` {
+                position:relative;
+                padding-top:`+lh+`px;
+                overflow:auto;
+                width:`+this.state.width+(this.state.scale_width? '%':'px')+`;
+                float:left;
+            }
+            .textfield-icon-`+this.state.theme_id+` {
+                float:left;
+                position:absolute;
+                text-anchor:middle;
+                top:0px;
+                right:-8px;
+                overflow:hidden;
             }
         `
         return (
             <div ref={'cont'} className={this.context.theme.textfield.default} onClick={this.props.onClick}>
                 <style>{css}</style> 
-                <div style={{float:"left"}}>
-                <div className={(this.state.active || this.state.dirty)? 'floatinghint-dirty':'floatinghint-clean'} ref="FloatingHintText">
+                <div ref={"innerleft"} className={(this.props.discreet && !this.state.visible)? ('textfield-discreet-hidden-'+this.state.theme_id):('textfield-discreet-active-'+this.state.theme_id)}>
+                <div className={(this.state.active || this.state.dirty)? 'floatinghint-dirty-'+this.state.theme_id:'floatinghint-clean-'+this.state.theme_id} ref="FloatingHintText">
                     {(this.state.active && !this.state.disabled)? this.props.floatingHintText:this.props.hintText}</div>
                 {this.props.password? <input type="password" 
                     onChange={this.handleChange}
@@ -283,12 +332,18 @@ class Component extends React.Component {
                         value={this.state.value}>
                 </textarea>} 
                 <span style={{width:'100%',paddingBottom:'0px'}}>
-                    {this.state.incognito? null:<span className={this.state.disabled? 'textfield-bar-disabled':(this.state.dirty? (this.state.error? 'textfield-bar-error':'textfield-bar-dirty'):(this.props.required? (this.state.error? 'textfield-bar-error':'textfield-bar-clean'):'textfield-bar-clean'))}></span>}
+                    {this.state.incognito? null:<span className={this.state.disabled? 'textfield-bar-disabled-'+this.state.theme_id:(this.state.dirty? (this.state.error? 'textfield-bar-error-'+this.state.theme_id:'textfield-bar-dirty-'+this.state.theme_id):(this.props.required? (this.state.error? 'textfield-bar-error-'+this.state.theme_id:'textfield-bar-clean-'+this.state.theme_id):'textfield-bar-clean-'+this.state.theme_id))}></span>}
                 </span>
-                <div className={'helptext'}>{this.props.helpText}</div>
+                <div className={'helptext-'+this.state.theme_id}>{this.props.helpText}</div>
                 </div>
-                    {this.props.icon? this.props.icon:null}
-                    {this.props.dropdown && !this.props.icon ? <Icon component={"arrow_drop_down"}/>:null}
+                <div className={'textfield-icon-'+this.state.theme_id}>
+                {this.props.icon? <Button icon={this.props.icon} onClick={(e)=>{
+                    if (this.props.discreet) {
+                        this.setState({visible:!this.state.visible})
+                    }
+                }}/>:null}
+                {this.props.dropdown && !this.props.icon ? <Button icon={<Icon component={"arrow_drop_down"}/>}/>:null}
+                </div>
             </div>
         );
     }

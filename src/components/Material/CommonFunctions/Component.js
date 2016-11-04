@@ -15,7 +15,6 @@
 *****************************************************************************/
 
 import React, { PropTypes } from 'react';
-import Paper from '../Paper'
 
 const defaultFunctions = {
     redirect:(e, redirect_location)=>{
