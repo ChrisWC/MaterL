@@ -164,8 +164,12 @@ class Component extends React.Component {
         return (
             <PopOver role="popover" {...this.props}>
                 <Menu handleChange={(e, v) => {
+                        e.target.value = options[v]
+                        e.target.options = options
+                        e.target.index = v
                         this.context.sheets[this.context.sheets.length - 1].handleForegroundRequest(this.getPopoverAsOverlay, false)
                         this.setState({...this.state, value:options[v], dirty:true, active:false})
+                        this.handleChange(e, v)
                     }}>
                     {options.length == 0? 
                         <Button contextName="menu" label={"Nothing Here."}/>:

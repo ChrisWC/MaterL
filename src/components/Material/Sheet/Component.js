@@ -59,7 +59,6 @@ class Component extends React.Component {
                open:true,
                userOpen:undefined
            },
-           theme_id:context.theme_component_id.next().value
         }
     }
 
@@ -274,6 +273,7 @@ class Component extends React.Component {
         }
     }
     componentWillMount = () => {
+        this.state.theme_id = this.context.theme_component_id.next().value
     }
     componentWillUpdate = (nextProps, nextState) => {
     }

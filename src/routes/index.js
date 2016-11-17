@@ -41,7 +41,8 @@ import slider from './slider';
 import empty_cell_list from './empty_cell_list'
 import tree from './tree'
 import expansion_panel from './expansion_panel'
-
+import data_table from './data_table'
+import graph from './graph';
 import { Provider } from 'react-redux';
 
 export default {
@@ -51,6 +52,7 @@ export default {
   children: [
     home,
     responsive_ui,
+    data_table,
     expansion_panel,
     empty_cell_list,
     slider,
@@ -66,6 +68,7 @@ export default {
     text_field,
     drawer,
     appbar,
+    graph,
     menu,
     icon,
     about,

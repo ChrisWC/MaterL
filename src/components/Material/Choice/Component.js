@@ -30,7 +30,7 @@ class Component extends React.Component {
                 fontSize:'16px',
                 lineHeight:'16px',
             },
-            active:!this.props.active
+            active:this.props.active
         }
     }
     static propTypes = {
@@ -80,6 +80,13 @@ class Component extends React.Component {
             }
         }
         return null
+    }
+    componentWillReceiveProps = (nProps) => {
+        var nstate = {...this.state}
+        if (nProps.active != undefined) {
+            nstate.active = nProps.active
+        }
+        this.setState(nstate)
     }
     handleClick = (e) => {
         this.setState({active:!this.state.active});

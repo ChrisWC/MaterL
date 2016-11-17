@@ -69,12 +69,14 @@ class Component extends React.Component {
     render() {
         return(
             <Sheet style={this.state.style} className={this.context.theme.appbar.default} depth={4} {...this.props} {...this.defaultProps}>
+                <div className={this.context.theme.appbar.default}>
                 <span style={{float:'left'}}>
                 {this.props.icon? React.cloneElement(this.props.icon, {...this.props.icon.props, contextName:'appbar'}):null}
                 </span>
                 <span style={this.state.title_style} className={this.context.theme.appbar.title}>{this.props.title}</span>
-                <div style={{height:'64px', float:'right'}}>
-                    {this.props.right }
+                <div className={this.context.theme.appbar.right}>
+                    {this.props.right}
+                </div>
                 </div>
             </Sheet>
         );

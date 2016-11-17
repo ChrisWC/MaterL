@@ -13,12 +13,13 @@
 *   See the License for the specific language governing permissions and
 *   limitations under the License.
 *****************************************************************************/
+
 import React, { PropTypes } from 'react';
 
 import classNames from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Component.css';
-import Choice from '../Choice';
+import BarDecor from '../BarDecor';
+import TextField from '../TextField';
 /****************************************************************
  ****************************************************************/
 class Component extends React.Component {
@@ -26,18 +27,18 @@ class Component extends React.Component {
         super(props);
 
         this.state = {
-            options:this.props.options,
-            values:this.props.values
+            style: {
+            },
+            columnHeaders:this.props.columnHeaders,
+            columnTypes:this.props.columnTypes,
+            data:this.props.data(),
+            rows:1
         }
     }
     static propTypes = {
+        nodes: React.Proptypes.array,
     };
     static defaultProps = {
-        error:false,
-        valid:false,
-        required:false,
-        inset:false,
-        value:""
     };
     static contextTypes = {
         palette: React.PropTypes.object,
@@ -67,11 +68,10 @@ class Component extends React.Component {
         this.setState({active:false})
     }
     render() {
-
         return (
             <div>
-                {this.props.values.map((val, key, arr) => {
-                    return <div><Choice role={this.props.role} active={val}>{this.props.options[key]} {val? 'true':'false'}</Choice><br /></div>
+                {this.state.nodes.map((val, key, arr) => {
+                    return <div></div>
                 })}
             </div>
         );

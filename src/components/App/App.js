@@ -114,19 +114,21 @@ class App extends Component {
                     </Button>
                     <Button contextName="menu" label="Components" active={false}>
                         <Menu>
+                            <Button contextName="menu" label="Appbar" active={false} redirect={"/appbar"} />
                             <Button contextName="menu" label="BarDecor" active={false} redirect={"/bar_decor"} />
                             <Button contextName="menu" label="Button" active={false} redirect={"/button"} />
                             <Button contextName="menu" label="Card" active={false} redirect={"/card"}/>
                             <Button contextName="menu" label="Choice" active={false} redirect={"/choice"} />
                             <Button contextName="menu" label="Device" active={false} redirect={"/device"} />
-                            <Button contextName="menu" label="Text Field" active={false} redirect={"/text_field"}/>
-                            <Button contextName="menu" label="Appbar" active={false} redirect={"/appbar"} />
                             <Button contextName="menu" label="Drawer" active={false} redirect={"/drawer"} />
+                            <Button contextName="menu" label="DataTable" active={false} redirect={"/data_table"} />
+                            <Button contextName="menu" label="Expansion Panel" active={false} redirect={"/expansion_panel"} />
+                            <Button contextName="menu" label="Graph" active={false} redirect={"/graph"} />
                             <Button contextName="menu" label="Menu" active={false} redirect={"/menu"} />
                             <Button contextName="menu" label="Paper" active={false} redirect={"/paper"} />
                             <Button contextName="menu" label="Icon" active={false} redirect={"/icon"} />
                             <Button contextName="menu" label="Slider" active={false} redirect={"/slider"} />
-                            <Button contextName="menu" label="Expansion Panel" active={false} redirect={"/expansion_panel"} />
+                            <Button contextName="menu" label="Text Field" active={false} redirect={"/text_field"}/>
                         </Menu>
                     </Button>
                 </Menu>

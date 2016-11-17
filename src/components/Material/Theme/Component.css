@@ -128,6 +128,10 @@
     padding-right:0px;
     display:block;
     position:absolute;
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:center;
+    justify-content:space-between;
 }
 .appbar-title {
     display:inline-block;
@@ -173,6 +177,15 @@
 }
 .appbar .button > * {
     float:left;
+}
+.appbar .appbar-left {
+
+}
+.appbar .appbar-right {
+    align-self:flex-end;
+    height:64px;
+    display:flex;
+    flex-wrap:nowrap;
 }
 .drawer {
     width:256px;
@@ -465,7 +478,10 @@
     padding-left:4px;
     padding-right:4px;
     clear:both;
-    display:block;
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:right;
+    flex-direction:row-reverse;
     overflow:hidden;
     height:44px;
     margin-bottom:4px;

@@ -17,11 +17,12 @@
 import React, { PropTypes } from 'react';
 import s from './Component.css'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-
+import uuid from 'uuid';
 const defaultTheme = {
     appbar:{
         default:s.appbar,
         title:s['appbar-title'],
+        right:s['appbar-right'],
         inset:16,
         zDepth:4,
     },
@@ -308,10 +309,9 @@ class Component extends React.Component {
     };
     getThemeComponentId = function*() {
         var id = 0;
-
         while (true) {
-            id += 1;
             yield id;
+            id++;
         }
     }
     static defaultProps = {
