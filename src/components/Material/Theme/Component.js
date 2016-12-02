@@ -30,6 +30,9 @@ const defaultTheme = {
         default:s.choice,
         body:s['choice-body'],
     },
+    datatable:{
+        default:s.datatable,
+    },
     expansion_panel:{
         default:s['expansion-panel'],
         container:s['expansion-panel-header'],

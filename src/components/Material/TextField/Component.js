@@ -48,7 +48,7 @@ class Component extends React.Component {
             error:false,
             value:this.props.value,
             disabled:this.props.disabled,
-            incognito:false,
+            incognito:this.props.incognito,
             visible:this.props.discreet? false:true,
             theme_id:context.theme_component_id.next().value,
             width:this.props.width,
@@ -67,7 +67,8 @@ class Component extends React.Component {
         getOptions:PropTypes.func,
         discreet:PropTypes.bool,
         dense:PropTypes.bool,
-        width:PropTypes.number
+        width:PropTypes.number,
+        incognito:PropTypes.bool
     };
     static defaultProps = {
         error:false,
@@ -80,6 +81,7 @@ class Component extends React.Component {
         discreet:false,
         dense:false,
         width:100,
+        incognito:false,
         getOptions:(val) => {
             //should generate a filtered list using val
             //ideally an id associated with the value, if valid, will

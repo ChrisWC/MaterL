@@ -92,7 +92,7 @@ class App extends Component {
         }
         const leftDrawer = (<Drawer open={openLeftNavigation} depth={1}>
                 <Menu>
-                    <Button icon={<Icon resolution={"24px"} component={"chevron_left"}/>} contextName="menu" role="header" label="MaterL" active={false} onClick={()=>{openLeftNavigation(!this.state.openLeftDrawer)}}/>
+                    <Button icon={<Icon resolution={"24px"} component={"chevron_left"}/>} contextName="menu" role="header" label="MaterL" active={false} onClick={(e)=>{openLeftNavigation(!this.state.openLeftDrawer)}}/>
                     <Button contextName="menu" label="About Project" active={false} redirect={"/about"} />
                     <Button contextName="menu" label="Topics">
                         <Menu>
@@ -134,7 +134,7 @@ class App extends Component {
                 </Menu>
             </Drawer>)
         const menuButton = (
-                <Button icon={<Icon resolution={"24px"} context={"navigation"} component={"menu"}/>} onClick={()=>{
+                <Button icon={<Icon resolution={"24px"} context={"navigation"} component={"menu"}/>} onClick={(e)=>{
                         openLeftNavigation(!this.state.openLeftDrawer)
                     }} />
         )

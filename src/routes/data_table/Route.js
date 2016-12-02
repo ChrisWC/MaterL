@@ -37,7 +37,7 @@ function Route({}, context) {
                 be customizable by the user.
             </p>
             <DataTable columnHeaders={["Name", "Username"]} columnTypes={["textfield", "textfield"]} data={()=>{
-                return [['John R. Doe', 'oscar-willy'], ['Greogory Arnault', 'octo-crab']]
+                return [['John R. Doe', 'oscar-willy'], ['Greogory Arnault', 'octo-crab'], ['Richard S. Uckar', 'mouse-cat'], ['Sarah Derekson', 'frog-berg']]
             }}/>
         </div>
     </div>

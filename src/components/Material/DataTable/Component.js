@@ -19,15 +19,17 @@ import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import BarDecor from '../BarDecor';
+import Choice from '../Choice';
 import TextField from '../TextField';
 /****************************************************************
  ****************************************************************/
 class Component extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
 
         this.state = {
             style: {
+                boxShadow:this.context.theme.shadows['3'].boxShadow
             },
             columnHeaders:this.props.columnHeaders,
             columnTypes:this.props.columnTypes,
@@ -45,8 +47,12 @@ class Component extends React.Component {
     };
     static contextTypes = {
         palette: React.PropTypes.object,
-        theme: React.PropTypes.object
+        theme: React.PropTypes.object,
+        theme_component_id: PropTypes.object,
     };
+    componentWillMount = () => {
+        this.state.theme_id = this.context.theme_component_id.next().value
+    }
     handleClick = (e) => {
         this.setState({active:!this.state.active});
     }
@@ -70,24 +76,45 @@ class Component extends React.Component {
     handleBlur = (e) => {
         this.setState({active:false})
     }
+    genCSS = () => {
+        var css = Object.keys(this.state.style).map((val, index, arr) => {
+            var name = val.replace(/([A-Z])/g, (str) => {return '-'+str.toLowerCase();})
+            return ``+name+`:`+this.state.style[val]+`;`
+        })
+        var css_template = '';
+        for (var i = 0; i < css.length; i++) {
+            css_template += ("\t" + css[i] + "\n")
+        }
+        return css_template
+    }
     render() {
+        var css = `.datatable-`+"_"+this.state.theme_id+` {`+"\n"+this.genCSS()+`}`
         return (
-            <table><tbody>
+            <div>
+                <style>
+                    {css}
+                </style>
+            <table className={classNames({['datatable-'+"_"+this.state.theme_id]:true, [this.context.theme.datatable.default]:true})}><tbody>
                 <tr>
+                <th><Choice role="check" active={false}></Choice></th>
                 {this.state.columnHeaders.map((val, key, arr) => {
                     return <th>{val}</th>
                 })}
                 </tr>
                 {this.state.data.map((row, rowIndex, obj) => {
                     return (<tr>
+                    <td><Choice role="check" active={false}></Choice></td>
                     {row.map((data, colIndex) => {
                         if (this.state.columnTypes[colIndex] == 'textfield') {
-                            return (<td><TextField value={data}/></td>)
+                            return (<td><TextField incognito={true} value={data}/></td>)
+                        }
+                        else if (this.state.columnTypes[colIndex] == 'choice') {
+
                         }
                     })}
                     </tr>)
                 })}
-            </tbody></table>
+            </tbody></table></div>
         );
     }
 }

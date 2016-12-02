@@ -26,7 +26,6 @@ class Component extends React.Component {
         this.state = {
             style: {
             },
-            clientActive:false,
         }
     }
     static propTypes = {
@@ -39,7 +38,8 @@ class Component extends React.Component {
         resolution:'24px',
         style:{
             fill:'black',
-        }
+        },
+        onClick:(e)=>{}
     };
     getIcon = () => {
         var icon = null;
@@ -56,7 +56,7 @@ class Component extends React.Component {
     }
     render() {
         return (
-            <div onClick={this.props.onClick} className={this.props.className} style={{...this.state.style}}>
+            <div onClick={(e)=>this.props.onClick(e)} className={this.props.className}>
                 {this.getIcon()}
             </div>
         );
@@ -64,4 +64,4 @@ class Component extends React.Component {
 }
 
 
-export default withStyles(s)(Component);
+export default Component;

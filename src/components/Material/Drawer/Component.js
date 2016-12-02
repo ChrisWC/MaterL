@@ -37,8 +37,6 @@ class Component extends React.Component {
             },
             open:this.props.open,
         }
-        //console.log("DRAWER 0")
-        //console.log(this.state)
     }
     static propTypes = {
         open:PropTypes.func,
@@ -65,6 +63,7 @@ class Component extends React.Component {
         var nstate = {}
         if (newProps.open !== undefined) {
             var open = newProps.open()
+            nstate = {...nstate, open:open}
             if (this.props.handleResize && open != this.state.open) {
                 this.props.handleResize('left', {width:(open)? this.state.style.width:'0px'})
                 nstate = {...nstate, open:open}
@@ -77,12 +76,6 @@ class Component extends React.Component {
         this.setState({style:{...this.state.style, maxWidth:window.innerWidth}})
     }
     componentWillMount = () => {
-        /*if (typeof(window) !== 'undefined') {
-            this.setState({style:{...this.state.style, maxWidth:window.innerWidth, maxHeight:window.innerHeight}})
-        } else { 
-            this.setState({style:{...this.state.style, maxWidth:'100%', maxHeight:'100%'}})
-        }*/
-        //console.log(global.viewport)
     }
     componentReceiveProps = (nProps, nContext) => {
     }

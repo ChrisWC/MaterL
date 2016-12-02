@@ -89,8 +89,9 @@ class Component extends React.Component {
         this.setState(nstate)
     }
     handleClick = (e) => {
-        this.setState({active:!this.state.active});
-        e.target.value = !this.state.active;
+        var active = !this.state.active;
+        this.setState({active:active});
+        e.target.value = active;
         this.props.onChange(e);
     }
     render() {
@@ -106,4 +107,4 @@ class Component extends React.Component {
 }
 
 
-export default withStyles(s)(Component);
+export default Component;

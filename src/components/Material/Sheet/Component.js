@@ -185,20 +185,27 @@ class Component extends React.Component {
         var userOpen = this.state.reaction.userOpen;
         
         //get default
+        //console.log('M')
+        //console.log(this.state.openRequest)
+        //console.log(props.open)
         var openRequestRet = undefined
-        var openRequest = (props.open === undefined)? this.state.openRequest:props.open;
+        var openRequest = (this.state.openRequest != undefined)? this.state.openRequest:props.open;
+        //console.log(openRequest)
         if (behaviour.visibility == 'permenant' || this.props.inLayer) {
             open = true;
         }
         else if (behaviour.visibility == 'persistent') {
-            if (typeof openRequest === "function") {
+            if (typeof openRequest == "function") {
+                //console.log("RTRTT")
                 openRequestRet = openRequest()
             } else {
                 openRequestRet = openRequest
             }
 
-
+            //console.log(openRequestRet)
+            //console.log(userOpen)
             if (openRequestRet === undefined) {
+                //console.log("GGGG")
                 open = false;
 
                 if (context.device && context.device.device_type) {
@@ -212,12 +219,14 @@ class Component extends React.Component {
             else if (openRequestRet !== undefined) {
                 //SYNC
                 if (userOpen === undefined) {
+                    //console.log("TEST")
                     open = !open
                     userOpen = open
                     if (typeof openRequest == 'function') {
                         openRequest(open)
                     }
                 } else {
+                    //console.log("PEST")
                     open = openRequestRet
                     userOpen = openRequestRet
                 }
@@ -244,6 +253,7 @@ class Component extends React.Component {
                 //resolve user input and preference
             }
             else if (openRequestRet !== undefined) {
+                
                 //SYNC
                 if (userOpen === undefined) {
                     open = !open
@@ -266,7 +276,11 @@ class Component extends React.Component {
                 }
             }
         }
-        
+        /*console.log('N')
+        console.log(behaviour)
+        console.log(openRequestRet)
+        console.log(open)
+        console.log(userOpen)*/
         return {
             open:open,
             userOpen:userOpen
