@@ -276,11 +276,6 @@ class Component extends React.Component {
                 }
             }
         }
-        /*console.log('N')
-        console.log(behaviour)
-        console.log(openRequestRet)
-        console.log(open)
-        console.log(userOpen)*/
         return {
             open:open,
             userOpen:userOpen

@@ -102,6 +102,10 @@
     height:100%;
     line-height:100%;
     padding:0px;
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:center;
+    justify-content:space-between;
 }
 
 .icon-button * {
@@ -116,6 +120,9 @@
     height:32px;
     line-height:32px;
     vertical-align:middle;
+    flex-wrap:nowrap;
+    align-items:center;
+    justify-content:space-between;
 }
 .appbar {
     color:white;
@@ -158,6 +165,9 @@
     margin:0px;
     padding-left:8px;
     padding-right:8px;
+    flex-wrap:nowrap;
+    align-items:center;
+    justify-content:space-between;
 }
 .appbar .button i {
     line-height:64px;
@@ -172,6 +182,9 @@
     margin:0px;
     padding-left:16px;
     padding-right:16px;
+    flex-wrap:nowrap;
+    align-items:center;
+    justify-content:space-between;
 }
 .appbar-button i {
     line-height:64px;
@@ -208,7 +221,10 @@
     outline:none;
 }
 .datatable td > .choice {
-
+    width:72px;
+}
+.datatable th > .choice {
+    width:72px;
 }
 
 .datatable tr:first-of-type .choice i {
@@ -216,6 +232,8 @@
 }
 .datatable tr .choice i {
     line-height:48px;
+    padding-left:24px;
+    padding-right:24px;
 }
 .datatable tr:last-of-type .choice i {
     line-height:56px;
@@ -246,6 +264,18 @@
 
 .datatable tr:last-of-type > td {
     border-bottom:0px solid rgb(229, 229, 229);
+}
+.datatable tr > td {
+    padding-right:56px;
+}
+.datatable tr > th {
+    padding-right:56px;
+}
+.datatable tr > td:first-of-type {
+    padding-right:0px;
+}
+.datatable tr > th:first-of-type {
+    padding-right:0px;
 }
 .drawer {
     width:256px;

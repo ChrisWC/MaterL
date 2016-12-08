@@ -37,7 +37,6 @@ class Component extends React.Component {
                 ...this.getShadow(),
                 ...this.getColor(),
                 paddingLeft:(this.props.menuDepth+1)*8+'px',
-                display:'block',
             },
             title_style:{
                 display:'inline-block',

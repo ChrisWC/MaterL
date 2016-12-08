@@ -45,7 +45,7 @@ class Component extends React.Component {
         var icon = null;
         var css = "material-icons md-24"
         try {
-            icon = (<i className={css} onClick={this.props.onClick}>{this.props.component}</i>)//require('material-design-icons/' + this.props.context + '/svg/production/ic_'+this.props.component+'_'+'24px'+'.svg')//icons.svg[this.props.resolution]
+            icon = (<i className={css} onClick={this.props.onClick}>{this.props.component}</i>)
         }
         catch (e) {
             console.log(e)
