@@ -30,7 +30,9 @@ class Component extends React.Component {
                 fontSize:'16px',
                 lineHeight:'16px',
             },
-            active:this.props.active
+            max_activation:(this.props.role == 'star')? 2:2,
+            active:this.props.active,
+            activation:this.props.activation
         }
     }
     static propTypes = {
@@ -39,6 +41,7 @@ class Component extends React.Component {
         component:PropTypes.string,
         role:PropTypes.string,
         active:PropTypes.bool,
+        activation:PropTypes.number,
         onChange:PropTypes.func
     };
     static defaultProps = {
@@ -83,7 +86,7 @@ class Component extends React.Component {
     }
     componentWillReceiveProps = (nProps) => {
         var nstate = {...this.state}
-        if (nProps.active != undefined) {
+        if (nProps.active != undefined && nProps.active != this.state.active) {
             nstate.active = nProps.active
         }
         this.setState(nstate)
@@ -96,7 +99,7 @@ class Component extends React.Component {
     }
     render() {
         return (
-            <div className={this.context.theme.choice} style={this.state.style} onClick={this.props.onClick} className={this.context.theme.choice.default}>
+            <div className={this.context.theme.choice} style={this.state.style} className={this.context.theme.choice.default}>
                 {this.getIcon(this.props.role, this.state.active)}
                 <div className={this.context.theme.choice.body} ref={'text'} style={{float:'left'}}>
                     {this.props.children}

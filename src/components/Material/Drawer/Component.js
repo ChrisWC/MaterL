@@ -23,7 +23,6 @@ class Component extends React.Component {
         this.state = {
             style:{
                 maxWidth:context.rootSheetDim.width,
-                maxHeight:context.rootSheetDim.height,
                 ...context.theme.drawer.style,
                 ...props.style
             },
@@ -89,11 +88,9 @@ class Component extends React.Component {
     render() {
         return (
             <Sheet ref='Paper' rules={this.context.theme.drawer.rules} behaviour={this.state.behaviour} open={this.state.open} role={this.props.role} style={{...this.state.style, ...this.state.drawer_style}} depth={1} className={this.context.theme.drawer.cn}> 
-                <div style={{float:'clear', width:'auto', height:'100%', overflow:'hidden', overflowY:'auto', position:'relative'}}>
                     {React.Children.map(this.props.children, (val, key, arr) => {
                         return React.cloneElement(val, {key:key, width:this.state.style.width, onClick:(e)=>{val.props.onClick(e);}, ...val.props})
                     })} 
-                </div>
             </Sheet>
         );
     }

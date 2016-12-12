@@ -26,9 +26,19 @@ class Component extends React.Component {
     static propTypes = {
     };
     render() {
+        const css = `
+            
+        `
         return(
-            <div>
-                <span>T</span>
+            <div ref="cont">
+                <style>
+                    {css}
+                </style>
+                <div ref="inner">
+                    <span>T</span>
+                    <div ref="back"/>
+                    <div ref="control"/>
+                </div>
             </div>
         );
     }

@@ -32,7 +32,8 @@ class Component extends React.Component {
             error:false,
             value:this.props.value,
             disabled:this.props.disabled,
-            incognito:false
+            incognito:false,
+            left:0
         }
     }
     static propTypes = {
@@ -71,11 +72,37 @@ class Component extends React.Component {
     handleBlur = (e) => {
         this.setState({active:false})
     }
+    componentDidMount = () => {
+        this.state.left_start = this.refs['cont'].getBoundingClientRect().left;
+        console.log({...this.state})
+    }
+    onMouseDown = (e, v) => {
+        var s = this.refs['cont'].getBoundingClientRect().left;
+        var d = e.pageX - s;
+        this.setState({...this.state, dragging:true, left:d, start:s, end:(this.refs['cont'].getBoundingClientRect().right-s)})
+        e.stopPropagation()
+    }
+    onMouseUp = (e, v) => {
+        this.setState({dragging:false})
+        e.stopPropagation()
+    }
+    onMouseMove = (e, v) => {
+        //update position
+        if (this.state.dragging) {
+            //console.log("Move")
+            var d = e.pageX-this.state.start//this.refs['SliderControl'].getBoundingClientRect().left;
+            if (d >= 0 && d <= this.state.end) {
+                this.setState({left:d})
+            }
+            //console.log(d)
+            e.stopPropagation()
+        }
+    }
     render() {
         const controlHeight = 8;
         const sliderHeight = 2;
         const sliderOffset = (controlHeight-sliderHeight)/2.0
-        const sliderSegments = 4;
+        const sliderSegments = 20;
         /*var segments = []
         for (var i = 0; 0 < sliderSegments; i++) {
             segments.push((<div className={'slider-bar-segment'} ref="SliderBarLeft"/>))
@@ -107,7 +134,8 @@ class Component extends React.Component {
                 border-bottom-width:0px;
                 border-style:none;
                 height:`+sliderHeight+`px;
-                width:50px;
+                border-radius:0px;
+                width:10px;
                 display:block;
                 float:left;
                 background-color:`+this.context.palette['default']['default'].backgroundColor+`;
@@ -123,23 +151,24 @@ class Component extends React.Component {
                 border-radius:100px;
                 background-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
                 height:`+controlHeight+`px;
-                float:left;
                 width:`+controlHeight+`px;
+                position:relative;
+                left:`+this.state.left+"px"+`;
             }
         `
         return (
-            <div className={this.context.theme.textfield.default} onClick={this.props.onClick}>
+            <div ref="cont" className={this.context.theme.textfield.default} onClick={this.props.onClick} onMouseMove={this.onMouseMove} onMouseLeave={this.onMouseUp} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}>
                 <style>{css}</style> 
-                <div ref={"Label"} style={{float:'left'}}>
-                    alabel
-                </div>
                 {[...Array(sliderSegments)].map((x, i, arr) => {
-                    return <div key={i} className={'slider-bar-segment'}/>
+                    return <div key={i} className={'slider-bar-segment'} onMouseDown={this.onMouseDown}/>
                 })}
-                <div className={'slider-control'} ref="SliderControl"/>
-                <div ref="ValueLabel" style={{float:'left'}}>
-                    alabel
-                </div>
+                <div className={'slider-control'} ref="SliderControl" onDragStart={(e,v) => {
+                        //this.setState({left_start:e.clientX, diff:0})
+                        //console.log("START")
+                    }}
+                    onMouseDown={this.onMouseDown}
+                    onMouseUp={this.onMouseUp}
+                    />
             </div>
         );
     }

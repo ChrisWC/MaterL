@@ -21,7 +21,6 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import BarDecor from '../BarDecor';
 import Choice from '../Choice';
 import TextField from '../TextField';
-import DataTableRow from '../DataTableRow';
 /****************************************************************
  ****************************************************************/
 class Component extends React.Component {
@@ -89,24 +88,18 @@ class Component extends React.Component {
         return css_template
     }
     render() {
-        var css = `.datatable-`+"_"+this.state.theme_id+` {`+"\n"+this.genCSS()+`}`
-        return (
-            <div>
-                <style>
-                    {css}
-                </style>
-            <table className={classNames({['datatable-'+"_"+this.state.theme_id]:true, [this.context.theme.datatable.default]:true})}><tbody>
-                <tr>
-                <th><Choice role="check" active={false}></Choice></th>
-                {this.state.columnHeaders.map((val, key, arr) => {
-                    return <th>{val}</th>
+        var css = `.datatable-row-`+"_"+this.state.theme_id+` {`+"\n"+this.genCSS()+`}`
+        return (<tr>
+                <td><Choice role="check" active={false}></Choice></td>
+                {this.props.row.map((data, colIndex) => {
+                    if (this.state.columnTypes[colIndex] == 'textfield') {
+                        return (<td><TextField incognito={true} value={data}/></td>)
+                    }
+                    else if (this.state.columnTypes[colIndex] == 'choice') {
+
+                    }
                 })}
-                </tr>
-                {this.state.data.map((row, rowIndex, obj) => {
-                    return (<DataTableRow {...this.props} row={row}/>)
-                })}
-            </tbody></table></div>
-        );
+                </tr>)
     }
 }
 

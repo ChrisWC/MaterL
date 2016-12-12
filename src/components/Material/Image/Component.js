@@ -13,7 +13,9 @@
 *   See the License for the specific language governing permissions and
 *   limitations under the License.
 *****************************************************************************/
-
+/****************************************************************************
+ * Holds an image for users to view
+ ****************************************************************************/
 import React, { PropTypes } from 'react';
 
 class Component extends React.Component {
@@ -24,6 +26,12 @@ class Component extends React.Component {
         }
     }
     static propTypes = {
+        userChangable: PropTypes.bool,
+        url: PropTypes.string
+    };
+    static defaultProps = {
+        userChangable:false,
+        url:null
     };
     render() {
         var placeholder = (
@@ -37,7 +45,7 @@ class Component extends React.Component {
         );
         return(
             <div>
-            {placeholder}
+                {this.props.url? placeholder:placeholder}
             </div>
         );
     }

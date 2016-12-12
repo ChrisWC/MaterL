@@ -33,11 +33,6 @@ class Component extends React.Component {
                 display:'inline-block',
                 float:'left'
             },
-            inner_style:{
-                ...this.getShadow(),
-                ...this.getColor(),
-                paddingLeft:(this.props.menuDepth+1)*8+'px',
-            },
             title_style:{
                 display:'inline-block',
                 margin:0,
@@ -47,7 +42,8 @@ class Component extends React.Component {
             },
             hover:false,
             openPopovers:false,
-            active:this.props.active
+            active:this.props.active,
+            theme_id:context.theme_component_id.next().value
         }
     }
     getClassnames = () => {
@@ -161,13 +157,14 @@ class Component extends React.Component {
         commonFunctions: React.PropTypes.object,
         theme: React.PropTypes.object,
         isDense: React.PropTypes.bool,
+        theme_component_id: PropTypes.object,
         backgroundColor: React.PropTypes.object
     }
     handleHover = (new_state) => {
         this.setState({hover:new_state})
     }
     handleDefault = () => {
-        this.setState({openPopovers:false, inner_style:{...this.state.inner_style, ...this.getColor()}})
+        this.setState({openPopovers:false})
     }
     getPopoverAsOverlay = () => {
         var rect = this.refs['cont'].getBoundingClientRect();
@@ -239,24 +236,34 @@ class Component extends React.Component {
             e.stopPropagation()
         }
     }
-    componentDidMount = () => {
-        
-    }
-    componentWillUnmount = () => {
-
-    }
     componentWillReceiveProps = (newProps) => {
         this.setState({
-            inner_style:{...this.state.inner_style, ...this.getColor()},
             active:newProps.active,
         })
     }
     render() {
         var color = this.getColor()
         var cn = this.getClassnames()
+        var shadow = this.getShadow()? this.getShadow().boxShadow:'none'
+        const css = ` 
+            .button-`+this.state.theme_id+` {
+                padding-left:`+(this.props.menuDepth+1)*8+'px'+`;
+                box-shadow:`+shadow+`;
+                background-color:`+color.backgroundColor+`;
+                color:`+color.color+`;
+                fill:`+color.fill+`;
+            }
+            .button-container-`+this.state.theme_id+` {
+
+            }
+        `
+        
         return(
-            <div role="button" ref="cont" style={this.state.outer_style} onMouseLeave={() => {this.handleDefault()}} >
-                <div id="inner" className={cn} style={{...this.state.inner_style, ...this.getColor(), ...this.getShadow() }}  
+            <div role="button" ref="cont" className={this.context.theme.button.container} onMouseLeave={() => {this.handleDefault()}} >
+                <style>
+                    {css}
+                </style>
+                <div id="inner" className={classNames({[cn]:true, ['button-'+this.state.theme_id]:true})}  
                     onMouseDown={(e) => this.handleMouseDown(e)} 
                     onMouseUp={(e) => this.handleMouseUp(e)}
                     onTouchStart={(e) => this.handleTouchStart(e)}
@@ -270,7 +277,7 @@ class Component extends React.Component {
 
                     {this.props.rightIcon? React.cloneElement(this.props.rightIcon, {...this.props.rightIcon.props, className:this.context.theme.button.icon, style:{paddingLeft:'8px', fill:color.fill, color:color.color}}):null}
                     {this.props.icon? React.cloneElement(this.props.icon, {...this.props.icon.props, className:this.context.theme.button.icon, style:{fill:color.fill, color:color.color}}):null}
-                    {this.props.label? <div style={this.state.title_style} >{this.props.label}
+                    {this.props.label? <div>{this.props.label}
                     
                     <input ref={'file'} type="file" style={{position:'absolute', cursor:'pointer', top:"0px",right:"0px", visibility:'hidden', display:'inline-block', padding:'0px', margin:'0px',width:'0px'}}/>
                     </div>:null} 

@@ -18,6 +18,13 @@
 * {
     vertical-align:top;
 }
+.button-container {
+    display:inline-block;
+    width:auto;
+}
+.menu .button-container {
+    display:block;
+}
 .button {
     font-size:14px;
     font-weight:500;
@@ -27,6 +34,10 @@
     line-height:36px;
     border-radius:2px;
     margin:4px;
+    display:inline-flex;
+    flex-wrap:norwap;
+    align-items:center;
+    justify-content:space-between;
 }
 
 .button i {
@@ -280,12 +291,12 @@
 .drawer {
     width:256px;
     top:0px;
-    bottom:0px;
     left:0px;
+    bottom:0px;
     display:block;
     overflow:hidden;
+    overflow-y:auto;
     position:absolute;
-    float:left;
 }
 .content-area {
    position:absolute;

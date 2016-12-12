@@ -51,6 +51,7 @@ const defaultTheme = {
         menu:s['menu']
     },
     button:{
+        container:s['button-container'],
         button:s.button,
         drawer_header:s['drawer-header-button'],
         menu:s['menu-button'],
