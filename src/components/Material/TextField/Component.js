@@ -52,6 +52,7 @@ class Component extends React.Component {
             visible:this.props.discreet? false:true,
             theme_id:context.theme_component_id.next().value,
             width:this.props.width,
+            scrollHeight:16,
             scale_width:true
         }
     }
@@ -68,7 +69,8 @@ class Component extends React.Component {
         discreet:PropTypes.bool,
         dense:PropTypes.bool,
         width:PropTypes.number,
-        incognito:PropTypes.bool
+        incognito:PropTypes.bool,
+        multiline:PropTypes.bool
     };
     static defaultProps = {
         error:false,
@@ -82,6 +84,8 @@ class Component extends React.Component {
         dense:false,
         width:100,
         incognito:false,
+        multiline:false,
+        inline:false,
         getOptions:(val) => {
             //should generate a filtered list using val
             //ideally an id associated with the value, if valid, will
@@ -137,11 +141,34 @@ class Component extends React.Component {
         if (this.state.disabled) {
             return
         }
-        this.setState({value: e.target.value, dirty:(e.target.value == "")? false:true})
+        var ta = this.refs["textarea"]
+        var scrollHeight = this.state.scrollHeight;
+        if (e.target.value.length < this.state.value.length && this.props.multiline) {
+            scrollHeight = 16;//ta.scrollHeight;
+            
+            //console.log({...e.target})
+            //console.log(e.target.scrollTop)
+            //console.log(e.target.clientHeight)
+            //console.log(e.target.offsetHeight)
+            //e.target.clientHeight = e.target.scrollHeight;
+            //this.refs["textarea"].clientHeight = scrollHeight;
+        }
+        this.setState({value: e.target.value, dirty:(e.target.value == "")? false:true, scrollHeight:scrollHeight})
 
         if (this.props.onChange) {
             this.props.onChange(e);
         }
+    }
+    handleResize = (e, v) => {
+
+    }
+    componentDidUpdate = (pState, pProps) => {
+       if (this.refs["textarea"] && this.refs["textarea"].scrollHeight != this.refs["textarea"].clientHeight && this.props.multiline) {
+            //console.log(this.refs["textarea"])
+            this.setState({scrollHeight:this.refs["textarea"].scrollHeight})
+            //this.refs["textarea"].clientHeight = this.refs["textarea"].scrollHeight;
+
+       }
     }
     handleFocus = (e) => {
         if (this.props.dropdown && !this.state.disabled) {
@@ -233,6 +260,7 @@ class Component extends React.Component {
                 display:block;
                 border-color:`+this.context.palette['default']['default'].backgroundColor+`;
                 padding:0px;
+                padding-top:4px;
                 padding-bottom:0px;
                 position:relative;
                 text-align:center;
@@ -269,7 +297,8 @@ class Component extends React.Component {
                 left:0px;
                 right:0px;
                 top:16px;
-                padding-top:`+lh+`px;
+                color:`+this.context.palette['default']['default'].backgroundColor+`;
+                padding-top:`+0+`px;
                 padding-bottom:4px;
                 line-height:16px;
                 font-size:16px;
@@ -284,7 +313,8 @@ class Component extends React.Component {
                 left:0px;
                 right:0px;
                 top:0px;
-                padding-top:`+lh+`px;
+                color:`+this.context.palette['default']['default'].backgroundColor+`;
+                padding-top:`+0+`px;
                 padding-bottom:4px;
                 top:0px;
                 font-size:12px;
@@ -298,6 +328,7 @@ class Component extends React.Component {
                 line-height:14px;
                 position:realative;
                 height:auto;
+                color:`+this.context.palette['default']['default'].backgroundColor+`;
             }
             .textfield-discreet-hidden-`+this.state.theme_id+` {
                 position:relative;
@@ -308,9 +339,10 @@ class Component extends React.Component {
             }
             .textfield-discreet-active-`+this.state.theme_id+` {
                 position:relative;
-                padding-top:`+lh+`px;
+                padding-top:`+(16)+`px;
+                padding-bottom:4px;
                 overflow:auto;
-                width:`+this.state.width+(this.state.scale_width? '%':'px')+`;
+                width:100%;
                 float:left;
             }
             .textfield-icon-`+this.state.theme_id+` {
@@ -321,25 +353,39 @@ class Component extends React.Component {
                 right:-8px;
                 overflow:hidden;
             }
+            .textfield-`+this.state.theme_id+` {
+                align-self:flex-end;
+                vertical-align:bottom;
+                position:relative;
+                bottom:0px;
+            }
+            .textfield-`+this.state.theme_id+` textarea {
+                overflow:hidden;
+                height:`+this.state.scrollHeight+`px;
+            }
         `
         return (
-            <div ref={'cont'} className={this.context.theme.textfield.default} onClick={this.props.onClick}>
+            <div ref={'cont'} className={this.props.inline? this.context.theme.textfield.inline:this.context.theme.textfield.default} onClick={this.props.onClick}>
                 <style>{css}</style> 
-                <div ref={"innerleft"} className={(this.props.discreet && !this.state.visible)? ('textfield-discreet-hidden-'+this.state.theme_id):('textfield-discreet-active-'+this.state.theme_id)}>
+                <div ref={"innerleft"} className={classNames({
+                        [(this.props.discreet && !this.state.visible)? ('textfield-discreet-hidden-'+this.state.theme_id):('textfield-discreet-active-'+this.state.theme_id)]:true,
+                        ['textfield-'+this.state.theme_id]:true
+                    })}>
                 <div className={(this.state.active || this.state.dirty)? 'floatinghint-dirty-'+this.state.theme_id:'floatinghint-clean-'+this.state.theme_id} ref="FloatingHintText">
                     {(this.state.active && !this.state.disabled)? this.props.floatingHintText:this.props.hintText}</div>
                 {this.props.password? <input type="password" 
                     onChange={this.handleChange}
                     onFocus={this.handleFocus}
+                    onResize={()=>{console.log("RESIZE")}}
                     value={this.state.value}
-                    />:<textarea rows={1}  onChange={this.handleChange}
+                    />:<textarea ref="textarea" onChange={this.handleChange}
                         onFocus={this.handleFocus}
                         onBlur={this.handleBlur}
                         value={this.state.value}>
                 </textarea>} 
-                <span style={{width:'100%',paddingBottom:'0px'}}>
+                <div style={{width:'100%',paddingBottom:'0px',paddingTop:'4px'}}>
                     {this.state.incognito? null:<span className={this.state.disabled? 'textfield-bar-disabled-'+this.state.theme_id:(this.state.dirty? (this.state.error? 'textfield-bar-error-'+this.state.theme_id:'textfield-bar-dirty-'+this.state.theme_id):(this.props.required? (this.state.error? 'textfield-bar-error-'+this.state.theme_id:'textfield-bar-clean-'+this.state.theme_id):'textfield-bar-clean-'+this.state.theme_id))}></span>}
-                </span>
+                </div>
                 <div className={'helptext-'+this.state.theme_id}>{this.props.helpText}</div>
                 </div>
                 <div className={'textfield-icon-'+this.state.theme_id}>

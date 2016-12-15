@@ -17,8 +17,7 @@ import React, { PropTypes } from 'react';
 
 import classNames from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Component.css';
-import Choice from '../Choice';
+import BarDecor from '../BarDecor';
 /****************************************************************
  ****************************************************************/
 class Component extends React.Component {
@@ -26,60 +25,30 @@ class Component extends React.Component {
         super(props);
 
         this.state = {
-            options:this.props.options,
-            values:this.props.values
         }
     }
     static propTypes = {
-
+        type:PropTypes.oneOf(['text', 'select', 'toggle']),
+        fill:PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.object
+        ]),
+        value:PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number])
     };
     static defaultProps = {
-        error:false,
-        valid:false,
-        required:false,
-        inset:false,
-        value:"",
-        asSubRow:false,
-        numSelectable:-1
     };
     static contextTypes = {
         palette: React.PropTypes.object,
         theme: React.PropTypes.object
     };
-    handleClick = (e) => {
-        this.setState({active:!this.state.active});
-    }
-    handleChange = (e, v) => {
-        if (this.state.disabled) {
-            return
-        }
-        this.setState({value: e.target.value, dirty:(e.target.value == "")? false:true})
-
-        if (this.props.onChange) {
-            this.props.onChange(e);
-        }
-    }
-    handleFocus = (e) => {
-        if (!this.state.disabled) {
-            this.setState({active:true})
-        }
-
-        //move floating hint text to top
-    }
-    handleBlur = (e) => {
-        this.setState({active:false})
+    componentDidMount = () => {
     }
     render() {
 
-        return this.props.asSubRow? (
-            <div>
-
-            </div>
-        ):(
-            <div>
-                {this.props.values.map((val, key, arr) => {
-                    return <div><Choice role={this.props.role} active={val}>{this.props.options[key]} {val? 'true':'false'}</Choice><br /></div>
-                })}
+        const css = `
+        `
+        return (
+            <div ref="cont" >
             </div>
         );
     }

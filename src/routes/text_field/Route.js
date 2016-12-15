@@ -30,6 +30,7 @@ function Route({}, context) {
   return (
     <div className={s.root}>
         <div className={s.container}>
+            <h1>Text Fields</h1>
             <p>
                 Under the Material Specification, text-fields and text-boxes are
                 the same. There function is instead determined by its parameters.
@@ -56,7 +57,15 @@ function Route({}, context) {
                     }}/><br />
             </section>
             <section>
-
+                <h2>Multi-Line Input</h2>
+                <TextField multiline={true} hintText="Multi-line input" floatingHintText="Multi-line input"/>
+            </section>
+            <section>
+                <h2>Full-width</h2>
+                <Card style={{width:'600px'}}>
+                    <TextField inline={true} hintText="Inline" floatingHintText="Inline" helpText="single line"/>
+                    <TextField inline={true} multiline={true} hintText="Multi-line" floatingHintText="Multi-line"/>
+                </Card>
             </section>
         </div>
     </div>

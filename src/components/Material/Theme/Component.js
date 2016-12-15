@@ -44,6 +44,7 @@ const defaultTheme = {
     },
     textfield:{
         default:s.textfield,
+        inline:s['textfield-inline'],
         floatinghint:s['textfield-floatinghint'],
         hint:s['textfield-hint']
     },
