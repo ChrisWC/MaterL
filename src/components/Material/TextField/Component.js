@@ -297,7 +297,8 @@ class Component extends React.Component {
                 left:0px;
                 right:0px;
                 top:16px;
-                color:`+this.context.palette['default']['default'].backgroundColor+`;
+                color:`+this.context.palette['default']['default'].color+`;
+                opacity:0.38;
                 padding-top:`+0+`px;
                 padding-bottom:4px;
                 line-height:16px;
@@ -313,7 +314,8 @@ class Component extends React.Component {
                 left:0px;
                 right:0px;
                 top:0px;
-                color:`+this.context.palette['default']['default'].backgroundColor+`;
+                color:`+this.context.palette['default']['default'].color+`;
+                opacity:0.38;
                 padding-top:`+0+`px;
                 padding-bottom:4px;
                 top:0px;
@@ -328,7 +330,8 @@ class Component extends React.Component {
                 line-height:14px;
                 position:realative;
                 height:auto;
-                color:`+this.context.palette['default']['default'].backgroundColor+`;
+                color:`+this.context.palette['default']['default'].color+`;
+                opacity:0.54;
             }
             .textfield-discreet-hidden-`+this.state.theme_id+` {
                 position:relative;
@@ -362,6 +365,11 @@ class Component extends React.Component {
             .textfield-`+this.state.theme_id+` textarea {
                 overflow:hidden;
                 height:`+this.state.scrollHeight+`px;
+                opacity:0.87;
+            }
+            .textfield-`+this.state.theme_id+` input {
+                overflow:hidden;
+                opacity:0.87;
             }
         `
         return (
@@ -376,7 +384,7 @@ class Component extends React.Component {
                 {this.props.password? <input type="password" 
                     onChange={this.handleChange}
                     onFocus={this.handleFocus}
-                    onResize={()=>{console.log("RESIZE")}}
+                    onResize={()=>{}}
                     value={this.state.value}
                     />:<textarea ref="textarea" onChange={this.handleChange}
                         onFocus={this.handleFocus}
