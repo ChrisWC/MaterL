@@ -256,6 +256,9 @@ class Component extends React.Component {
             .button-container-`+this.state.theme_id+` {
 
             }
+            .button-floating-action {
+                border-radius:90px;
+            }
         `
         
         return(
@@ -263,7 +266,10 @@ class Component extends React.Component {
                 <style>
                     {css}
                 </style>
-                <div id="inner" className={classNames({[cn]:true, ['button-'+this.state.theme_id]:true})}  
+                <div id="inner" className={classNames({[cn]:true, 
+                        ['button-'+this.state.theme_id]:true,
+                        'button-floating-action':this.props.floating
+                    })}  
                     onMouseDown={(e) => this.handleMouseDown(e)} 
                     onMouseUp={(e) => this.handleMouseUp(e)}
                     onTouchStart={(e) => this.handleTouchStart(e)}
