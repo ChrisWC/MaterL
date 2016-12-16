@@ -212,13 +212,13 @@ class Component extends React.Component {
         const css = `
             @keyframes primary-bar {
                 0% {
-                    border-top-width:1px;
+                    border-top-width:2px;
                     border-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
                     width:10%;
                     margin:0 45%;
                 }
                 30% {
-                    border-top-width:1.5px;
+                    border-top-width:2px;
                     border-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
                     width:50%;
                     margin:0 25%;
@@ -230,13 +230,33 @@ class Component extends React.Component {
                     margin:0 0;
                 }
             }
+            @keyframes error-bar {
+                0% {
+                    border-top-width:2px;
+                    border-color:`+this.context.palette['secondary']['primary'].backgroundColor+`;
+                    width:10%;
+                    margin:0 45%;
+                }
+                30% {
+                    border-top-width:2px;
+                    border-color:`+this.context.palette['secondary']['primary'].backgroundColor+`;
+                    width:50%;
+                    margin:0 25%;
+                }
+                100% {
+                    border-top-width:2px;
+                    border-color:`+this.context.palette['secondary']['primary'].backgroundColor+`;
+                    width:100%;
+                    margin:0 0;
+                }
+            }
             @keyframes floating-hint-animation {
                 0% {
-                    font-size:16px;
+                    font-size:12px;
                     top:8px;
                 }
                 100% {
-                    font-size:8px;
+                    font-size:12px;
                     top:0px;
                 }
             }
@@ -250,7 +270,7 @@ class Component extends React.Component {
                 display:block;
                 border-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
                 animation-name:primary-bar;
-                animation-duration:1s;
+                animation-duration:2s;
                 padding:0px;
                 padding-bottom:0px;
                 text-align:center;
@@ -279,6 +299,8 @@ class Component extends React.Component {
                 height:0px;
                 display:block;
                 border-color:`+this.context.palette['secondary']['primary'].backgroundColor+`;
+                animation-name:error-bar;
+                animation-duration:2s;
                 padding:0px;
                 padding-bottom:0px;
                 text-align:center;
@@ -347,7 +369,7 @@ class Component extends React.Component {
             }
             .textfield-discreet-active-`+this.state.theme_id+` {
                 position:relative;
-                padding-top:`+(16)+`px;
+                padding-top:`+(0)+`px;
                 padding-bottom:4px;
                 overflow:auto;
                 width:100%;
@@ -361,9 +383,13 @@ class Component extends React.Component {
                 right:-8px;
                 overflow:hidden;
             }
+            .textfield-dense {
+                padding-top:16px;
+            }
+            .textfield-default {
+                padding-top:12px;
+            }
             .textfield-`+this.state.theme_id+` {
-                align-self:flex-end;
-                vertical-align:bottom;
                 position:relative;
                 bottom:0px;
             }
@@ -385,7 +411,9 @@ class Component extends React.Component {
                         [(this.props.discreet && !this.state.visible)? ('textfield-discreet-hidden-'+this.state.theme_id):('textfield-discreet-active-'+this.state.theme_id)]:true,
                         ['textfield-'+this.state.theme_id]:true,
                         [this.context.theme.line.short]:this.props.short && (!this.props.discreet || (this.props.discreet && this.state.visible)),
-                        [this.context.theme.line.body]:!this.props.short && (!this.props.discreet || (this.props.discreet && this.state.visible))
+                        [this.context.theme.line.body]:!this.props.short && (!this.props.discreet || (this.props.discreet && this.state.visible)),
+                        'textfield-dense':this.props.dense,
+                        'textfield-default':!this.props.dense
                     })}>
                 <div className={(this.state.active || this.state.dirty)? 'floatinghint-dirty-'+this.state.theme_id:'floatinghint-clean-'+this.state.theme_id} ref="FloatingHintText">
                     {(this.state.active && !this.state.disabled)? this.props.floatingHintText:this.props.hintText}</div>
@@ -399,7 +427,7 @@ class Component extends React.Component {
                         onBlur={this.handleBlur}
                         value={this.state.value}>
                 </textarea>} 
-                <div style={{width:'100%',paddingBottom:'0px',paddingTop:'4px'}}>
+                <div style={{width:'100%',paddingBottom:'0px',paddingTop:'6px'}}>
                     {this.state.incognito? null:<span className={
                         this.state.disabled? 
                             'textfield-bar-disabled-'+this.state.theme_id:(

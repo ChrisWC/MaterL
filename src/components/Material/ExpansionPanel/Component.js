@@ -66,7 +66,7 @@ class Component extends React.Component {
         return this.state.label_container_vpadding;
     }
     componentDidMount = () => {
-        this.setState({label_container_vpadding:this.updatePadding()})
+        //this.setState({label_container_vpadding:this.updatePadding()})
     }
     componentWillUnmount = () => {
     }
@@ -74,7 +74,7 @@ class Component extends React.Component {
         var l = this.updatePadding();
         if (l != 0) {
             console.log(l);
-            this.setState({label_container_vpadding:l})
+            //this.setState({label_container_vpadding:l})
         }
     }
     handleChange = (e, v) => {
@@ -83,8 +83,6 @@ class Component extends React.Component {
     render() {
         const css = `
             .label_container-`+this.state.theme_id+` {
-                padding-top:`+this.state['label_container_vpadding']+`px;
-                padding-bottom:`+this.state['label_container_vpadding']+`px;
             }
         `
         return (

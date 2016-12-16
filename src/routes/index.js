@@ -44,13 +44,14 @@ import expansion_panel from './expansion_panel'
 import data_table from './data_table'
 import graph from './graph';
 import { Provider } from 'react-redux';
-
+import mcw from './mcw';
 export default {
 
   path: '/',
 
   children: [
     home,
+    mcw,
     responsive_ui,
     data_table,
     expansion_panel,

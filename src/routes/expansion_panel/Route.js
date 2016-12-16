@@ -53,11 +53,11 @@ function Route(props, context) {
                 <h3>Test test test</h3>
 
             </ExpansionPanel>
-            <ExpansionPanel title="Expansion Panel" expanded={false}>
+            <ExpansionPanel title="Expansion Panel" value={"test"} expanded={false}>
                 <h3>Test test test</h3>
 
             </ExpansionPanel>
-            <ExpansionPanel title="Expansion Panel" subtitle="demo" input={<TextField hintText="name" floatingHintText="name"/>} expanded={false}>
+            <ExpansionPanel title="Expansion Panel" subtitle="demo" input={<TextField incognito={true} hintText="name" floatingHintText="name"/>} expanded={false}>
                 <TextField hintText="Firstname" floatingHintText="Firstname"/>
                 <TextField hintText="Middlename" floatingHintText="Middlename"/>
                 <TextField hintText="Lastname" floatingHintText="Lastname"/>

@@ -423,7 +423,7 @@
     display:inline-block;
     position:relative;
     top:0px;
-    min-height:64px;
+    min-height:60px;
 }
 .textfield-inline {
     clear:all;
@@ -432,6 +432,7 @@
     padding-left:16px;
     padding-right:16px;
     top:0px;
+    min-height:56px;
 }
 .textfield-hint {
     display:block;
