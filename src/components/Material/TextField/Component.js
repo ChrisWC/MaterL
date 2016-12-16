@@ -39,13 +39,9 @@ class Component extends React.Component {
         super(props, context);
 
         this.state = {
-            style: {
-                height:'0px'
-            },
-            innerleft:'0px',
             active:false,
             dirty:(this.props.value.length > 0)? true:false,
-            error:false,
+            error:this.props.error,
             value:this.props.value,
             disabled:this.props.disabled,
             incognito:this.props.incognito,
@@ -70,7 +66,7 @@ class Component extends React.Component {
         dense:PropTypes.bool,
         width:PropTypes.number,
         incognito:PropTypes.bool,
-        multiline:PropTypes.bool
+        multiline:PropTypes.bool,
     };
     static defaultProps = {
         error:false,
@@ -82,6 +78,7 @@ class Component extends React.Component {
         dropdwon:false,
         discreet:false,
         dense:false,
+        short:true,
         width:100,
         incognito:false,
         multiline:false,
@@ -210,16 +207,24 @@ class Component extends React.Component {
         )
     }
     render() {
-        var lh = (parseFloat(this.state.style.height) - parseFloat(this.state.innerleft))/2.0;
-        var ih = lh+36;
+        //var lh = (parseFloat(this.state.style.height) - parseFloat(this.state.innerleft))/2.0;
+        //var ih = lh+36;
         const css = `
             @keyframes primary-bar {
                 0% {
+                    border-top-width:1px;
                     border-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
                     width:10%;
                     margin:0 45%;
                 }
+                30% {
+                    border-top-width:1.5px;
+                    border-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
+                    width:50%;
+                    margin:0 25%;
+                }
                 100% {
+                    border-top-width:2px;
                     border-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
                     width:100%;
                     margin:0 0;
@@ -236,14 +241,14 @@ class Component extends React.Component {
                 }
             }
             .textfield-bar-dirty-`+this.state.theme_id+` {
-                border-top-width:1px;
+                border-top-width:2px;
                 border-left-width:0px;
                 border-right-width:0px;
                 border-bottom-width:0px;
                 border-style:solid;
                 height:0px;
                 display:block;
-                border-color:`+this.context.palette['default']['default'].backgroundColor+`;
+                border-color:`+this.context.palette['primary']['primary'].backgroundColor+`;
                 animation-name:primary-bar;
                 animation-duration:1s;
                 padding:0px;
@@ -266,14 +271,14 @@ class Component extends React.Component {
                 text-align:center;
             }
             .textfield-bar-error-`+this.state.theme_id+` {
-                border-top-width:1px;
+                border-top-width:2px;
                 border-left-width:0px;
                 border-right-width:0px;
                 border-bottom-width:0px;
                 border-style:solid;
                 height:0px;
                 display:block;
-                border-color:`+this.context.palette['secondary']['default'].backgroundColor+`;
+                border-color:`+this.context.palette['secondary']['primary'].backgroundColor+`;
                 padding:0px;
                 padding-bottom:0px;
                 text-align:center;
@@ -314,7 +319,7 @@ class Component extends React.Component {
                 left:0px;
                 right:0px;
                 top:0px;
-                color:`+this.context.palette['default']['default'].color+`;
+                color:`+(this.state.error? this.context.palette['secondary']['primary'].backgroundColor:this.context.palette['primary']['primary'].color)+`;
                 opacity:0.38;
                 padding-top:`+0+`px;
                 padding-bottom:4px;
@@ -335,7 +340,7 @@ class Component extends React.Component {
             }
             .textfield-discreet-hidden-`+this.state.theme_id+` {
                 position:relative;
-                padding-top:`+lh+`px;
+                padding-top:`+0+`px;
                 float:left;
                 width:0px;
                 overflow:hidden;
@@ -365,7 +370,8 @@ class Component extends React.Component {
             .textfield-`+this.state.theme_id+` textarea {
                 overflow:hidden;
                 height:`+this.state.scrollHeight+`px;
-                opacity:0.87;
+                color:`+(this.state.disabled? this.context.palette['default']['default'].color:this.context.palette['default']['default'].color)+`;
+                opacity:`+(this.state.disabled? 0.54:0.87)+`;
             }
             .textfield-`+this.state.theme_id+` input {
                 overflow:hidden;
@@ -373,11 +379,13 @@ class Component extends React.Component {
             }
         `
         return (
-            <div ref={'cont'} className={this.props.inline? this.context.theme.textfield.inline:this.context.theme.textfield.default} onClick={this.props.onClick}>
+            <div ref={'cont'} className={classNames({[this.props.inline? this.context.theme.textfield.inline:this.context.theme.textfield.default]:true})} onClick={this.props.onClick}>
                 <style>{css}</style> 
                 <div ref={"innerleft"} className={classNames({
                         [(this.props.discreet && !this.state.visible)? ('textfield-discreet-hidden-'+this.state.theme_id):('textfield-discreet-active-'+this.state.theme_id)]:true,
-                        ['textfield-'+this.state.theme_id]:true
+                        ['textfield-'+this.state.theme_id]:true,
+                        [this.context.theme.line.short]:this.props.short && (!this.props.discreet || (this.props.discreet && this.state.visible)),
+                        [this.context.theme.line.body]:!this.props.short && (!this.props.discreet || (this.props.discreet && this.state.visible))
                     })}>
                 <div className={(this.state.active || this.state.dirty)? 'floatinghint-dirty-'+this.state.theme_id:'floatinghint-clean-'+this.state.theme_id} ref="FloatingHintText">
                     {(this.state.active && !this.state.disabled)? this.props.floatingHintText:this.props.hintText}</div>
@@ -392,7 +400,19 @@ class Component extends React.Component {
                         value={this.state.value}>
                 </textarea>} 
                 <div style={{width:'100%',paddingBottom:'0px',paddingTop:'4px'}}>
-                    {this.state.incognito? null:<span className={this.state.disabled? 'textfield-bar-disabled-'+this.state.theme_id:(this.state.dirty? (this.state.error? 'textfield-bar-error-'+this.state.theme_id:'textfield-bar-dirty-'+this.state.theme_id):(this.props.required? (this.state.error? 'textfield-bar-error-'+this.state.theme_id:'textfield-bar-clean-'+this.state.theme_id):'textfield-bar-clean-'+this.state.theme_id))}></span>}
+                    {this.state.incognito? null:<span className={
+                        this.state.disabled? 
+                            'textfield-bar-disabled-'+this.state.theme_id:(
+                            this.state.dirty? (
+                                this.state.error? 
+                                    'textfield-bar-error-'+this.state.theme_id:
+                                    'textfield-bar-dirty-'+this.state.theme_id):(
+                                this.props.required? (
+                                    this.state.error? 
+                                        'textfield-bar-error-'+this.state.theme_id:
+                                        'textfield-bar-clean-'+this.state.theme_id):
+                                    'textfield-bar-clean-'+this.state.theme_id))}>
+                    </span>}
                 </div>
                 <div className={'helptext-'+this.state.theme_id}>{this.props.helpText}</div>
                 </div>

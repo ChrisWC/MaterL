@@ -59,6 +59,62 @@ h1 {
     font-size:112px;
     font-weight:200;
     font-variant:normal;
+    margin-bottom:48px;
+    color:rgba(0,0,0,0.54);
+}
+display-4 {
+    display:block;
+    font-size:112px;
+    font-weight:200;
+    font-variant:normal;
+    margin-bottom:48px;
+    color:rgba(0,0,0,0.54);
+}
+display-3 {
+    display:block;
+    font-size:56px;
+    font-variant:normal;
+    color:rgba(0,0,0,0.87);
+}
+display-2 {
+    display:block;
+    font-size:45px;
+    font-variant:normal;
+    color:rgba(0,0,0,0.87);
+}
+display-1 {
+    display:block;
+    font-size:34px;
+    font-variant:normal;
+    color:rgba(0,0,0,0.87);
+}
+headline {
+    display:block;
+    font-size:24px;
+    font-variant:normal;
+    color:rgba(0,0,0,0.87);
+}
+title {
+    display:block;
+    font-size:21px;
+    font-weight:bold;
+    font-variant:normal;
+    color:rgba(0,0,0,0.87);
+}
+body-1 {
+    display:block;
+    font-size:15px;
+    font-variant:medium;
+    margin-bottom:1em;
+    color:rgba(0,0,0,0.87);
+}
+body-2 {
+    display:block;
+    font-size:15px;
+    font-weight:bold;
+    font-variant:medium;
+    margin-bottom:1em;
+    color:rgba(0,0,0,0.87);
 }
 h2 {
     font-size:56px;

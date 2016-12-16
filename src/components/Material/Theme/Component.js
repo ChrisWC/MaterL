@@ -26,6 +26,10 @@ const defaultTheme = {
         inset:16,
         zDepth:4,
     },
+    line:{
+        body:s['body-line-length-ideal'],
+        short:s['short-line-length-ideal']
+    },
     choice:{
         default:s.choice,
         body:s['choice-body'],

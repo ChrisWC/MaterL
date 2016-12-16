@@ -30,18 +30,23 @@ function Route({}, context) {
   return (
     <div className={s.root}>
         <div className={s.container}>
-            <h1>Text Fields</h1>
+            <h1 className={"display-1"}>Text Field</h1>
             <p>
                 Under the Material Specification, text-fields and text-boxes are
                 the same. There function is instead determined by its parameters.
             </p>
             <TextField value="More Text" hintText="Text" floatingHintText="A Text Field"/><Button icon={<Icon component={"create"}/>} label={"A Button"} priority={"primary"}/>
+            <title>
+                Disabled Textfield
+            </title>
+            <body-1>
+                You can set a textfield as disabled by passing true into the disabled prop.
+            </body-1>
+            <TextField value="More Text" hintText="Disabled" floatingHintText="Disabled" disabled={true} icon={<Icon component={"create"}/>}/><Button raised={true} icon={<Icon component={"create"}/>} label={"A Button"} priority={"primary"}/><Button label={"A Button"} priority={"primary"}/>
             <h3>
-                Disabled
+                Error
             </h3>
-            <div style={{position:'relative'}}>
-            <TextField value="MOre" hintText="Disabled" floatingHintText="Disabled" disabled={false} icon={<Icon component={"create"}/>}/><Button raised={true} icon={<Icon component={"create"}/>} label={"A Button"} priority={"primary"}/><Button label={"A Button"} priority={"primary"}/>
-            </div>
+            <TextField value="More Text" hintText="Disabled" floatingHintText="Disabled" error={true} icon={<Icon component={"create"}/>}/><Button raised={true} icon={<Icon component={"create"}/>} label={"A Button"} priority={"primary"}/><Button label={"A Button"} priority={"primary"}/>
             <h3>
                 Inline
             </h3>
